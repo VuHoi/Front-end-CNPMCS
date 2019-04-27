@@ -1,5 +1,8 @@
+import { CustomerServiceProxy } from './../../shared/service-proxies/service-proxies';
+import { ViewDemoModelModalComponent } from './demo-model/view-demo-model-modal.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 import { AppCommonModule } from '@app/shared/common/app-common.module';
 import { UtilsModule } from '@shared/utils/utils.module';
@@ -10,12 +13,25 @@ import { TableModule } from 'primeng/table';
 import { GWebsiteRoutingModule } from './gwebsite-routing.module';
 
 import { MenuClientComponent, CreateOrEditMenuClientModalComponent } from './index';
+import { DemoModelComponent } from './demo-model/demo-model.component';
+import { CreateOrEditDemoModelModalComponent } from './demo-model/create-or-edit-demo-model-modal.component';
 import { DemoModelServiceProxy } from '@shared/service-proxies/service-proxies';
-import { PurchaseComponent } from './purchase/purchase/purchase.component';
+import { CustomerComponent } from './customer/customer.component';
+import { ViewCustomerModalComponent } from './customer/view-customer-modal.component';
+import { CreateOrEditCustomerModalComponent } from './customer/create-or-edit-customer-modal.component';
+import { ProductComponent } from './product/product.component';
+import { CreateOrEditProductModalComponent } from './product/create-or-edit-product-modal/create-or-edit-product-modal.component';
+import { PlanComponent } from './plan/plan.component';
+import { CreateOrEditPlanModalComponent } from './plan/create-or-edit-plan-modal/create-or-edit-plan-modal.component';
+import { PurchaseComponent } from './purchase/purchase.component';
+import { CreateOrEditPurchaseModalComponent } from './purchase/create-or-edit-purchase-modal/create-or-edit-purchase-modal.component';
+import { PurchaseHistoryComponent } from './purchaseHistory/purchaseHistory.component';
+import { BudgetComponent } from './budget/budget.component';
 
 @NgModule({
     imports: [
         FormsModule,
+        NgSelectModule,
         CommonModule,
         FileUploadModule,
         ModalModule.forRoot(),
@@ -34,10 +50,14 @@ import { PurchaseComponent } from './purchase/purchase/purchase.component';
     ],
     declarations: [
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
-        PurchaseComponent
+        DemoModelComponent, CreateOrEditDemoModelModalComponent, ViewDemoModelModalComponent,
+        CustomerComponent, CreateOrEditCustomerModalComponent, ViewCustomerModalComponent, ProductComponent, CreateOrEditProductModalComponent,
+        PlanComponent, CreateOrEditPlanModalComponent, PurchaseComponent, CreateOrEditPurchaseModalComponent,  PurchaseHistoryComponent,
+        BudgetComponent
     ],
     providers: [
-        DemoModelServiceProxy
+        DemoModelServiceProxy,
+        CustomerServiceProxy
     ]
 })
 export class GWebsiteModule { }

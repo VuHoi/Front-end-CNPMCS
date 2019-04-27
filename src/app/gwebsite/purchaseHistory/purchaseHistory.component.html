@@ -1,0 +1,125 @@
+<div [@routerTransition]>
+
+    <div class="m-subheader ">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto col-xs-6">
+                <h3 class="m-subheader__title m-subheader__title--separator">
+                    <span>{{l("Purchase History")}}</span>
+                </h3>
+                <span class="m-section__sub">
+                    {{l("PurchaseHistoryInfo")}}
+                </span>
+            </div>
+        </div>
+    </div>
+  
+    <div class="m-content">
+        <div class="m-portlet m-portlet--mobile">
+            <div class="m-portlet__body">
+                <form autocomplete="off">
+                    <div class="m-form m-form--label-align-right" id="TextsFilterForm">
+                        <div class="row align-items-center m--margin-bottom-10">
+                            <div class="col-sm-12">
+                                <div class="input-group">
+                                    <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control"
+                                        placeholder="{{l('SearchWithThreeDot')}}" type="text">
+                                    <span class="input-group-btn">
+                                        <button (click)="applyFilters()" class="btn btn-primary" type="submit"><i class="icon-refresh"></i>
+                                            {{l("Refresh")}}</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="row align-items-center">
+                    <!--<Primeng-TurboTable-Start>-->
+                    <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
+                        <p-table #dataTable (onLazyLoad)="getPurchaseHistorys($event)" [value]="primengTableHelper.records"
+                            rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                            [responsive]="primengTableHelper.isResponsive">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th pSortableColumn="purchaseId">
+                                        {{l('PurchaseId')}}
+                                        <p-sortIcon field="purchaseId"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="staffId">
+                                        {{l('StaffId')}}
+                                        <p-sortIcon field="staffId"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="product">
+                                        {{l('Product')}}
+                                        <p-sortIcon field="product"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="quantity">
+                                        {{l('Quantity')}}
+                                        <p-sortIcon field="quantity"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="approvedDate">
+                                        {{l('Approved Date')}}
+                                        <p-sortIcon field="approvedDate"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="purchaseDate">
+                                        {{l('Purchase Date')}}
+                                        <p-sortIcon field="purchaseDate"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="status">
+                                        {{l('Status')}}
+                                        <p-sortIcon field="status"></p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-record="$implicit">
+                                <tr>
+                                    <td>
+                                        <span class="ui-column-title">{{l('PurchaseId')}}</span>
+                                        <span title="{{record.purchaseId}}">{{truncateString(record.purchaseId)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('StaffId')}}</span>
+                                        <span title="{{record.staffId}}">{{truncateString(record.staffId)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Product')}}</span>
+                                        <span title="{{record.product}}">{{truncateString(record.product)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Quantity')}}</span>
+                                        <span title="{{record.quantity}}">{{ record.quantity }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Approved Date')}}</span>
+                                        <span title="{{record.approvedDate}}">{{truncateString(record.approvedDate)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Purchase Date')}}</span>
+                                        <span title="{{record.purchaseDate}}">{{truncateString(record.purchaseDate)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Status')}}</span>
+                                        <span title="{{record.status}}">{{truncateString(record.status)}}</span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
+                            {{l('NoData')}}
+                        </div>
+                        <div class="primeng-paging-container">
+                            <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
+                                (onPageChange)="getPurchaseHistorys($event)" [totalRecords]="primengTableHelper.totalRecordsCount"
+                                [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
+                            </p-paginator>
+                            <span class="total-records-count">
+                                {{l('TotalRecordsCount', primengTableHelper.totalRecordsCount)}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Primeng-TurboTable-End>-->
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  
