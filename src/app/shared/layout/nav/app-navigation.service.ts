@@ -21,11 +21,21 @@ export class AppNavigationService {
                 new AppMenuItem('DemoModel', 'Pages.Administration.DemoModel', 'flaticon-menu-1', '/app/gwebsite/demo-model'),
                 new AppMenuItem('Customer', 'Pages.Administration.Customer', 'flaticon-menu-1', '/app/gwebsite/customer'),
                 // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-                new AppMenuItem('Product', 'Pages.Administration.MenuClient', 'flaticon-shapes', '/app/gwebsite/product'),
-                new AppMenuItem('Plan', 'Pages.Administration.MenuClient', 'flaticon-calendar-2', '/app/gwebsite/plan'),
-                new AppMenuItem('Purchase', 'Pages.Administration.MenuClient', 'flaticon-cart', '/app/gwebsite/purchase'),
-                new AppMenuItem('Purchase History', 'Pages.Administration.MenuClient', 'flaticon-list-1', '/app/gwebsite/purchase-history'),
-                new AppMenuItem('Budget', 'Pages.Administration.MenuClient', 'flaticon-coins', '/app/gwebsite/budget')
+                // new AppMenuItem('Purchase', 'Pages.Administration.MenuClient', 'flaticon-cart', '/app/gwebsite/purchase'),
+                // new AppMenuItem('Purchase History', 'Pages.Administration.MenuClient', 'flaticon-list-1', '/app/gwebsite/purchase-history'),
+                // new AppMenuItem('Budget', 'Pages.Administration.MenuClient', 'flaticon-coins', '/app/gwebsite/budget')
+            ]),
+            new AppMenuItem('Category', '', 'flaticon-interface-5', '', [
+                new AppMenuItem('Supplier', 'Pages.Administration.MenuClient', 'flaticon-profile-1', '/app/gwebsite/supplier'),
+                new AppMenuItem('Supplier Category', 'Pages.Administration.MenuClient', 'flaticon-truck', '/app/gwebsite/supplier-category'),
+                new AppMenuItem('Product', 'Pages.Administration.MenuClient', 'flaticon-app', '/app/gwebsite/product'),
+                new AppMenuItem('Product Category', 'Pages.Administration.MenuClient', 'flaticon-shapes', '/app/gwebsite/product-category')
+            ]),
+            new AppMenuItem('Plan', '', 'flaticon-calendar', '', [
+                new AppMenuItem('Purchase Plan', 'Pages.Administration.MenuClient', 'flaticon-calendar-2', '/app/gwebsite/plan')
+            ]),
+            new AppMenuItem('Purchase', '', 'flaticon-cart', '', [
+                new AppMenuItem('Project', 'Pages.Administration.MenuClient', 'flaticon-imac', '/app/gwebsite/project')
             ]),
             new AppMenuItem('Systems', '', 'flaticon-layers', '', [
                 new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),

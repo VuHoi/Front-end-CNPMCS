@@ -19,6 +19,8 @@ import { DemoModelServiceProxy } from '@shared/service-proxies/service-proxies';
 import { CustomerComponent } from './customer/customer.component';
 import { ViewCustomerModalComponent } from './customer/view-customer-modal.component';
 import { CreateOrEditCustomerModalComponent } from './customer/create-or-edit-customer-modal.component';
+import { ProductCategoryComponent } from './productCategory/productCategory.component';
+import { CreateOrEditProductCategoryModalComponent } from './productCategory/create-or-edit-productCategory-modal/create-or-edit-productCategory-modal.component';
 import { ProductComponent } from './product/product.component';
 import { CreateOrEditProductModalComponent } from './product/create-or-edit-product-modal/create-or-edit-product-modal.component';
 import { PlanComponent } from './plan/plan.component';
@@ -27,6 +29,12 @@ import { PurchaseComponent } from './purchase/purchase.component';
 import { CreateOrEditPurchaseModalComponent } from './purchase/create-or-edit-purchase-modal/create-or-edit-purchase-modal.component';
 import { PurchaseHistoryComponent } from './purchaseHistory/purchaseHistory.component';
 import { BudgetComponent } from './budget/budget.component';
+import { SupplierComponent } from './supplier/supplier.component';
+import { CreateOrEditSupplierModalComponent } from './supplier/create-or-edit-supplier-modal/create-or-edit-supplier-modal.component';
+import { SupplierCategoryComponent } from './supplierCategory/supplierCategory.component';
+import { CreateOrEditSupplierCategoryModalComponent } from './supplierCategory/create-or-edit-supplierCategory-modal/create-or-edit-supplierCategory-modal.component';
+
+
 
 @NgModule({
     imports: [
@@ -53,7 +61,8 @@ import { BudgetComponent } from './budget/budget.component';
         DemoModelComponent, CreateOrEditDemoModelModalComponent, ViewDemoModelModalComponent,
         CustomerComponent, CreateOrEditCustomerModalComponent, ViewCustomerModalComponent, ProductComponent, CreateOrEditProductModalComponent,
         PlanComponent, CreateOrEditPlanModalComponent, PurchaseComponent, CreateOrEditPurchaseModalComponent,  PurchaseHistoryComponent,
-        BudgetComponent
+        BudgetComponent, ProductCategoryComponent, CreateOrEditProductCategoryModalComponent, SupplierComponent, CreateOrEditSupplierModalComponent,
+        SupplierCategoryComponent, CreateOrEditSupplierCategoryModalComponent
     ],
     providers: [
         DemoModelServiceProxy,

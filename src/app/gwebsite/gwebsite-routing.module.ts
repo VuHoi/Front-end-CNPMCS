@@ -4,10 +4,14 @@ import { MenuClientComponent } from '@app/gwebsite/menu-client/menu-client.compo
 import { DemoModelComponent } from './demo-model/demo-model.component';
 import { CustomerComponent } from './customer/customer.component';
 import { ProductComponent } from './product/product.component';
+import { ProductCategoryComponent } from './productCategory/productCategory.component';
 import { PlanComponent } from './plan/plan.component';
 import { PurchaseComponent } from './purchase/purchase.component';
 import { PurchaseHistoryComponent } from './purchaseHistory/purchaseHistory.component';
 import { BudgetComponent } from './budget/budget.component';
+import { SupplierComponent } from './supplier/supplier.component';
+import { SupplierCategoryComponent } from './supplierCategory/supplierCategory.component';
+
 
 @NgModule({
     imports: [
@@ -43,8 +47,35 @@ import { BudgetComponent } from './budget/budget.component';
                 path: '',
                 children: [
                     {
-                        path: 'product', component: ProductComponent,
+                        path: 'supplier-category', component: SupplierCategoryComponent,
                         //tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+                        data: { permission: 'Pages.Administration.MenuClient' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'supplier', component: SupplierComponent,
+                        data: { permission: 'Pages.Administration.MenuClient' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'product-category', component: ProductCategoryComponent,
+                        data: { permission: 'Pages.Administration.MenuClient' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'product', component: ProductComponent,
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
                 ]
@@ -54,7 +85,6 @@ import { BudgetComponent } from './budget/budget.component';
                 children: [
                     {
                         path: 'plan', component: PlanComponent,
-                        //tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
                 ]
@@ -64,7 +94,6 @@ import { BudgetComponent } from './budget/budget.component';
                 children: [
                     {
                         path: 'purchase', component: PurchaseComponent,
-                        //tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
                 ]
@@ -74,7 +103,6 @@ import { BudgetComponent } from './budget/budget.component';
                 children: [
                     {
                         path: 'purchase-history', component: PurchaseHistoryComponent,
-                        //tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
                 ]
@@ -84,7 +112,6 @@ import { BudgetComponent } from './budget/budget.component';
                 children: [
                     {
                         path: 'budget', component: BudgetComponent,
-                        //tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
                 ]
