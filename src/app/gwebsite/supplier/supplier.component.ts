@@ -14,11 +14,11 @@ import { CreateOrEditSupplierComponent } from './create-or-edit-supplier/create-
   animations: [appModuleAnimation()]
 })
 export class SupplierComponent extends AppComponentBase implements OnInit {
-    @ViewChild('textsTable') textsTable: ElementRef;
-    @ViewChild('dataTable') dataTable: Table;
-    @ViewChild('paginator') paginator: Paginator;
-    @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditSupplierComponent;
-  selectedCar1:any;
+  @ViewChild('textsTable') textsTable: ElementRef;
+  @ViewChild('dataTable') dataTable: Table;
+  @ViewChild('paginator') paginator: Paginator;
+  @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditSupplierComponent;
+  selectedCar1: any;
   /**
    * tạo các biến dể filters
    */
@@ -29,43 +29,43 @@ export class SupplierComponent extends AppComponentBase implements OnInit {
     private _router: Router,
     private _activatedRoute: ActivatedRoute,
     private _supplierServiceProxy: SupplierServiceProxy
-) {
+  ) {
     super(injector);
-}
- 
-  ngOnInit(): void {
-      this.getSupliers();
   }
 
- 
+  ngOnInit(): void {
+    this.getSupliers();
+  }
 
- 
+
+
+
   getSupliers() {
-      if (!this.paginator || !this.dataTable) {
-          return;
-      }
+    if (!this.paginator || !this.dataTable) {
+      return;
+    }
 
-      //show loading trong gridview
-      this.primengTableHelper.showLoadingIndicator();
+    //show loading trong gridview
+    this.primengTableHelper.showLoadingIndicator();
 
-      /**
-       * Sử dụng _apiService để call các api của backend
-       */
+    /**
+     * Sử dụng _apiService để call các api của backend
+     */
 
-      this._supplierServiceProxy.getAllBiddingPass().subscribe(result => {
-        this.primengTableHelper.totalRecordsCount=result.items.length;
-        this.primengTableHelper.records = result.items;
-        this.primengTableHelper.hideLoadingIndicator();
+    this._supplierServiceProxy.getAllBiddingPass().subscribe(result => {
+      this.primengTableHelper.totalRecordsCount = result.items.length;
+      this.primengTableHelper.records = result.items;
+      this.primengTableHelper.hideLoadingIndicator();
     });
   }
 
   init(): void {
-      //get params từ url để thực hiện filter
-      this._activatedRoute.params.subscribe((params: Params) => {
-          this.filterText = params['filterText'] || '';
-       
-         
-      });
+    //get params từ url để thực hiện filter
+    this._activatedRoute.params.subscribe((params: Params) => {
+      this.filterText = params['filterText'] || '';
+
+
+    });
   }
 
 
@@ -77,16 +77,16 @@ export class SupplierComponent extends AppComponentBase implements OnInit {
    * @param text
    */
   truncateString(text): string {
-      return abp.utils.truncateStringWithPostfix(text, 32, '...');
+    return abp.utils.truncateStringWithPostfix(text, 32, '...');
   }
 
   //Refresh grid khi thực hiện create or edit thành công
   refreshValueFromModal(): void {
-      
+    this.getSupliers();
   }
 
   //hàm show view create Product
   createProduct() {
- this.createOrEditModal.show();
+    this.createOrEditModal.show();
   }
 }

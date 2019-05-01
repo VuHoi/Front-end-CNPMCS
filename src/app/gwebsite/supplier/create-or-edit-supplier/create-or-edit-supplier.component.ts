@@ -18,10 +18,10 @@ export class CreateOrEditSupplierComponent extends AppComponentBase {
      * @Output dùng để public event cho component khác xử lý
      */
     @Output() modalSave: EventEmitter<any> = new EventEmitter<any>();
-
+    isEdit = false;
     active = false;
     saving = false;
-    supplier: SupplierSavedDto = new SupplierSavedDto();
+    supplier: SupplierSavedDto = new SupplierSavedDto({ address: '', biddings: [], contact: '', email: '', fax: '', id: 0, name: '', phone: '00000000990' });
     biddings: any[] = [];
     productId = '';
     selectItems: SelectItem[];
@@ -38,7 +38,8 @@ export class CreateOrEditSupplierComponent extends AppComponentBase {
 
     show(supplier?: any | null | undefined): void {
         this.active = true;
-        this.supplier = supplier ? supplier : null;
+        this.supplier = supplier ? supplier : this.supplier;
+        this.isEdit = supplier ? true : false;
         this.modal.show();
     }
 
@@ -59,7 +60,7 @@ export class CreateOrEditSupplierComponent extends AppComponentBase {
         });
     }
     insertPurchase() {
-        var input = this.supplier;
+        var input = Object.create(this.supplier);
         input.biddings = [];
         this.biddings.map(item => {
             const startDate = item.ranges ? item.ranges[0] : new Date();
@@ -70,21 +71,25 @@ export class CreateOrEditSupplierComponent extends AppComponentBase {
             }));
         })
 
-        this._supplierServiceProxy.createSupplier(input).subscribe(item => console.log(item), err => console.log(err));
+        this._supplierServiceProxy.createSupplier(input).subscribe(item => {
+            this.close();
+            this.modalSave.emit(null);
+            console.log(item)
+        }, err => console.log(err));
     }
 
     updatePurchase() {
-        var input = this.supplier;
-        input.biddings = [];
-        this.biddings.map(item => {
-            const startDate = item.ranges ? item.ranges[0] : new Date();
-            const endDate = item.ranges ? item.ranges[1] ? item.ranges[1] : new Date() : new Date();
-            input.biddings.push(new BiddingSaved({
-                startDate, endDate,
-                status: 0, productId: item.id, supplierId: input.id
-            }));
-        })
-
+        var input = Object.create(this.supplier);
+        // input.biddings = [];
+        // this.biddings.map(item => {
+        //     const startDate = item.ranges ? item.ranges[0] : new Date();
+        //     const endDate = item.ranges ? item.ranges[1] ? item.ranges[1] : new Date() : new Date();
+        //     input.biddings.push(new BiddingSaved({
+        //         startDate, endDate,
+        //         status: 0, productId: item.id, supplierId: input.id
+        //     }));
+        // })
+        console.log(input)
         this._supplierServiceProxy.updateSupplier(input).subscribe(item => {
             this.close();
             this.modalSave.emit(null);
