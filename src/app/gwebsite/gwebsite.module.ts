@@ -1,4 +1,3 @@
-import { CustomerServiceProxy } from './../../shared/service-proxies/service-proxies';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -26,9 +25,10 @@ import { CreateOrEditPurchaseModalComponent } from './purchase/create-or-edit-pu
 import { PurchaseHistoryComponent } from './purchaseHistory/purchaseHistory.component';
 import { BudgetComponent } from './budget/budget.component';
 import { SupplierComponent } from './supplier/supplier.component';
-import { CreateOrEditSupplierModalComponent } from './supplier/create-or-edit-supplier-modal/create-or-edit-supplier-modal.component';
+import { CreateOrEditSupplierComponent } from './supplier/create-or-edit-supplier-modal/create-or-edit-supplier-modal.component';
 import { SupplierCategoryComponent } from './supplierCategory/supplierCategory.component';
 import { CreateOrEditSupplierCategoryModalComponent } from './supplierCategory/create-or-edit-supplierCategory-modal/create-or-edit-supplierCategory-modal.component';
+import { CustomerServiceProxy } from '@app/shared/service-proxies/service-proxies';
 
 
 
@@ -57,7 +57,7 @@ import { CreateOrEditSupplierCategoryModalComponent } from './supplierCategory/c
     ],
     declarations: [
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
-        SupplierComponent, CreateOrEditSupplierModalComponent,
+        SupplierComponent, CreateOrEditSupplierComponent,
         SupplierCategoryComponent, CreateOrEditSupplierCategoryModalComponent,
         ProductCategoryComponent, CreateOrEditProductCategoryModalComponent,
         ProductComponent, CreateOrEditProductModalComponent,
@@ -68,6 +68,7 @@ import { CreateOrEditSupplierCategoryModalComponent } from './supplierCategory/c
     ],
     providers: [
         DemoModelServiceProxy,
+        CustomerServiceProxy,
         SupplierServiceProxy,
         ProductsServiceProxy,
         PurchaseServiceProxy

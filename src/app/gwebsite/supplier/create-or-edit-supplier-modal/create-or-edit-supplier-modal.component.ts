@@ -6,8 +6,8 @@ import { SelectItem } from 'primeng/primeng';
 
 @Component({
     selector: 'app-create-or-edit-supplier',
-    templateUrl: './create-or-edit-supplier.component.html',
-    styleUrls: ['./create-or-edit-supplier.component.css']
+    templateUrl: './create-or-edit-supplier-modal.component.html',
+    styleUrls: ['./create-or-edit-supplier-modal.component.css']
 })
 export class CreateOrEditSupplierComponent extends AppComponentBase {
     @ViewChild('createOrEditModal') modal: ModalDirective;
@@ -54,7 +54,7 @@ export class CreateOrEditSupplierComponent extends AppComponentBase {
     getDataProduct() {
         this._productsServiceProxy.getProducts().subscribe(products => {
             this.selectItems = [];
-            products.items.map(i => this.selectItems.push({ value: { id: i.id }, label: i.name }))
+            products.items.map(i => this.selectItems.push({ value: { id: i.id }, label: i.name }));
         });
     }
     insertPurchase() {
@@ -67,7 +67,7 @@ export class CreateOrEditSupplierComponent extends AppComponentBase {
                 startDate, endDate,
                 status: 0, productId: item.id, supplierId: input.id
             }));
-        })
+        });
 
         this._supplierServiceProxy.createSupplier(input).subscribe(item => console.log(item), err => console.log(err));
     }
