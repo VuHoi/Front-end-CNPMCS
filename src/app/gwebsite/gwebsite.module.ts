@@ -31,6 +31,13 @@ import { CreateOrEditSupplierCategoryModalComponent } from './supplierCategory/c
 import { CustomerServiceProxy } from '@app/shared/service-proxies/service-proxies';
 import { ProjectComponent } from './project/project.component';
 import { CreateOrEditProjectModalComponent } from './project/create-or-edit-project-modal/create-or-edit-project-modal.component';
+import { BidProfileComponent } from './bids/bidProfile.component';
+import { CreateOrEditBidProfileModalComponent } from './bids/create-or-edit-bidProfile-modal/create-or-edit-bidProfile-modal.component';
+import { PurchaseContractComponent } from './purchaseContract/purchaseContract.component';
+import { CreateOrEditPurchaseContractModalComponent } from './purchaseContract/create-or-edit-purchaseContract-modal/create-or-edit-purchaseContract-modal.component';
+import { PurchaseOrderComponent } from './purchaseOrder/purchaseOrder.component';
+import { CreateOrEditPurchaseOrderModalComponent } from './purchaseOrder/create-or-edit-purchaseOrder-modal/create-or-edit-purchaseOrder-modal.component';
+
 
 
 @NgModule({
@@ -65,7 +72,10 @@ import { CreateOrEditProjectModalComponent } from './project/create-or-edit-proj
         PurchaseComponent, CreateOrEditPurchaseModalComponent,
         PurchaseHistoryComponent,
         BudgetComponent,
-        ProjectComponent, CreateOrEditProjectModalComponent
+        ProjectComponent, CreateOrEditProjectModalComponent,
+        BidProfileComponent, CreateOrEditBidProfileModalComponent,
+        PurchaseContractComponent, CreateOrEditPurchaseContractModalComponent,
+        PurchaseOrderComponent, CreateOrEditPurchaseOrderModalComponent
     ],
     providers: [
         DemoModelServiceProxy,
