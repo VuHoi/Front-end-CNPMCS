@@ -1,5 +1,3 @@
-import { CustomerServiceProxy } from './../../shared/service-proxies/service-proxies';
-import { ViewDemoModelModalComponent } from './demo-model/view-demo-model-modal.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -13,12 +11,7 @@ import { TableModule } from 'primeng/table';
 import { GWebsiteRoutingModule } from './gwebsite-routing.module';
 
 import { MenuClientComponent, CreateOrEditMenuClientModalComponent } from './index';
-import { DemoModelComponent } from './demo-model/demo-model.component';
-import { CreateOrEditDemoModelModalComponent } from './demo-model/create-or-edit-demo-model-modal.component';
-import { DemoModelServiceProxy } from '@shared/service-proxies/service-proxies';
-import { CustomerComponent } from './customer/customer.component';
-import { ViewCustomerModalComponent } from './customer/view-customer-modal.component';
-import { CreateOrEditCustomerModalComponent } from './customer/create-or-edit-customer-modal.component';
+import { DemoModelServiceProxy, SupplierServiceProxy, ProductsServiceProxy, PurchaseServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ProductComponent } from './product/product.component';
 import { CreateOrEditProductModalComponent } from './product/create-or-edit-product-modal/create-or-edit-product-modal.component';
 import { PlanComponent } from './plan/plan.component';
@@ -27,7 +20,10 @@ import { PurchaseComponent } from './purchase/purchase.component';
 import { CreateOrEditPurchaseModalComponent } from './purchase/create-or-edit-purchase-modal/create-or-edit-purchase-modal.component';
 import { PurchaseHistoryComponent } from './purchaseHistory/purchaseHistory.component';
 import { BudgetComponent } from './budget/budget.component';
-
+import { SupplierComponent } from './supplier/supplier.component';
+import { CreateOrEditSupplierComponent } from './supplier/create-or-edit-supplier/create-or-edit-supplier.component';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { CalendarModule } from 'primeng/calendar';
 @NgModule({
     imports: [
         FormsModule,
@@ -46,18 +42,23 @@ import { BudgetComponent } from './budget/budget.component';
         PrimeNgFileUploadModule,
         AutoCompleteModule,
         EditorModule,
-        InputMaskModule
+        InputMaskModule,
+        MultiSelectModule,
+        CalendarModule
     ],
     declarations: [
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
-        DemoModelComponent, CreateOrEditDemoModelModalComponent, ViewDemoModelModalComponent,
-        CustomerComponent, CreateOrEditCustomerModalComponent, ViewCustomerModalComponent, ProductComponent, CreateOrEditProductModalComponent,
-        PlanComponent, CreateOrEditPlanModalComponent, PurchaseComponent, CreateOrEditPurchaseModalComponent,  PurchaseHistoryComponent,
-        BudgetComponent
+        ProductComponent, CreateOrEditProductModalComponent,
+        PlanComponent, CreateOrEditPlanModalComponent, PurchaseComponent, CreateOrEditPurchaseModalComponent, PurchaseHistoryComponent,
+        BudgetComponent,
+        SupplierComponent,
+        CreateOrEditSupplierComponent
     ],
     providers: [
         DemoModelServiceProxy,
-        CustomerServiceProxy
+        SupplierServiceProxy,
+        ProductsServiceProxy,
+        PurchaseServiceProxy
     ]
 })
 export class GWebsiteModule { }
