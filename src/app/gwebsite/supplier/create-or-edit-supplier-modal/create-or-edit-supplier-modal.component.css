@@ -1,0 +1,18 @@
+::ng-deep .ui-multiselect{
+width: 400px !important;
+}
+
+::ng-deep .ui-multiselect-items-wrapper{
+    width: 400px !important;
+}
+
+/* ::ng-deep .ui-datepicker-calendar{
+    position: absolute !important;
+    top:0px;
+    left:0px;
+    z-index: 10000;
+} */
+
+::ng-deep .ui-multiselect-items{
+    min-height: 200px;
+}

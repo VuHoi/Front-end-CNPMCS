@@ -10,9 +10,11 @@ import { ModalModule, PopoverModule, TabsModule, TooltipModule } from 'ngx-boots
 import { AutoCompleteModule, EditorModule, FileUploadModule as PrimeNgFileUploadModule, InputMaskModule, PaginatorModule } from 'primeng/primeng';
 import { TableModule } from 'primeng/table';
 import { GWebsiteRoutingModule } from './gwebsite-routing.module';
+import { DemoModelServiceProxy, SupplierServiceProxy, ProductsServiceProxy, PurchaseServiceProxy } from '@shared/service-proxies/service-proxies';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { CalendarModule } from 'primeng/calendar';
 
 import { MenuClientComponent, CreateOrEditMenuClientModalComponent } from './index';
-import { DemoModelServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ProductCategoryComponent } from './productCategory/productCategory.component';
 import { CreateOrEditProductCategoryModalComponent } from './productCategory/create-or-edit-productCategory-modal/create-or-edit-productCategory-modal.component';
 import { ProductComponent } from './product/product.component';
@@ -27,6 +29,7 @@ import { SupplierComponent } from './supplier/supplier.component';
 import { CreateOrEditSupplierModalComponent } from './supplier/create-or-edit-supplier-modal/create-or-edit-supplier-modal.component';
 import { SupplierCategoryComponent } from './supplierCategory/supplierCategory.component';
 import { CreateOrEditSupplierCategoryModalComponent } from './supplierCategory/create-or-edit-supplierCategory-modal/create-or-edit-supplierCategory-modal.component';
+
 
 
 
@@ -48,18 +51,26 @@ import { CreateOrEditSupplierCategoryModalComponent } from './supplierCategory/c
         PrimeNgFileUploadModule,
         AutoCompleteModule,
         EditorModule,
-        InputMaskModule
+        InputMaskModule,
+        MultiSelectModule,
+        CalendarModule
     ],
     declarations: [
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
+        SupplierComponent, CreateOrEditSupplierModalComponent,
+        SupplierCategoryComponent, CreateOrEditSupplierCategoryModalComponent,
+        ProductCategoryComponent, CreateOrEditProductCategoryModalComponent,
         ProductComponent, CreateOrEditProductModalComponent,
-        PlanComponent, CreateOrEditPlanModalComponent, PurchaseComponent, CreateOrEditPurchaseModalComponent,  PurchaseHistoryComponent,
-        BudgetComponent, ProductCategoryComponent, CreateOrEditProductCategoryModalComponent, SupplierComponent, CreateOrEditSupplierModalComponent,
-        SupplierCategoryComponent, CreateOrEditSupplierCategoryModalComponent
+        PlanComponent, CreateOrEditPlanModalComponent,
+        PurchaseComponent, CreateOrEditPurchaseModalComponent,
+        PurchaseHistoryComponent,
+        BudgetComponent
     ],
     providers: [
         DemoModelServiceProxy,
-        CustomerServiceProxy
+        SupplierServiceProxy,
+        ProductsServiceProxy,
+        PurchaseServiceProxy
     ]
 })
 export class GWebsiteModule { }

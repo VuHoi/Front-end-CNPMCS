@@ -1,20 +1,17 @@
-import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
-import { AppComponentBase } from '@shared/common/app-component-base';
+import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output, Injector } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
-import { finalize } from 'rxjs/operators';
-import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
-import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { SupplierDto } from '../dto/supplier.dto';
+import { ProductsServiceProxy, SupplierSavedDto, Bidding, BiddingSaved, SupplierServiceProxy } from '@shared/service-proxies/service-proxies';
+import { AppComponentBase } from '@shared/common/app-component-base';
+import { SelectItem } from 'primeng/primeng';
 
 @Component({
-    selector: 'createOrEditSupplierModal',
-    templateUrl: './create-or-edit-supplier-modal.component.html',
-    styleUrls: ['./create-or-edit-supplier-modal.component.css']
+    selector: 'app-create-or-edit-supplier',
+    templateUrl: './create-or-edit-supplier.component.html',
+    styleUrls: ['./create-or-edit-supplier.component.css']
 })
-export class CreateOrEditSupplierModalComponent extends AppComponentBase {
-
+export class CreateOrEditSupplierComponent extends AppComponentBase {
     @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('supplierCombobox') supplierCombobox: ElementRef;
+    @ViewChild('purchaseCombobox') purchaseCombobox: ElementRef;
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
 
     /**
@@ -24,63 +21,77 @@ export class CreateOrEditSupplierModalComponent extends AppComponentBase {
 
     active = false;
     saving = false;
-
-    supplier: SupplierDto = new SupplierDto();
-    suppliers: ComboboxItemDto[] = [];
-
+    supplier: SupplierSavedDto = new SupplierSavedDto();
+    biddings: any[] = [];
+    productId = '';
+    selectItems: SelectItem[];
+    rangeDates: Date[];
     constructor(
         injector: Injector,
-        private _apiService: WebApiServiceProxy
+        private _productsServiceProxy: ProductsServiceProxy,
+        private _supplierServiceProxy: SupplierServiceProxy
     ) {
         super(injector);
+        this.getDataProduct();
+
     }
 
-    show(supplierId?: number | null | undefined): void {
+    show(supplier?: any | null | undefined): void {
         this.active = true;
-
-        this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', supplierId).subscribe(result => {
-            // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-            this.supplier = result.menuClient;
-            this.suppliers = result.menuClients;
-            this.modal.show();
-            setTimeout(() => {
-                    $(this.supplierCombobox.nativeElement).selectpicker('refresh');
-            }, 0);
-        });
+        this.supplier = supplier ? supplier : null;
+        this.modal.show();
     }
 
     save(): void {
         let input = this.supplier;
         this.saving = true;
         if (input.id) {
-            this.updateSupplier();
+            this.updatePurchase();
         } else {
-            this.insertSupplier();
+            this.insertPurchase();
         }
     }
+    getDataProduct() {
+        this._productsServiceProxy.getProducts().subscribe(products => {
+            this.selectItems = [];
+            products.items.map(i => this.selectItems.push({ value: { id: i.id }, label: i.name }))
+        });
+    }
+    insertPurchase() {
+        let input = this.supplier;
+        input.biddings = [];
+        this.biddings.map(item => {
+            const startDate = item.ranges ? item.ranges[0] : new Date();
+            const endDate = item.ranges ? item.ranges[1] ? item.ranges[1] : new Date() : new Date();
+            input.biddings.push(new BiddingSaved({
+                startDate, endDate,
+                status: 0, productId: item.id, supplierId: input.id
+            }));
+        })
 
-    insertSupplier() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.post('api/MenuClient/CreateMenuClient', this.supplier)
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
-            });
+        this._supplierServiceProxy.createSupplier(input).subscribe(item => console.log(item), err => console.log(err));
     }
 
-    updateSupplier() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.put('api/MenuClient/UpdateMenuClient', this.supplier)
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
-            });
-    }
+    updatePurchase() {
+        let input = this.supplier;
+        input.biddings = [];
+        this.biddings.map(item => {
+            const startDate = item.ranges ? item.ranges[0] : new Date();
+            const endDate = item.ranges ? item.ranges[1] ? item.ranges[1] : new Date() : new Date();
+            input.biddings.push(new BiddingSaved({
+                startDate, endDate,
+                status: 0, productId: item.id, supplierId: input.id
+            }));
+        });
 
+        this._supplierServiceProxy.updateSupplier(input).subscribe(item => {
+            this.close();
+            this.modalSave.emit(null);
+        }, err => console.log(err));
+    }
+    onChangeOptionProduct() {
+        console.log('sss', this.biddings);
+    }
     close(): void {
         this.active = false;
         this.modal.hide();

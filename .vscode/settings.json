@@ -15,5 +15,7 @@
         "*.sln": true,
         "*.csproj.user": true,
         "*.suo": true
-    }
+    },
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
 }
