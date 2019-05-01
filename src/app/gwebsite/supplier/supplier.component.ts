@@ -5,7 +5,7 @@ import { Paginator } from 'primeng/primeng';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { SupplierServiceProxy } from '@shared/service-proxies/service-proxies';
-import { CreateOrEditSupplierComponent } from './create-or-edit-supplier/create-or-edit-supplier.component';
+import { CreateOrEditSupplierComponent } from './create-or-edit-supplier-modal/create-or-edit-supplier-modal.component';
 
 @Component({
     selector: 'app-supplier',
