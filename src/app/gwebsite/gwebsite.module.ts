@@ -70,7 +70,7 @@ import { SubPlanComponent } from './plan/sub-plan/sub-plan.component';
         SupplierCategoryComponent, CreateOrEditSupplierCategoryModalComponent,
         ProductCategoryComponent, CreateOrEditProductCategoryModalComponent,
         ProductComponent, CreateOrEditProductModalComponent,
-        PlanComponent, CreateOrEditPlanModalComponent,
+        PlanComponent, CreateOrEditPlanModalComponent, SubPlanComponent,
         PurchaseComponent, CreateOrEditPurchaseModalComponent,
         PurchaseHistoryComponent,
         BudgetComponent,
@@ -78,8 +78,7 @@ import { SubPlanComponent } from './plan/sub-plan/sub-plan.component';
         BidProfileComponent, CreateOrEditBidProfileModalComponent,
         PurchaseContractComponent, CreateOrEditPurchaseContractModalComponent,
         PurchaseOrderComponent, CreateOrEditPurchaseOrderModalComponent,
-        SubmissionComponent, CreateOrEditSubmissionModalComponent,
-        SubPlanComponent
+        SubmissionComponent, CreateOrEditSubmissionModalComponent
     ],
     providers: [
         DemoModelServiceProxy,
