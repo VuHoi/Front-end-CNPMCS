@@ -13,6 +13,7 @@ import { ProjectComponent } from './project/project.component';
 import { BidProfileComponent } from './bids/bidProfile.component';
 import { PurchaseContractComponent } from './purchaseContract/purchaseContract.component';
 import { PurchaseOrderComponent } from './purchaseOrder/purchaseOrder.component';
+import { SubmissionComponent } from './submission/submission.component';
 
 
 @NgModule({
@@ -132,6 +133,15 @@ import { PurchaseOrderComponent } from './purchaseOrder/purchaseOrder.component'
                 children: [
                     {
                         path: 'purchaseOrder', component: PurchaseOrderComponent,
+                        data: { permission: 'Pages.Administration.MenuClient' }
+                    },
+                ]
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'submission', component: SubmissionComponent,
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
                 ]

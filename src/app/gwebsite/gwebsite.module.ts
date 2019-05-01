@@ -37,7 +37,8 @@ import { PurchaseContractComponent } from './purchaseContract/purchaseContract.c
 import { CreateOrEditPurchaseContractModalComponent } from './purchaseContract/create-or-edit-purchaseContract-modal/create-or-edit-purchaseContract-modal.component';
 import { PurchaseOrderComponent } from './purchaseOrder/purchaseOrder.component';
 import { CreateOrEditPurchaseOrderModalComponent } from './purchaseOrder/create-or-edit-purchaseOrder-modal/create-or-edit-purchaseOrder-modal.component';
-
+import { SubmissionComponent } from './submission/submission.component';
+import { CreateOrEditSubmissionModalComponent } from './submission/create-or-edit-submission-modal/create-or-edit-submission-modal.component';
 
 
 @NgModule({
@@ -75,7 +76,8 @@ import { CreateOrEditPurchaseOrderModalComponent } from './purchaseOrder/create-
         ProjectComponent, CreateOrEditProjectModalComponent,
         BidProfileComponent, CreateOrEditBidProfileModalComponent,
         PurchaseContractComponent, CreateOrEditPurchaseContractModalComponent,
-        PurchaseOrderComponent, CreateOrEditPurchaseOrderModalComponent
+        PurchaseOrderComponent, CreateOrEditPurchaseOrderModalComponent,
+        SubmissionComponent, CreateOrEditSubmissionModalComponent
     ],
     providers: [
         DemoModelServiceProxy,
