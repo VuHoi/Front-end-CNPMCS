@@ -29,8 +29,8 @@ import { CreateOrEditSupplierComponent } from './supplier/create-or-edit-supplie
 import { SupplierCategoryComponent } from './supplierCategory/supplierCategory.component';
 import { CreateOrEditSupplierCategoryModalComponent } from './supplierCategory/create-or-edit-supplierCategory-modal/create-or-edit-supplierCategory-modal.component';
 import { CustomerServiceProxy } from '@app/shared/service-proxies/service-proxies';
-
-
+import { ProjectComponent } from './project/project.component';
+import { CreateOrEditProjectModalComponent } from './project/create-or-edit-project-modal/create-or-edit-project-modal.component';
 
 
 @NgModule({
@@ -64,7 +64,8 @@ import { CustomerServiceProxy } from '@app/shared/service-proxies/service-proxie
         PlanComponent, CreateOrEditPlanModalComponent,
         PurchaseComponent, CreateOrEditPurchaseModalComponent,
         PurchaseHistoryComponent,
-        BudgetComponent
+        BudgetComponent,
+        ProjectComponent, CreateOrEditProjectModalComponent
     ],
     providers: [
         DemoModelServiceProxy,

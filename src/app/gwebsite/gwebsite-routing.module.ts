@@ -9,6 +9,7 @@ import { PurchaseHistoryComponent } from './purchaseHistory/purchaseHistory.comp
 import { BudgetComponent } from './budget/budget.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { SupplierCategoryComponent } from './supplierCategory/supplierCategory.component';
+import { ProjectComponent } from './project/project.component';
 
 
 @NgModule({
@@ -95,7 +96,16 @@ import { SupplierCategoryComponent } from './supplierCategory/supplierCategory.c
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
                 ]
-            }
+            },
+            {
+                path: '',
+                children: [
+                    {
+                        path: 'project', component: ProjectComponent,
+                        data: { permission: 'Pages.Administration.MenuClient' }
+                    },
+                ]
+            },
         ])
     ],
     exports: [
