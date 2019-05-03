@@ -12,7 +12,7 @@
             </div>
             <div class="col-xs-6 text-right">
                 <button (click)="createProduct()" *ngIf="isGranted('Pages.Administration.MenuClient.Create')"
-                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("Create New Bidding")}}</button>
+                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("Create New Bidding ")}}</button>
             </div>
         </div>
     </div>
@@ -115,7 +115,8 @@
                                     <td>
                                         <span class="ui-column-title">{{l('Supplier')}}</span>
                                         <span *ngFor="let bidding of record.biddings">
-                                            <a><span *ngIf="bidding.status===1">{{bidding.supplier.name}}</span></a>
+                                            <a (click)="biddingModal.show()"><span
+                                                    *ngIf="bidding.status===1">{{bidding.supplier.name}}</span></a>
                                         </span>
                                     </td>
 
@@ -142,4 +143,6 @@
         </div>
     </div>
     <createOrEditProductModal #createOrEditModal (modalSave)="refreshValueFromModal()"></createOrEditProductModal>
+    <app-bidding #biddingModal (modalSave)="refreshValueFromModal()"></app-bidding>
+
 </div>
