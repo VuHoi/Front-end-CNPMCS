@@ -24,6 +24,8 @@ import { SupplierComponent } from './supplier/supplier.component';
 import { CreateOrEditSupplierComponent } from './supplier/create-or-edit-supplier/create-or-edit-supplier.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CalendarModule } from 'primeng/calendar';
+import { BiddingComponent } from './product/bidding/bidding.component';
+import { DropdownModule } from 'primeng/dropdown';
 @NgModule({
     imports: [
         FormsModule,
@@ -44,7 +46,8 @@ import { CalendarModule } from 'primeng/calendar';
         EditorModule,
         InputMaskModule,
         MultiSelectModule,
-        CalendarModule
+        CalendarModule,
+        DropdownModule
     ],
     declarations: [
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
@@ -52,7 +55,8 @@ import { CalendarModule } from 'primeng/calendar';
         PlanComponent, CreateOrEditPlanModalComponent, PurchaseComponent, CreateOrEditPurchaseModalComponent, PurchaseHistoryComponent,
         BudgetComponent,
         SupplierComponent,
-        CreateOrEditSupplierComponent
+        CreateOrEditSupplierComponent,
+        BiddingComponent
     ],
     providers: [
         DemoModelServiceProxy,

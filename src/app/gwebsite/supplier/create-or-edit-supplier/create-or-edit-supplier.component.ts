@@ -54,7 +54,7 @@ export class CreateOrEditSupplierComponent extends AppComponentBase {
         }
     }
     getDataProduct() {
-        this._productsServiceProxy.getProducts().subscribe(products => {
+        this._productsServiceProxy.getProducts(null, null, null, null).subscribe(products => {
             this.selectItems = [];
             products.items.map(i => this.selectItems.push({ value: { id: i.id }, label: i.name }))
         });

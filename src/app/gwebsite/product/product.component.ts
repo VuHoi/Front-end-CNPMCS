@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild, Optional, Inject } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -7,13 +7,13 @@ import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
 import { CreateOrEditProductModalComponent } from './create-or-edit-product-modal/create-or-edit-product-modal.component';
-import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
+import { ProductsServiceProxy, API_BASE_URL } from '@shared/service-proxies/service-proxies';
 
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.css'],
-  animations: [appModuleAnimation()]
+    selector: 'app-product',
+    templateUrl: './product.component.html',
+    styleUrls: ['./product.component.css'],
+    animations: [appModuleAnimation()]
 })
 export class ProductComponent extends AppComponentBase implements AfterViewInit, OnInit {
 
@@ -29,14 +29,17 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
      * tạo các biến dể filters
      */
     filterText: string;
-
+    baseUrl1 = 'http://localhost:5000';
     constructor(
         injector: Injector,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
-        private _apiService: WebApiServiceProxy
+        private _productService: ProductsServiceProxy,
+        @Optional() @Inject(API_BASE_URL) baseUrl?: string
     ) {
         super(injector);
+        // console.log('baseUrl', baseUrl)
+        // this.baseUrl1 = baseUrl
     }
 
     /**
@@ -69,18 +72,15 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
         /**
          * Sử dụng _apiService để call các api của backend
          */
-
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.get('api/MenuClient/GetMenuClientsByFilter',
-            [{ fieldName: 'Name', value: this.filterText }],
-            this.primengTableHelper.getSorting(this.dataTable),
+        console.log(event);
+        this._productService.getProducts(this.filterText, this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getMaxResultCount(this.paginator, event),
-            this.primengTableHelper.getSkipCount(this.paginator, event),
-        ).subscribe(result => {
-            this.primengTableHelper.totalRecordsCount = result.totalCount;
-            this.primengTableHelper.records = result.items;
-            this.primengTableHelper.hideLoadingIndicator();
-        });
+            this.primengTableHelper.getSkipCount(this.paginator, event))
+            .subscribe(result => {
+                this.primengTableHelper.totalRecordsCount = result.items.length;
+                this.primengTableHelper.records = result.items;
+                this.primengTableHelper.hideLoadingIndicator();
+            });
     }
 
     init(): void {
@@ -118,18 +118,11 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
 
     //Refresh grid khi thực hiện create or edit thành công
     refreshValueFromModal(): void {
-        if (this.createOrEditModal.product.id) {
-            for (let i = 0; i < this.primengTableHelper.records.length; i++) {
-                if (this.primengTableHelper.records[i].id === this.createOrEditModal.product.id) {
-                    this.primengTableHelper.records[i] = this.createOrEditModal.product;
-                    return;
-                }
-            }
-        } else { this.reloadPage(); }
+        this.getProducts();
     }
 
     //hàm show view create Product
-    createProduct() {
-        this.createOrEditModal.show();
+    createProduct(id?: number) {
+        this.createOrEditModal.show(id);
     }
 }

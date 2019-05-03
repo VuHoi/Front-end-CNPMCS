@@ -1,10 +1,9 @@
 import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
-import { finalize } from 'rxjs/operators';
-import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
-import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { ProductDto } from '../dto/product.dto';
+import { ProductsServiceProxy, SupplierServiceProxy, BiddingSaved } from '@shared/service-proxies/service-proxies';
+import { SelectItem } from 'primeng/primeng';
+import * as moment from 'moment';
 
 @Component({
     selector: 'createOrEditProductModal',
@@ -24,63 +23,58 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
 
     active = false;
     saving = false;
-
-    product: ProductDto = new ProductDto();
-    products: ComboboxItemDto[] = [];
-
+    bidding: BiddingSaved = new BiddingSaved({ productId: 0, endDate: null, status: 0, supplierId: 0, startDate: null });
+    selectItems: SelectItem[] = [];
+    suppliers: SelectItem[] = [];
+    rangeDates: Date[];
     constructor(
         injector: Injector,
-        private _apiService: WebApiServiceProxy
+        private _productsServiceProxy: ProductsServiceProxy,
+        private _supplierServiceProxy: SupplierServiceProxy
     ) {
         super(injector);
+        this.getDataProduct();
+        this.suppliers.push({ value: '', label: 'Select supplier' })
     }
 
     show(productId?: number | null | undefined): void {
         this.active = true;
-
-        this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', productId).subscribe(result => {
-            // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-            this.product = result.menuClient;
-            this.products = result.menuClients;
-            this.modal.show();
-            setTimeout(() => {
-                    $(this.productCombobox.nativeElement).selectpicker('refresh');
-            }, 0);
-        });
+        this.modal.show();
     }
 
     save(): void {
-        let input = this.product;
         this.saving = true;
-        if (input.id) {
-            this.updateProduct();
-        } else {
-            this.insertProduct();
-        }
+        this.bidding.startDate = this.rangeDates ? moment(this.rangeDates[0]) : moment(new Date());
+        this.bidding.endDate = this.rangeDates && this.rangeDates.length > 1 ? moment(this.rangeDates[1]) : moment(new Date())
+        this.bidding.status = 0;
+        this._supplierServiceProxy.createBidding(this.bidding).subscribe(item => {
+            this.close();
+            this.modalSave.emit(null);
+            console.log(item);
+        });
+
+    }
+    dropdownChange() {
+        this.getSupplierByProduct();
+    }
+    getDataProduct() {
+        this._productsServiceProxy.getProducts('', '', 1000, 0).subscribe(products => {
+            this.selectItems = [];
+            this.selectItems.push({ value: '', label: 'Select product' })
+            products.items.map(i => this.selectItems.push({ value: i.id, label: i.name }))
+        });
     }
 
-    insertProduct() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.post('api/MenuClient/CreateMenuClient', this.product)
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
-            });
+    getSupplierByProduct() {
+        this._supplierServiceProxy.getSupplierByProduct(0, 1000, +this.bidding.productId).subscribe(suppliers => {
+            this.suppliers = [];
+            this.suppliers.push({ value: '', label: 'Select supplier' })
+            suppliers.items.map(i => this.suppliers.push({ value: i.id, label: i.name }))
+        })
     }
-
-    updateProduct() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.put('api/MenuClient/UpdateMenuClient', this.product)
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
-            });
+    dropdownSupplierChange() {
+        console.log(this.bidding);
     }
-
     close(): void {
         this.active = false;
         this.modal.hide();
