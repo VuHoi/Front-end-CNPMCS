@@ -37,7 +37,16 @@ export class AppNavigationService {
                 new AppMenuItem('Bid Profile', 'Pages.Administration.MenuClient', 'flaticon-book', '/app/gwebsite/bidProfile'),
                 new AppMenuItem('Purchase Contract', 'Pages.Administration.MenuClient', 'flaticon-squares-1', '/app/gwebsite/purchaseContract'),
                 new AppMenuItem('Purchase Order', 'Pages.Administration.MenuClient', 'flaticon-open-box', '/app/gwebsite/purchaseOrder'),
-                new AppMenuItem('Submission', 'Pages.Administration.MenuClient', 'flaticon-exclamation-1', '/app/gwebsite/submission')
+                new AppMenuItem('Submission', 'Pages.Administration.MenuClient', 'flaticon-exclamation-1', '/app/gwebsite/submission'),
+                new AppMenuItem('DemoModel', 'Pages.Administration.DemoModel', 'flaticon-menu-1', '/app/gwebsite/demo-model'),
+                new AppMenuItem('Customer', 'Pages.Administration.Customer', 'flaticon-menu-1', '/app/gwebsite/customer'),
+                new AppMenuItem('Product', 'Pages.Administration.MenuClient', 'flaticon-shapes', '/app/gwebsite/product'),
+                new AppMenuItem('Plan', 'Pages.Administration.MenuClient', 'flaticon-calendar-2', '/app/gwebsite/plan'),
+                new AppMenuItem('Purchase', 'Pages.Administration.MenuClient', 'flaticon-cart', '/app/gwebsite/purchase'),
+                new AppMenuItem('Purchase History', 'Pages.Administration.MenuClient', 'flaticon-list-1', '/app/gwebsite/purchase-history'),
+                new AppMenuItem('Budget', 'Pages.Administration.MenuClient', 'flaticon-coins', '/app/gwebsite/budget'),
+                new AppMenuItem('Supplier', 'Pages.Administration.MenuClient', 'flaticon-coins', '/app/gwebsite/supplier')
+
             ]),
             new AppMenuItem('Systems', '', 'flaticon-layers', '', [
                 new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),

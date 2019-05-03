@@ -5,8 +5,8 @@
             <form *ngIf="active" #editForm="ngForm" novalidate (ngSubmit)="save()">
                 <div class="modal-header">
                     <h4 class="modal-title">
-                        <span *ngIf="supplier.id">Edit Supplier : {{supplier.name}}</span>
-                        <span *ngIf="!supplier.id">Create new supplier</span>
+                        <span *ngIf="isEdit">Edit Supplier : {{supplier?.name}}</span>
+                        <span *ngIf="!isEdit">Create new supplier</span>
                     </h4>
                     <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
                         <span aria-hidden="true">&times;</span>
@@ -18,7 +18,7 @@
                             (onChange)="onChangeOptionProduct()" [ngModelOptions]="{standalone: true}">
                         </p-multiSelect> -->
 
-                        <p-multiSelect [options]="selectItems" [(ngModel)]="biddings"
+                        <p-multiSelect [options]="selectItems" [(ngModel)]="biddings" *ngIf="!isEdit"
                             [ngModelOptions]="{standalone: true}" (onChange)="onChangeOptionProduct()"
                             [panelStyle]="{minWidth:'12em'}">
                             <ng-template let-products pTemplate="selectedItems">

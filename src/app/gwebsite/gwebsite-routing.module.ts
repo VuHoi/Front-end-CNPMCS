@@ -59,42 +59,27 @@ import { SubmissionComponent } from './submission/submission.component';
             {
                 path: '',
                 children: [
+
                     {
                         path: 'product', component: ProductComponent,
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
-                ]
-            },
-            {
-                path: '',
-                children: [
                     {
                         path: 'plan', component: PlanComponent,
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
-                ]
-            },
-            {
-                path: '',
-                children: [
                     {
                         path: 'purchase', component: PurchaseComponent,
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
-                ]
-            },
-            {
-                path: '',
-                children: [
+                    {
+                        path: 'supplier', component: SupplierComponent,
+                        data: { permission: 'Pages.Administration.MenuClient' }
+                    },
                     {
                         path: 'purchase-history', component: PurchaseHistoryComponent,
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
-                ]
-            },
-            {
-                path: '',
-                children: [
                     {
                         path: 'budget', component: BudgetComponent,
                         data: { permission: 'Pages.Administration.MenuClient' }
@@ -145,7 +130,7 @@ import { SubmissionComponent } from './submission/submission.component';
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
                 ]
-            }
+            },
         ])
     ],
     exports: [

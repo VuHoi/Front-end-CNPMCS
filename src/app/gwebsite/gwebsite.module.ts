@@ -9,13 +9,11 @@ import { ModalModule, PopoverModule, TabsModule, TooltipModule } from 'ngx-boots
 import { AutoCompleteModule, EditorModule, FileUploadModule as PrimeNgFileUploadModule, InputMaskModule, PaginatorModule } from 'primeng/primeng';
 import { TableModule } from 'primeng/table';
 import { GWebsiteRoutingModule } from './gwebsite-routing.module';
-import { DemoModelServiceProxy, SupplierServiceProxy, ProductsServiceProxy, PurchaseServiceProxy } from '@shared/service-proxies/service-proxies';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { CalendarModule } from 'primeng/calendar';
 
 import { MenuClientComponent, CreateOrEditMenuClientModalComponent } from './index';
 import { ProductCategoryComponent } from './productCategory/productCategory.component';
 import { CreateOrEditProductCategoryModalComponent } from './productCategory/create-or-edit-productCategory-modal/create-or-edit-productCategory-modal.component';
+import { SupplierServiceProxy, ProductsServiceProxy, PurchaseServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ProductComponent } from './product/product.component';
 import { CreateOrEditProductModalComponent } from './product/create-or-edit-product-modal/create-or-edit-product-modal.component';
 import { PlanComponent } from './plan/plan.component';
@@ -25,10 +23,8 @@ import { CreateOrEditPurchaseModalComponent } from './purchase/create-or-edit-pu
 import { PurchaseHistoryComponent } from './purchaseHistory/purchaseHistory.component';
 import { BudgetComponent } from './budget/budget.component';
 import { SupplierComponent } from './supplier/supplier.component';
-import { CreateOrEditSupplierComponent } from './supplier/create-or-edit-supplier-modal/create-or-edit-supplier-modal.component';
 import { SupplierCategoryComponent } from './supplierCategory/supplierCategory.component';
 import { CreateOrEditSupplierCategoryModalComponent } from './supplierCategory/create-or-edit-supplierCategory-modal/create-or-edit-supplierCategory-modal.component';
-import { CustomerServiceProxy } from '@app/shared/service-proxies/service-proxies';
 import { ProjectComponent } from './project/project.component';
 import { CreateOrEditProjectModalComponent } from './project/create-or-edit-project-modal/create-or-edit-project-modal.component';
 import { BidProfileComponent } from './bids/bidProfile.component';
@@ -42,6 +38,12 @@ import { CreateOrEditSubmissionModalComponent } from './submission/create-or-edi
 import { SubPlanComponent } from './plan/sub-plan/sub-plan.component';
 
 
+import { CreateOrEditSupplierComponent } from './supplier/create-or-edit-supplier/create-or-edit-supplier.component';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { CalendarModule } from 'primeng/calendar';
+import { BiddingComponent } from './product/bidding/bidding.component';
+import { DropdownModule } from 'primeng/dropdown';
+import { RadioButtonModule } from 'primeng/radiobutton';
 @NgModule({
     imports: [
         FormsModule,
@@ -62,7 +64,9 @@ import { SubPlanComponent } from './plan/sub-plan/sub-plan.component';
         EditorModule,
         InputMaskModule,
         MultiSelectModule,
-        CalendarModule
+        CalendarModule,
+        DropdownModule,
+        RadioButtonModule
     ],
     declarations: [
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
@@ -78,11 +82,18 @@ import { SubPlanComponent } from './plan/sub-plan/sub-plan.component';
         BidProfileComponent, CreateOrEditBidProfileModalComponent,
         PurchaseContractComponent, CreateOrEditPurchaseContractModalComponent,
         PurchaseOrderComponent, CreateOrEditPurchaseOrderModalComponent,
-        SubmissionComponent, CreateOrEditSubmissionModalComponent
+        SubmissionComponent, CreateOrEditSubmissionModalComponent,
+        MenuClientComponent, CreateOrEditMenuClientModalComponent,
+        ProductComponent, CreateOrEditProductModalComponent,
+        PlanComponent, CreateOrEditPlanModalComponent, PurchaseComponent, CreateOrEditPurchaseModalComponent, PurchaseHistoryComponent,
+        BudgetComponent,
+        SupplierComponent,
+        CreateOrEditSupplierComponent,
+        BiddingComponent
     ],
+
     providers: [
-        DemoModelServiceProxy,
-        CustomerServiceProxy,
+
         SupplierServiceProxy,
         ProductsServiceProxy,
         PurchaseServiceProxy

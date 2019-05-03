@@ -5209,10 +5209,22 @@ export class ProductsServiceProxy {
     }
 
     /**
+     * @name (optional) 
+     * @sorting (optional) 
+     * @maxResultCount (optional) 
+     * @skipCount (optional) 
      * @return Success
      */
-    getProducts(): Observable<ListResultDtoOfProductDto> {
-        let url_ = this.baseUrl + "/api/Products/GetProducts";
+    getProducts(name: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<ListResultDtoOfProductDto> {
+        let url_ = this.baseUrl + "/api/Products/GetProducts?";
+        if (name !== undefined)
+            url_ += "Name=" + encodeURIComponent("" + name) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -16223,7 +16235,7 @@ export class ProductDto implements IProductDto {
     availableAddress!: string | undefined;
     addedDate!: moment.Moment | undefined;
     image!: ImageDto | undefined;
-    supplier!: SupplierDto | undefined;
+    biddings!: TitleBiddingProduct[] | undefined;
 
     constructor(data?: IProductDto) {
         if (data) {
@@ -16244,7 +16256,11 @@ export class ProductDto implements IProductDto {
             this.availableAddress = data["availableAddress"];
             this.addedDate = data["addedDate"] ? moment(data["addedDate"].toString()) : <any>undefined;
             this.image = data["image"] ? ImageDto.fromJS(data["image"]) : <any>undefined;
-            this.supplier = data["supplier"] ? SupplierDto.fromJS(data["supplier"]) : <any>undefined;
+            if (data["biddings"] && data["biddings"].constructor === Array) {
+                this.biddings = [];
+                for (let item of data["biddings"])
+                    this.biddings.push(TitleBiddingProduct.fromJS(item));
+            }
         }
     }
 
@@ -16265,7 +16281,11 @@ export class ProductDto implements IProductDto {
         data["availableAddress"] = this.availableAddress;
         data["addedDate"] = this.addedDate ? this.addedDate.toISOString() : <any>undefined;
         data["image"] = this.image ? this.image.toJSON() : <any>undefined;
-        data["supplier"] = this.supplier ? this.supplier.toJSON() : <any>undefined;
+        if (this.biddings && this.biddings.constructor === Array) {
+            data["biddings"] = [];
+            for (let item of this.biddings)
+                data["biddings"].push(item.toJSON());
+        }
         return data; 
     }
 }
@@ -16279,7 +16299,7 @@ export interface IProductDto {
     availableAddress: string | undefined;
     addedDate: moment.Moment | undefined;
     image: ImageDto | undefined;
-    supplier: SupplierDto | undefined;
+    biddings: TitleBiddingProduct[] | undefined;
 }
 
 export class ImageDto implements IImageDto {
@@ -16322,17 +16342,71 @@ export interface IImageDto {
     url: string | undefined;
 }
 
-export class SupplierDto implements ISupplierDto {
+export class TitleBiddingProduct implements ITitleBiddingProduct {
+    supplierId!: number | undefined;
+    productId!: number | undefined;
+    supplier!: TitleSupplier | undefined;
+    startDate!: moment.Moment | undefined;
+    endDate!: moment.Moment | undefined;
+    status!: number | undefined;
+
+    constructor(data?: ITitleBiddingProduct) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.supplierId = data["supplierId"];
+            this.productId = data["productId"];
+            this.supplier = data["supplier"] ? TitleSupplier.fromJS(data["supplier"]) : <any>undefined;
+            this.startDate = data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
+            this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
+            this.status = data["status"];
+        }
+    }
+
+    static fromJS(data: any): TitleBiddingProduct {
+        data = typeof data === 'object' ? data : {};
+        let result = new TitleBiddingProduct();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["supplierId"] = this.supplierId;
+        data["productId"] = this.productId;
+        data["supplier"] = this.supplier ? this.supplier.toJSON() : <any>undefined;
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        return data; 
+    }
+}
+
+export interface ITitleBiddingProduct {
+    supplierId: number | undefined;
+    productId: number | undefined;
+    supplier: TitleSupplier | undefined;
+    startDate: moment.Moment | undefined;
+    endDate: moment.Moment | undefined;
+    status: number | undefined;
+}
+
+export class TitleSupplier implements ITitleSupplier {
     name!: string | undefined;
     address!: string | undefined;
     email!: string | undefined;
     fax!: string | undefined;
     phone!: string | undefined;
     contact!: string | undefined;
-    biddings!: BiddingProduct[] | undefined;
-    id!: number | undefined;
 
-    constructor(data?: ISupplierDto) {
+    constructor(data?: ITitleSupplier) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -16349,18 +16423,12 @@ export class SupplierDto implements ISupplierDto {
             this.fax = data["fax"];
             this.phone = data["phone"];
             this.contact = data["contact"];
-            if (data["biddings"] && data["biddings"].constructor === Array) {
-                this.biddings = [];
-                for (let item of data["biddings"])
-                    this.biddings.push(BiddingProduct.fromJS(item));
-            }
-            this.id = data["id"];
         }
     }
 
-    static fromJS(data: any): SupplierDto {
+    static fromJS(data: any): TitleSupplier {
         data = typeof data === 'object' ? data : {};
-        let result = new SupplierDto();
+        let result = new TitleSupplier();
         result.init(data);
         return result;
     }
@@ -16373,81 +16441,17 @@ export class SupplierDto implements ISupplierDto {
         data["fax"] = this.fax;
         data["phone"] = this.phone;
         data["contact"] = this.contact;
-        if (this.biddings && this.biddings.constructor === Array) {
-            data["biddings"] = [];
-            for (let item of this.biddings)
-                data["biddings"].push(item.toJSON());
-        }
-        data["id"] = this.id;
         return data; 
     }
 }
 
-export interface ISupplierDto {
+export interface ITitleSupplier {
     name: string | undefined;
     address: string | undefined;
     email: string | undefined;
     fax: string | undefined;
     phone: string | undefined;
     contact: string | undefined;
-    biddings: BiddingProduct[] | undefined;
-    id: number | undefined;
-}
-
-export class BiddingProduct implements IBiddingProduct {
-    supplierId!: number | undefined;
-    productId!: number | undefined;
-    product!: ProductDto | undefined;
-    startDate!: moment.Moment | undefined;
-    endDate!: moment.Moment | undefined;
-    status!: number | undefined;
-
-    constructor(data?: IBiddingProduct) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.supplierId = data["supplierId"];
-            this.productId = data["productId"];
-            this.product = data["product"] ? ProductDto.fromJS(data["product"]) : <any>undefined;
-            this.startDate = data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
-            this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
-            this.status = data["status"];
-        }
-    }
-
-    static fromJS(data: any): BiddingProduct {
-        data = typeof data === 'object' ? data : {};
-        let result = new BiddingProduct();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["supplierId"] = this.supplierId;
-        data["productId"] = this.productId;
-        data["product"] = this.product ? this.product.toJSON() : <any>undefined;
-        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
-        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        return data; 
-    }
-}
-
-export interface IBiddingProduct {
-    supplierId: number | undefined;
-    productId: number | undefined;
-    product: ProductDto | undefined;
-    startDate: moment.Moment | undefined;
-    endDate: moment.Moment | undefined;
-    status: number | undefined;
 }
 
 export class CurrentUserProfileEditDto implements ICurrentUserProfileEditDto {
@@ -18924,6 +18928,134 @@ export class ListResultDtoOfSupplierDto implements IListResultDtoOfSupplierDto {
 
 export interface IListResultDtoOfSupplierDto {
     items: SupplierDto[] | undefined;
+}
+
+export class SupplierDto implements ISupplierDto {
+    name!: string | undefined;
+    address!: string | undefined;
+    email!: string | undefined;
+    fax!: string | undefined;
+    phone!: string | undefined;
+    contact!: string | undefined;
+    biddings!: BiddingProduct[] | undefined;
+    id!: number | undefined;
+
+    constructor(data?: ISupplierDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.address = data["address"];
+            this.email = data["email"];
+            this.fax = data["fax"];
+            this.phone = data["phone"];
+            this.contact = data["contact"];
+            if (data["biddings"] && data["biddings"].constructor === Array) {
+                this.biddings = [];
+                for (let item of data["biddings"])
+                    this.biddings.push(BiddingProduct.fromJS(item));
+            }
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): SupplierDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SupplierDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["address"] = this.address;
+        data["email"] = this.email;
+        data["fax"] = this.fax;
+        data["phone"] = this.phone;
+        data["contact"] = this.contact;
+        if (this.biddings && this.biddings.constructor === Array) {
+            data["biddings"] = [];
+            for (let item of this.biddings)
+                data["biddings"].push(item.toJSON());
+        }
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ISupplierDto {
+    name: string | undefined;
+    address: string | undefined;
+    email: string | undefined;
+    fax: string | undefined;
+    phone: string | undefined;
+    contact: string | undefined;
+    biddings: BiddingProduct[] | undefined;
+    id: number | undefined;
+}
+
+export class BiddingProduct implements IBiddingProduct {
+    supplierId!: number | undefined;
+    productId!: number | undefined;
+    product!: ProductDto | undefined;
+    startDate!: moment.Moment | undefined;
+    endDate!: moment.Moment | undefined;
+    status!: number | undefined;
+
+    constructor(data?: IBiddingProduct) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.supplierId = data["supplierId"];
+            this.productId = data["productId"];
+            this.product = data["product"] ? ProductDto.fromJS(data["product"]) : <any>undefined;
+            this.startDate = data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
+            this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
+            this.status = data["status"];
+        }
+    }
+
+    static fromJS(data: any): BiddingProduct {
+        data = typeof data === 'object' ? data : {};
+        let result = new BiddingProduct();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["supplierId"] = this.supplierId;
+        data["productId"] = this.productId;
+        data["product"] = this.product ? this.product.toJSON() : <any>undefined;
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        return data; 
+    }
+}
+
+export interface IBiddingProduct {
+    supplierId: number | undefined;
+    productId: number | undefined;
+    product: ProductDto | undefined;
+    startDate: moment.Moment | undefined;
+    endDate: moment.Moment | undefined;
+    status: number | undefined;
 }
 
 export class BiddingSaved implements IBiddingSaved {
