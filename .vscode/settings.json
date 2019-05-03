@@ -1,20 +1,20 @@
 {
     "typescript.check.workspaceVersion": false,
     "files.exclude": {
-        "**/.git": true,
-        "**/.svn": true,
-        "**/.hg": true,
-        "**/.DS_Store": true,
-        "node_modules": true,
-        "bin": true,
-        "obj": true,
-        "dist": true,
-        "Properties": true,
         ".vs": true,
         "*.csproj": true,
-        "*.sln": true,
         "*.csproj.user": true,
-        "*.suo": true
+        "*.sln": true,
+        "*.suo": true,
+        "**/.DS_Store": true,
+        "**/.git": true,
+        "**/.hg": true,
+        "**/.svn": true,
+        "bin": true,
+        "dist": true,
+        "node_modules": true,
+        "obj": true,
+        "Properties": true
     },
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true
