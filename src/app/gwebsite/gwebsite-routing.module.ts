@@ -4,9 +4,6 @@ import { MenuClientComponent } from '@app/gwebsite/menu-client/menu-client.compo
 import { ProductComponent } from './product/product.component';
 import { ProductCategoryComponent } from './productCategory/productCategory.component';
 import { PlanComponent } from './plan/plan.component';
-import { PurchaseComponent } from './purchase/purchase.component';
-import { PurchaseHistoryComponent } from './purchaseHistory/purchaseHistory.component';
-import { BudgetComponent } from './budget/budget.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { SupplierCategoryComponent } from './supplierCategory/supplierCategory.component';
 import { ProjectComponent } from './project/project.component';
@@ -69,21 +66,9 @@ import { SubmissionComponent } from './submission/submission.component';
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
                     {
-                        path: 'purchase', component: PurchaseComponent,
-                        data: { permission: 'Pages.Administration.MenuClient' }
-                    },
-                    {
                         path: 'supplier', component: SupplierComponent,
                         data: { permission: 'Pages.Administration.MenuClient' }
-                    },
-                    {
-                        path: 'purchase-history', component: PurchaseHistoryComponent,
-                        data: { permission: 'Pages.Administration.MenuClient' }
-                    },
-                    {
-                        path: 'budget', component: BudgetComponent,
-                        data: { permission: 'Pages.Administration.MenuClient' }
-                    },
+                    }
                 ]
             },
             {
