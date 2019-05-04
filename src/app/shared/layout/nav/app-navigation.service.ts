@@ -34,8 +34,6 @@ export class AppNavigationService {
                 new AppMenuItem('Purchase Contract', 'Pages.Administration.MenuClient', 'flaticon-squares-1', '/app/gwebsite/purchaseContract'),
                 new AppMenuItem('Purchase Order', 'Pages.Administration.MenuClient', 'flaticon-open-box', '/app/gwebsite/purchaseOrder'),
                 new AppMenuItem('Submission', 'Pages.Administration.MenuClient', 'flaticon-exclamation-1', '/app/gwebsite/submission'),
-                new AppMenuItem('Product', 'Pages.Administration.MenuClient', 'flaticon-shapes', '/app/gwebsite/product'),
-                new AppMenuItem('Supplier', 'Pages.Administration.MenuClient', 'flaticon-coins', '/app/gwebsite/supplier')
             ]),
             new AppMenuItem('Systems', '', 'flaticon-layers', '', [
                 new AppMenuItem('OrganizationUnits', 'Pages.Administration.OrganizationUnits', 'flaticon-map', '/app/admin/organization-units'),
