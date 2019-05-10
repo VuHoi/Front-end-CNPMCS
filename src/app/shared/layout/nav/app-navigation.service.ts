@@ -19,11 +19,11 @@ export class AppNavigationService {
             new AppMenuItem('Administration', '', 'flaticon-interface-8', '', [
                 new AppMenuItem('MenuClient', 'Pages.Administration.MenuClient', 'flaticon-menu-1', '/app/gwebsite/menu-client'),
             ]),
-            new AppMenuItem('Category', '', 'flaticon-interface-5', '', [
+            new AppMenuItem('Catalog', '', 'flaticon-interface-5', '', [
                 new AppMenuItem('Supplier', 'Pages.Administration.MenuClient', 'flaticon-profile-1', '/app/gwebsite/supplier'),
-                new AppMenuItem('Supplier Category', 'Pages.Administration.MenuClient', 'flaticon-truck', '/app/gwebsite/supplier-category'),
+                new AppMenuItem('Supplier Catalog', 'Pages.Administration.MenuClient', 'flaticon-truck', '/app/gwebsite/supplier-category'),
                 new AppMenuItem('Product', 'Pages.Administration.MenuClient', 'flaticon-app', '/app/gwebsite/product'),
-                new AppMenuItem('Product Category', 'Pages.Administration.MenuClient', 'flaticon-shapes', '/app/gwebsite/product-category')
+                new AppMenuItem('Product Catalog', 'Pages.Administration.MenuClient', 'flaticon-shapes', '/app/gwebsite/product-category')
             ]),
             new AppMenuItem('Plan', '', 'flaticon-calendar', '', [
                 new AppMenuItem('Purchase Plan', 'Pages.Administration.MenuClient', 'flaticon-calendar-2', '/app/gwebsite/plan')
