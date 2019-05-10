@@ -11,32 +11,100 @@
                 </span>
             </div>
             <div class="col-xs-6 text-right">
-                <!-- Tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn -->
-                <button (click)="createPlan()" *ngIf="isGranted('Pages.Administration.MenuClient.Create')" class="btn btn-primary"><i
-                        class="fa fa-plus"></i> {{l("CreateNewPlan")}}</button>
+                <button (click)="createPlan()" *ngIf="isGranted('Pages.Administration.MenuClient.Create')"
+                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("CreateNewPlan")}}</button>
             </div>
         </div>
     </div>
-  
+
     <div class="m-content">
         <div class="m-portlet m-portlet--mobile">
             <div class="m-portlet__body">
-                <form autocomplete="off">
+                <form autocomplete="off" (ngSubmit)="SearchPlan()">
                     <div class="m-form m-form--label-align-right" id="TextsFilterForm">
                         <div class="row align-items-center m--margin-bottom-10">
                             <div class="col-sm-12">
-                                <div class="input-group">
-                                    <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control"
-                                        placeholder="{{l('SearchWithThreeDot')}}" type="text">
-                                    <span class="input-group-btn">
-                                        <button (click)="applyFilters()" class="btn btn-primary" type="submit"><i class="icon-refresh"></i>
-                                            {{l("Refresh")}}</button>
-                                    </span>
+                                <div class="btn-approved float-left">
+                                    <button (click)="applyFilters()" type="button" class="right btn btn-danger "
+                                        title="{{l('Approved All Plan')}}">{{l("Approved All")}}</button>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- filter -->
+                        <div class="row m--margin-bottom-10">
+                            <div class="col-sm-6">
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Plan Id:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <input type="text" name="planId" [placeholder]="'Plan Id'" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Year Implement:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <input type="text" name="yearImplement" [placeholder]="'Year Implement'"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row align-items-center">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Approval Status:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <select #approvalStatusSelect name="approvalStatus" class="form-control"
+                                            [(ngModel)]="approvalStatus" [attr.data-live-search]="true"
+                                            jq-plugin="selectpicker" required>
+                                            <option *ngFor="let item of ApprovalStatusList" [value]="item.id">
+                                                {{item.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Unit Code:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <select #unitCodeSelect name="unitCode" class="form-control"
+                                            [(ngModel)]="unitCode" [attr.data-live-search]="true"
+                                            jq-plugin="selectpicker" required>
+                                            <option *ngFor="let item of UnitCodeList" [value]="item">
+                                                {{item}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Department Code:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <select #departmentCodeSelect name="departmentCode" class="form-control"
+                                            [(ngModel)]="deparmentCode" [attr.data-live-search]="true"
+                                            jq-plugin="selectpicker" required>
+                                            <option *ngFor="let item of DepartmentCodeList" [value]="item">
+                                                {{item}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- search -->
+                        <div class="row align-items-center m--margin-bottom-10">
+                            <div class="col-sm-12 text-center">
+                                <button class="btn btn-primary" type="submit"><i class="icon-refresh"></i>
+                                    {{l("Search")}}</button>
+                            </div>
+                        </div>
+
                     </div>
                 </form>
+
                 <div class="row align-items-center">
                     <!--<Primeng-TurboTable-Start>-->
                     <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
@@ -45,29 +113,33 @@
                             [responsive]="primengTableHelper.isResponsive">
                             <ng-template pTemplate="header">
                                 <tr>
-                                    <th pSortableColumn="department">
-                                        {{l('Department')}}
-                                        <p-sortIcon field="department"></p-sortIcon>
+                                    <th pSortableColumn="ordinalNumber">
+                                        {{l('Ordinal Number')}}
+                                        <p-sortIcon field="ordinalNumber"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="product">
-                                        {{l('Product')}}
-                                        <p-sortIcon field="product"></p-sortIcon>
+                                    <th pSortableColumn="planId">
+                                        {{l('Plan Id')}}
+                                        <p-sortIcon field="planId"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="quantity">
-                                        {{l('Quantity')}}
-                                        <p-sortIcon field="quantity"></p-sortIcon>
+                                    <th pSortableColumn="effectiveDate">
+                                        {{l('Effective Date')}}
+                                        <p-sortIcon field="effectiveDate"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="updateDate">
-                                        {{l('Update Date')}}
-                                        <p-sortIcon field="updateDate"></p-sortIcon>
+                                    <th pSortableColumn="totalPrice">
+                                        {{l('Total Price')}}
+                                        <p-sortIcon field="totalPrice"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="unitId">
+                                        {{l('Unit Id')}}
+                                        <p-sortIcon field="unitId"></p-sortIcon>
                                     </th>
                                     <th pSortableColumn="status">
                                         {{l('Status')}}
                                         <p-sortIcon field="status"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="comment">
-                                        {{l('Comment')}}
-                                        <p-sortIcon field="comment"></p-sortIcon>
+                                    <th pSortableColumn="countChanged">
+                                        {{l('Count Changed')}}
+                                        <p-sortIcon field="countChanged"></p-sortIcon>
                                     </th>
                                     <th>{{l('Action')}}</th>
                                 </tr>
@@ -75,33 +147,48 @@
                             <ng-template pTemplate="body" let-record="$implicit">
                                 <tr>
                                     <td>
-                                        <span class="ui-column-title">{{l('Department')}}</span>
-                                        <span title="{{record.department}}">{{truncateString(record.department)}}</span>
+                                        <span class="ui-column-title">{{l('Ordinal Number')}}</span>
+                                        <span
+                                            title="{{record.ordinalNumber}}">{{truncateString(record.ordinalNumber)}}</span>
                                     </td>
                                     <td>
-                                        <span class="ui-column-title">{{l('Product')}}</span>
-                                        <span title="{{record.alias}}">{{truncateString(record.product)}}</span>
+                                        <span class="ui-column-title">{{l('Plan Id')}}</span>
+                                        <span title="{{record.planId}}">{{truncateString(record.planId)}}</span>
                                     </td>
                                     <td>
-                                        <span class="ui-column-title">{{l('Quantity')}}</span>
-                                        <span title="{{record.quantity}}">{{ record.quantity }}</span>
+                                        <span class="ui-column-title">{{l('Effective Date')}}</span>
+                                        <span title="{{record.effectiveDate}}">{{ record.effectiveDate }}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">{{l('Update Date')}}</span>
                                         <span title="{{record.updateDate}}">{{ record.updateDate }}</span>
                                     </td>
                                     <td>
+                                        <span class="ui-column-title">{{l('Total Price')}}</span>
+                                        <span title="{{record.totalPrice}}">{{ record.totalPrice }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Unit Id')}}</span>
+                                        <span title="{{record.unitId}}">{{ record.unitId }}</span>
+                                    </td>
+                                    <td>
                                         <span class="ui-column-title">{{l('Status')}}</span>
                                         <span title="{{record.updateDate}}">{{ record.status }}</span>
                                     </td>
                                     <td>
-                                        <span class="ui-column-title">{{l('Comment')}}</span>
-                                        <span title="{{record.updateDate}}">{{ record.comment }}</span>
+                                        <span class="ui-column-title">{{l('Count Changed')}}</span>
+                                        <span title="{{record.countChanged}}">{{ record.countChanged }}</span>
                                     </td>
                                     <td>
-                                        <button class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                        <button
+                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
                                             (click)="createOrEditModal.show(record.id)" title="{{l('Edit')}}">
                                             <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
+                                        </button>
+                                        <button
+                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                            (click)="createOrEditModal.show(record.id)" title="{{l('Approved')}}">
+                                            <i class="fa fa-edit" [attr.aria-label]="l('Approved')"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -126,5 +213,4 @@
         </div>
     </div>
     <createOrEditPlanModal #createOrEditModal (modalSave)="refreshValueFromModal()"></createOrEditPlanModal>
-  </div>
-  
+</div>

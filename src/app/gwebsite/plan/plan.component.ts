@@ -8,12 +8,13 @@ import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
 import { CreateOrEditPlanModalComponent } from './create-or-edit-plan-modal/create-or-edit-plan-modal.component';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
+import { ApprovalStatusEnum } from './dto/plan.dto';
 
 @Component({
-  selector: 'app-plan',
-  templateUrl: './plan.component.html',
-  styleUrls: ['./plan.component.css'],
-  animations: [appModuleAnimation()]
+    selector: 'app-plan',
+    templateUrl: './plan.component.html',
+    styleUrls: ['./plan.component.css'],
+    animations: [appModuleAnimation()]
 })
 export class PlanComponent extends AppComponentBase implements AfterViewInit, OnInit {
 
@@ -28,7 +29,28 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
     /**
      * tạo các biến dể filters
      */
-    filterText: string;
+    public filterText: string;
+    public approvalStatus = 3; // all status
+    public ApprovalStatusList = [
+        {
+            id: ApprovalStatusEnum.AllStatus,
+            name: 'All Status'
+        },
+        {
+            id: ApprovalStatusEnum.Approved,
+            name: 'Approved'
+        },
+        {
+            id: ApprovalStatusEnum.AwaitingApproval,
+            name: 'Awaiting Approval'
+        }
+    ];
+
+    public UnitCodeList = ['HN', 'HP', 'DN', 'TPHCM', 'CT'];
+    public unitCode = this.UnitCodeList[0];
+
+    public DepartmentCodeList = ['IT', 'HR', 'Acco', 'Mark', 'Sale', 'PR'];
+    public deparmentCode = this.DepartmentCodeList[0];
 
     constructor(
         injector: Injector,
@@ -98,14 +120,15 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
 
     applyFilters(): void {
         //truyền params lên url thông qua router
-        this._router.navigate(['app/gwebsite/plan', {
-            filterText: this.filterText
-        }]);
+        // this._router.navigate(['app/gwebsite/plan', {
+        //     filterText: this.filterText
+        // }]);
 
-        if (this.paginator.getPage() !== 0) {
-            this.paginator.changePage(0);
-            return;
-        }
+        // if (this.paginator.getPage() !== 0) {
+        //     this.paginator.changePage(0);
+        //     return;
+        // }
+        console.log('Approved 1');
     }
 
     /**
@@ -131,5 +154,8 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
     //hàm show view create Plan
     createPlan() {
         this.createOrEditModal.show();
+    }
+    public SearchPlan(): void {
+        console.log(this.approvalStatus + '__' + this.unitCode);
     }
 }

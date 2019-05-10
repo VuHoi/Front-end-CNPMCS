@@ -24,3 +24,10 @@ export enum StatusEnum {
     Draft = 1,
     Official = 2
 }
+
+export enum ApprovalStatusEnum {
+    Approved = 1,
+    AwaitingApproval = 2,
+    AllStatus = 3
+}
+
