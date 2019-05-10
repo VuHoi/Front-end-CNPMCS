@@ -11,6 +11,7 @@ import { BidProfileComponent } from './bids/bidProfile.component';
 import { PurchaseContractComponent } from './purchaseContract/purchaseContract.component';
 import { PurchaseOrderComponent } from './purchaseOrder/purchaseOrder.component';
 import { SubmissionComponent } from './submission/submission.component';
+import { SubPlanComponent } from './plan/sub-plan/sub-plan.component';
 
 
 @NgModule({
@@ -56,13 +57,22 @@ import { SubmissionComponent } from './submission/submission.component';
             {
                 path: '',
                 children: [
-
                     {
-                        path: 'product', component: ProductComponent,
+                        path: 'plan', component: PlanComponent,
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
                     {
-                        path: 'plan', component: PlanComponent,
+                        path: 'plan-detail', component: SubPlanComponent,
+                        data: { permission: 'Pages.Administration.MenuClient' }
+                    }
+                ]
+            },
+            {
+                path: '',
+                children: [
+
+                    {
+                        path: 'product', component: ProductComponent,
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
                     {

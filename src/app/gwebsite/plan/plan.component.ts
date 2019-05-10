@@ -158,4 +158,8 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
     public SearchPlan(): void {
         console.log(this.approvalStatus + '__' + this.unitCode);
     }
+
+    public ViewPlanDetail(planId: number): void {
+        this._router.navigate(['app/gwebsite/plan', planId]);
+    }
 }
