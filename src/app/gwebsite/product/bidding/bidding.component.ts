@@ -16,6 +16,22 @@ export class BiddingComponent extends AppComponentBase {
   suppliers: SelectItem[] = [];
   active = false;
   selectedSupplierId = 0;
+  biddingType = 0;
+  price = 0;
+  biddingTypes = [
+    { label: 'Select bidding type', value: null },
+    { label: 'Đấu thầu', value: 1 },
+    { label: 'Chuyển nhượng', value: 2 },
+    { label: 'Gì đó', value: 3 }
+
+  ];
+  status = [
+    { label: 'Select status', value: null },
+    { label: 'Trúng thầu', value: 1 },
+    { label: 'Dự thầu', value: 2 },
+    { label: 'Hết hạn', value: 3 }
+
+  ];
   rangeDates: Date[];
   constructor(injector: Injector, private _supplierServiceProxy: SupplierServiceProxy) {
     super(injector);
@@ -36,7 +52,7 @@ export class BiddingComponent extends AppComponentBase {
       startDate: this.rangeDates ? moment(this.rangeDates[0]) : moment(new Date()),
       endDate: this.rangeDates && this.rangeDates.length > 1 ? moment(this.rangeDates[1]) : moment(new Date()),
       status: 1,
-      productId: this.selectedSupplierId, supplierId: this.val1
+      productId: this.selectedSupplierId, supplierId: this.val1, biddingType: this.biddingType, price: this.price
     })).subscribe(result => {
       console.log(result);
       this.modalSave.emit(null);

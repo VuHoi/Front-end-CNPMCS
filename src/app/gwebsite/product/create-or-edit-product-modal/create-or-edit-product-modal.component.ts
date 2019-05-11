@@ -15,7 +15,20 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
     @ViewChild('createOrEditModal') modal: ModalDirective;
     @ViewChild('productCombobox') productCombobox: ElementRef;
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
+    biddingTypes = [
+        { label: 'Select bidding type', value: null },
+        { label: 'Đấu thầu', value: 1 },
+        { label: 'Chuyển nhượng', value: 2 },
+        { label: 'Gì đó', value: 3 }
 
+    ];
+    status = [
+        { label: 'Select status', value: null },
+        { label: 'Trúng thầu', value: 1 },
+        { label: 'Dự thầu', value: 2 },
+        { label: 'Hết hạn', value: 3 }
+
+    ];
     /**
      * @Output dùng để public event cho component khác xử lý
      */
@@ -23,7 +36,7 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
 
     active = false;
     saving = false;
-    bidding: BiddingSaved = new BiddingSaved({ productId: 0, endDate: null, status: 0, supplierId: 0, startDate: null });
+    bidding: BiddingSaved = new BiddingSaved({ productId: 0, endDate: null, status: 0, supplierId: 0, startDate: null, price: 0, biddingType: 0 });
     selectItems: SelectItem[] = [];
     suppliers: SelectItem[] = [];
     rangeDates: Date[];

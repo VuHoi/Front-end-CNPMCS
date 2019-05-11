@@ -17382,6 +17382,8 @@ export class Bidding implements IBidding {
     startDate!: moment.Moment | undefined;
     endDate!: moment.Moment | undefined;
     status!: number | undefined;
+    price!: number | undefined;
+    biddingType!: number | undefined;
     id!: number | undefined;
 
     constructor(data?: IBidding) {
@@ -17402,6 +17404,8 @@ export class Bidding implements IBidding {
             this.startDate = data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
             this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
             this.status = data["status"];
+            this.price = data["price"];
+            this.biddingType = data["biddingType"];
             this.id = data["id"];
         }
     }
@@ -17422,6 +17426,8 @@ export class Bidding implements IBidding {
         data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
         data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
         data["status"] = this.status;
+        data["price"] = this.price;
+        data["biddingType"] = this.biddingType;
         data["id"] = this.id;
         return data; 
     }
@@ -17435,6 +17441,8 @@ export interface IBidding {
     startDate: moment.Moment | undefined;
     endDate: moment.Moment | undefined;
     status: number | undefined;
+    price: number | undefined;
+    biddingType: number | undefined;
     id: number | undefined;
 }
 
@@ -19005,10 +19013,12 @@ export interface ISupplierDto {
 export class BiddingProduct implements IBiddingProduct {
     supplierId!: number | undefined;
     productId!: number | undefined;
-    product!: ProductDto | undefined;
+    product!: ProductTitleDto | undefined;
     startDate!: moment.Moment | undefined;
     endDate!: moment.Moment | undefined;
     status!: number | undefined;
+    price!: number | undefined;
+    biddingType!: number | undefined;
 
     constructor(data?: IBiddingProduct) {
         if (data) {
@@ -19023,10 +19033,12 @@ export class BiddingProduct implements IBiddingProduct {
         if (data) {
             this.supplierId = data["supplierId"];
             this.productId = data["productId"];
-            this.product = data["product"] ? ProductDto.fromJS(data["product"]) : <any>undefined;
+            this.product = data["product"] ? ProductTitleDto.fromJS(data["product"]) : <any>undefined;
             this.startDate = data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
             this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
             this.status = data["status"];
+            this.price = data["price"];
+            this.biddingType = data["biddingType"];
         }
     }
 
@@ -19045,6 +19057,8 @@ export class BiddingProduct implements IBiddingProduct {
         data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
         data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
         data["status"] = this.status;
+        data["price"] = this.price;
+        data["biddingType"] = this.biddingType;
         return data; 
     }
 }
@@ -19052,10 +19066,76 @@ export class BiddingProduct implements IBiddingProduct {
 export interface IBiddingProduct {
     supplierId: number | undefined;
     productId: number | undefined;
-    product: ProductDto | undefined;
+    product: ProductTitleDto | undefined;
     startDate: moment.Moment | undefined;
     endDate: moment.Moment | undefined;
     status: number | undefined;
+    price: number | undefined;
+    biddingType: number | undefined;
+}
+
+export class ProductTitleDto implements IProductTitleDto {
+    id!: string | undefined;
+    name!: string | undefined;
+    price!: number | undefined;
+    discount!: number | undefined;
+    summary!: string | undefined;
+    availableAddress!: string | undefined;
+    addedDate!: moment.Moment | undefined;
+    image!: ImageDto | undefined;
+
+    constructor(data?: IProductTitleDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+            this.price = data["price"];
+            this.discount = data["discount"];
+            this.summary = data["summary"];
+            this.availableAddress = data["availableAddress"];
+            this.addedDate = data["addedDate"] ? moment(data["addedDate"].toString()) : <any>undefined;
+            this.image = data["image"] ? ImageDto.fromJS(data["image"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ProductTitleDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProductTitleDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["price"] = this.price;
+        data["discount"] = this.discount;
+        data["summary"] = this.summary;
+        data["availableAddress"] = this.availableAddress;
+        data["addedDate"] = this.addedDate ? this.addedDate.toISOString() : <any>undefined;
+        data["image"] = this.image ? this.image.toJSON() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IProductTitleDto {
+    id: string | undefined;
+    name: string | undefined;
+    price: number | undefined;
+    discount: number | undefined;
+    summary: string | undefined;
+    availableAddress: string | undefined;
+    addedDate: moment.Moment | undefined;
+    image: ImageDto | undefined;
 }
 
 export class BiddingSaved implements IBiddingSaved {
@@ -19064,6 +19144,8 @@ export class BiddingSaved implements IBiddingSaved {
     startDate!: moment.Moment | undefined;
     endDate!: moment.Moment | undefined;
     status!: number | undefined;
+    price!: number | undefined;
+    biddingType!: number | undefined;
 
     constructor(data?: IBiddingSaved) {
         if (data) {
@@ -19081,6 +19163,8 @@ export class BiddingSaved implements IBiddingSaved {
             this.startDate = data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
             this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
             this.status = data["status"];
+            this.price = data["price"];
+            this.biddingType = data["biddingType"];
         }
     }
 
@@ -19098,6 +19182,8 @@ export class BiddingSaved implements IBiddingSaved {
         data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
         data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
         data["status"] = this.status;
+        data["price"] = this.price;
+        data["biddingType"] = this.biddingType;
         return data; 
     }
 }
@@ -19108,6 +19194,8 @@ export interface IBiddingSaved {
     startDate: moment.Moment | undefined;
     endDate: moment.Moment | undefined;
     status: number | undefined;
+    price: number | undefined;
+    biddingType: number | undefined;
 }
 
 export class SupplierSavedDto implements ISupplierSavedDto {

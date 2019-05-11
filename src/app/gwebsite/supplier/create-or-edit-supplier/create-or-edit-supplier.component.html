@@ -14,9 +14,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <!-- <p-multiSelect [options]="selectItems" [(ngModel)]="biddings"
-                            (onChange)="onChangeOptionProduct()" [ngModelOptions]="{standalone: true}">
-                        </p-multiSelect> -->
+
 
                         <p-multiSelect [options]="selectItems" [(ngModel)]="biddings" *ngIf="!isEdit"
                             [ngModelOptions]="{standalone: true}" (onChange)="onChangeOptionProduct()"
@@ -25,12 +23,28 @@
                                 <span *ngFor="let product of products">{{product.label}}</span>
                             </ng-template>
                             <ng-template let-product let-i="index" pTemplate="item">
-                                <div style="font-size:14px;float:right;margin-top:4px"> {{i}} {{product.label}}</div>
-                                <p-calendar [(ngModel)]="product.value.ranges" selectionMode="range"
-                                    [ngModelOptions]="{standalone: true}" [readonlyInput]="true">
-                                </p-calendar>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div>{{product.label}}</div>
+                                    </div>
+                                    <p-calendar [(ngModel)]="product.value.ranges" selectionMode="range"
+                                        aria-placeholder="Select start to end date"
+                                        [ngModelOptions]="{standalone: true}" [readonlyInput]="true">
+                                    </p-calendar>
+                                    <input #nameInput="ngModel" class="form-control w-25 " type="text" name="price"
+                                        placeholder="Price" [(ngModel)]="product.value.price" required maxlength="64">
+                                    <p-dropdown [options]="biddingTypes" [(ngModel)]="product.value.biddingType"
+                                        [ngModelOptions]="{standalone: true}">
+                                    </p-dropdown>
+                                    <p-dropdown [options]="status" [(ngModel)]="product.value.status"
+                                        [ngModelOptions]="{standalone: true}">
+                                    </p-dropdown>
+
+                                </div>
                             </ng-template>
                         </p-multiSelect>
+
+
                     </div>
 
 

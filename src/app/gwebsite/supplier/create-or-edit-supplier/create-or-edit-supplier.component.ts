@@ -25,6 +25,20 @@ export class CreateOrEditSupplierComponent extends AppComponentBase {
     biddings: any[] = [];
     productId = '';
     selectItems: SelectItem[];
+    biddingTypes = [
+        { label: 'Bidding type', value: null },
+        { label: 'Đấu thầu', value: 1 },
+        { label: 'Chuyển nhượng', value: 2 },
+        { label: 'Gì đó', value: 3 }
+
+    ];
+    status = [
+        { label: 'Status', value: null },
+        { label: 'Trúng thầu', value: 1 },
+        { label: 'Dự thầu', value: 2 },
+        { label: 'Hết hạn', value: 3 }
+
+    ];
     rangeDates: Date[];
     constructor(
         injector: Injector,
@@ -33,7 +47,6 @@ export class CreateOrEditSupplierComponent extends AppComponentBase {
     ) {
         super(injector);
         this.getDataProduct();
-
     }
 
     show(supplier?: any | null | undefined): void {
@@ -45,7 +58,7 @@ export class CreateOrEditSupplierComponent extends AppComponentBase {
 
     save(): void {
 
-        var input = this.supplier;
+        let input = this.supplier;
         this.saving = true;
         if (input.id) {
             this.updatePurchase();
@@ -56,30 +69,31 @@ export class CreateOrEditSupplierComponent extends AppComponentBase {
     getDataProduct() {
         this._productsServiceProxy.getProducts('', '', 1000, 0).subscribe(products => {
             this.selectItems = [];
-            products.items.map(i => this.selectItems.push({ value: { id: i.id }, label: i.name }))
+            products.items.map(i => this.selectItems.push({ value: { id: i.id }, label: i.name }));
         });
     }
     insertPurchase() {
-        var input = Object.create(this.supplier);
+        let input = Object.create(this.supplier);
         input.biddings = [];
         this.biddings.map(item => {
             const startDate = item.ranges ? item.ranges[0] : new Date();
             const endDate = item.ranges ? item.ranges[1] ? item.ranges[1] : new Date() : new Date();
             input.biddings.push(new BiddingSaved({
                 startDate, endDate,
-                status: 0, productId: item.id, supplierId: input.id
+                status: item.status, productId: item.id, supplierId: input.id, biddingType: item.biddingType, price: item.price
             }));
-        })
+        });
 
         this._supplierServiceProxy.createSupplier(input).subscribe(item => {
             this.close();
             this.modalSave.emit(null);
-            console.log(item)
         }, err => console.log(err));
     }
 
+
+
     updatePurchase() {
-        var input = Object.create(this.supplier);
+        let input = Object.create(this.supplier);
         // input.biddings = [];
         // this.biddings.map(item => {
         //     const startDate = item.ranges ? item.ranges[0] : new Date();
@@ -89,14 +103,13 @@ export class CreateOrEditSupplierComponent extends AppComponentBase {
         //         status: 0, productId: item.id, supplierId: input.id
         //     }));
         // })
-        console.log(input)
         this._supplierServiceProxy.updateSupplier(input).subscribe(item => {
             this.close();
             this.modalSave.emit(null);
         }, err => console.log(err));
     }
     onChangeOptionProduct() {
-        console.log('sss', this.biddings);
+        console.log('sss', this.biddingTypes);
     }
     close(): void {
         this.active = false;
