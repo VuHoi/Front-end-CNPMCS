@@ -11,7 +11,6 @@
                 </span>
             </div>
             <div class="col-xs-6 text-right">
-                <!-- Tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn -->
                 <button (click)="createBidProfile()" *ngIf="isGranted('Pages.Administration.MenuClient.Create')"
                     class="btn btn-primary"><i class="fa fa-plus"></i> {{l("CreateNewBidProfile")}}</button>
             </div>
@@ -47,7 +46,7 @@
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th pSortableColumn="name">
-                                        {{l('Name')}}
+                                        {{l('Hạng mục thầu')}}
                                         <p-sortIcon field="name"></p-sortIcon>
                                     </th>
                                     <th pSortableColumn="supplier">
@@ -67,50 +66,49 @@
                                         <p-sortIcon field="description"></p-sortIcon>
                                     </th>
                                     <th pSortableColumn="addedDate">
-                                        {{l('AddedDate')}}
+                                        {{l('Thời gian thầu')}}
                                         <p-sortIcon field="addedDate"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="image">
-                                        {{l('Image')}}
-                                        <p-sortIcon field="image"></p-sortIcon>
+                                    <th pSortableColumn="addedDate">
+                                        {{l('Hình thức thầu')}}
+                                        <p-sortIcon field="addedDate"></p-sortIcon>
                                     </th>
                                     <th>{{l('Edit')}}</th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-record="$implicit">
-                                <tr>
-                                    <td>
+                                <tr *ngFor="let item of record.biddings">
+                                    <td *ngIf="item.status===1">
                                         <span class="ui-column-title">{{l('Name')}}</span>
-                                        <span title="{{record.name}}">{{truncateString(record.name)}}</span>
+                                        <span title="{{record.name}}">{{truncateString(item.product.name)}}</span>
                                     </td>
-                                    <td>
+                                    <td *ngIf="item.status===1">
                                         <span class="ui-column-title">{{l('Supplier')}}</span>
-                                        <span
-                                            title="{{record.supplier}}">{{truncateString(record.supplierDto.name)}}</span>
+                                        <span title="{{record.supplier}}">{{truncateString(record.name)}}</span>
                                     </td>
-                                    <td>
+                                    <td *ngIf="item.status===1">
                                         <span class="ui-column-title">{{l('Contact')}}</span>
-                                        <span
-                                            title="{{record.contact}}">{{truncateString(record.supplierDto.contact)}}</span>
+                                        <span title="{{record.contact}}">{{truncateString(record.address)}}</span>
                                     </td>
-                                    <td>
+                                    <td *ngIf="item.status===1">
                                         <span class="ui-column-title">{{l('Price')}}</span>
-                                        <span title="{{record.price}}">{{truncateString(record.price)}}</span>
+                                        <span title="{{record.price}}">{{truncateString(item.price)}}</span>
                                     </td>
-                                    <td>
+                                    <td *ngIf="item.status===1">
                                         <span class="ui-column-title">{{l('Description')}}</span>
-                                        <span
-                                            title="{{record.description}}">{{truncateString(record.description)}}</span>
+                                        <span title="{{record.description}}">{{truncateString(record.phone)}}</span>
                                     </td>
-                                    <td>
+                                    <td *ngIf="item.status===1">
                                         <span class="ui-column-title">{{l('AddedDate')}}</span>
-                                        <span title="{{record.addedDate}}">{{ record.addedDate }}</span>
+                                        <span title="{{record.addedDate}}">{{ item.startDate | date: 'dd/MM/yyyy' }} -
+                                            {{ item.endDate | date: 'dd/MM/yyyy' }}</span>
                                     </td>
-                                    <td>
-                                        <span class="ui-column-title">{{l('Image')}}</span>
-                                        <span title="{{record.image}}">{{ record.imageDto.url }}</span>
+                                    <td *ngIf="item.status===1">
+                                        <span class="ui-column-title">{{l('AddedDate')}}</span>
+                                        <span
+                                            title="{{record.addedDate}}">{{ item.biddingType==0?'Đấu thầu':item.biddingType===1?'Chuyển nhượng':'Gì đó' }}</span>
                                     </td>
-                                    <td>
+                                    <td *ngIf="item.status===1">
                                         <button
                                             class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
                                             (click)="createOrEditModal.show(record.id)" title="{{l('Edit')}}">

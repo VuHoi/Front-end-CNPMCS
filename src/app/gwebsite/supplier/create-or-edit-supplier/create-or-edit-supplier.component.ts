@@ -27,9 +27,9 @@ export class CreateOrEditSupplierComponent extends AppComponentBase {
     selectItems: SelectItem[];
     biddingTypes = [
         { label: 'Bidding type', value: null },
-        { label: 'Đấu thầu', value: 1 },
-        { label: 'Chuyển nhượng', value: 2 },
-        { label: 'Gì đó', value: 3 }
+        { label: 'Đấu thầu', value: 0 },
+        { label: 'Chuyển nhượng', value: 1 },
+        { label: 'Gì đó', value: 2 }
 
     ];
     status = [

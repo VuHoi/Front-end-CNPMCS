@@ -8,6 +8,7 @@ import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
 import { CreateOrEditBidProfileModalComponent } from './create-or-edit-bidProfile-modal/create-or-edit-bidProfile-modal.component';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
+import { SupplierServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @Component({
     selector: 'app-bidProfile',
@@ -34,7 +35,7 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         injector: Injector,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
-        private _apiService: WebApiServiceProxy
+        private _supplierServiceProxy: SupplierServiceProxy
     ) {
         super(injector);
     }
@@ -70,18 +71,15 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
          * Sử dụng _apiService để call các api của backend
          */
 
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.get('api/MenuClient/GetMenuClientsByFilter',
-            [{ fieldName: 'Name', value: this.filterText }],
-            this.primengTableHelper.getSorting(this.dataTable),
-            this.primengTableHelper.getMaxResultCount(this.paginator, event),
-            this.primengTableHelper.getSkipCount(this.paginator, event),
-        ).subscribe(result => {
-            this.primengTableHelper.totalRecordsCount = result.totalCount;
+        this._supplierServiceProxy.getAllBiddingPass().subscribe(result => {
+            this.primengTableHelper.totalRecordsCount = result.items.length;
             this.primengTableHelper.records = result.items;
+            console.log(result.items);
             this.primengTableHelper.hideLoadingIndicator();
         });
     }
+
+
 
     init(): void {
         //get params từ url để thực hiện filter

@@ -31,11 +31,19 @@
                         </p-dropdown>
                     </div>
 
-                    <div class="mt-3 ">
-                        <div>Start to End date</div>
-                        <p-calendar [(ngModel)]="rangeDates" [ngModelOptions]="{standalone: true}" selectionMode="range"
-                            [readonlyInput]="true">
-                        </p-calendar>
+                    <div class="mt-3 row ">
+                        <div class="col-6">
+                            <div class="mb-2">Start to End date</div>
+                            <p-calendar [(ngModel)]="rangeDates" [ngModelOptions]="{standalone: true}"
+                                selectionMode="range" [readonlyInput]="true">
+                            </p-calendar>
+                        </div>
+                        <div class="col-6">
+                            <label for="price">Price</label>
+                            <input #nameInput="ngModel" class="form-control  " style="width:250px" type="text"
+                                name="price" placeholder="Price" [(ngModel)]="price" required maxlength="64">
+                        </div>
+
                     </div>
                 </div>
                 <div class="modal-footer">

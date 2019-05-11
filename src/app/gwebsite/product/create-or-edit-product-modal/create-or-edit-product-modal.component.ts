@@ -17,9 +17,9 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
     biddingTypes = [
         { label: 'Select bidding type', value: null },
-        { label: 'Đấu thầu', value: 1 },
-        { label: 'Chuyển nhượng', value: 2 },
-        { label: 'Gì đó', value: 3 }
+        { label: 'Đấu thầu', value: 0 },
+        { label: 'Chuyển nhượng', value: 1 },
+        { label: 'Gì đó', value: 2 }
 
     ];
     status = [
@@ -59,7 +59,7 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
         this.saving = true;
         this.bidding.startDate = this.rangeDates ? moment(this.rangeDates[0]) : moment(new Date());
         this.bidding.endDate = this.rangeDates && this.rangeDates.length > 1 ? moment(this.rangeDates[1]) : moment(new Date());
-        this.bidding.status = 0;
+        // this.bidding.status = 0;
         this._supplierServiceProxy.changeOwnerBiddingProduct(this.bidding).subscribe(item => {
             this.close();
             this.modalSave.emit(null);
