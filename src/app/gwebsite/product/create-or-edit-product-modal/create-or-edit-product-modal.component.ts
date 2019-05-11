@@ -60,11 +60,12 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
         this.bidding.startDate = this.rangeDates ? moment(this.rangeDates[0]) : moment(new Date());
         this.bidding.endDate = this.rangeDates && this.rangeDates.length > 1 ? moment(this.rangeDates[1]) : moment(new Date());
         // this.bidding.status = 0;
-        this._supplierServiceProxy.changeOwnerBiddingProduct(this.bidding).subscribe(item => {
-            this.close();
-            this.modalSave.emit(null);
-            console.log(item);
-        });
+        console.log('ss');
+        // this._supplierServiceProxy.changeOwnerBiddingProduct(this.bidding).subscribe(item => {
+        //     this.close();
+        //     this.modalSave.emit(null);
+        //     console.log(item);
+        // }, err => console.log(err));
 
     }
     dropdownChange() {

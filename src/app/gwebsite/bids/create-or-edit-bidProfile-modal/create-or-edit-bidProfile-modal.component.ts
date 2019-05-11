@@ -6,7 +6,7 @@ import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
 import { ComboboxItemDto, SupplierServiceProxy, ProductsServiceProxy, BiddingSaved } from '@shared/service-proxies/service-proxies';
 import { BidProfileDto } from '../dto/bidProfile.dto';
 import { SelectItem } from 'primeng/primeng';
-
+import * as moment from 'moment';
 @Component({
     selector: 'createOrEditBidProfileModal',
     templateUrl: './create-or-edit-bidProfile-modal.component.html',
@@ -55,11 +55,23 @@ export class CreateOrEditBidProfileModalComponent extends AppComponentBase {
             products.items.map(i => this.selectItems.push({ value: i.id, label: i.name }));
         });
     }
-
+    getSupplierByProduct() {
+        this._supplierServiceProxy.getSupplierByProduct(0, 1000, +this.bidding.productId).subscribe(suppliers => {
+            this.suppliers = [];
+            this.suppliers.push({ value: '', label: 'Select supplier' });
+            suppliers.items.map(i => this.suppliers.push({ value: i.id, label: i.name }));
+        });
+    }
+    dropdownChange() {
+        this.getSupplierByProduct();
+    }
     show(bidProfileId?: number | null | undefined): void {
         this.active = true;
         this.modal.show();
         this.getDataProduct();
+    }
+    dropdownSupplierChange() {
+        console.log(this.bidding);
     }
     onChangeRadioButton() {
         console.log(this.val1);
@@ -67,11 +79,14 @@ export class CreateOrEditBidProfileModalComponent extends AppComponentBase {
     save(): void {
         let input = this.bidProfile;
         this.saving = true;
-        if (input.id) {
-            this.updateBidProfile();
-        } else {
-            this.insertBidProfile();
-        }
+        this.bidding.startDate = this.rangeDates ? moment(this.rangeDates[0]) : moment(new Date());
+        this.bidding.endDate = this.rangeDates && this.rangeDates.length > 1 ? moment(this.rangeDates[1]) : moment(new Date());
+        // this.bidding.status = 0;
+        this._supplierServiceProxy.changeOwnerBiddingProduct(this.bidding).subscribe(item => {
+            this.close();
+            this.modalSave.emit(null);
+            console.log(item);
+        });
     }
     getAllProduct() {
 
