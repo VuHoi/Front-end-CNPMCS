@@ -58,7 +58,8 @@ import { SubPlanComponent } from './plan/sub-plan/sub-plan.component';
                 path: '',
                 children: [
                     {
-                        path: 'plan', component: PlanComponent,
+                        // path: 'plan', component: PlanComponent,
+                        path: 'plan', component: SubPlanComponent,
                         data: { permission: 'Pages.Administration.MenuClient' }
                     },
                     {

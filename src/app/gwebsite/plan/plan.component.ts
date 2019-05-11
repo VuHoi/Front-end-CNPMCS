@@ -118,18 +118,7 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
         this.paginator.changePage(this.paginator.getPage());
     }
 
-    applyFilters(): void {
-        //truyền params lên url thông qua router
-        // this._router.navigate(['app/gwebsite/plan', {
-        //     filterText: this.filterText
-        // }]);
 
-        // if (this.paginator.getPage() !== 0) {
-        //     this.paginator.changePage(0);
-        //     return;
-        // }
-        console.log('Approved 1');
-    }
 
     /**
      * Tạo pipe thay vì tạo từng hàm truncate như thế này
