@@ -18,10 +18,6 @@ import { ProductComponent } from './product/product.component';
 import { CreateOrEditProductModalComponent } from './product/create-or-edit-product-modal/create-or-edit-product-modal.component';
 import { PlanComponent } from './plan/plan.component';
 import { CreateOrEditPlanModalComponent } from './plan/create-or-edit-plan-modal/create-or-edit-plan-modal.component';
-import { PurchaseComponent } from './purchase/purchase.component';
-import { CreateOrEditPurchaseModalComponent } from './purchase/create-or-edit-purchase-modal/create-or-edit-purchase-modal.component';
-import { PurchaseHistoryComponent } from './purchaseHistory/purchaseHistory.component';
-import { BudgetComponent } from './budget/budget.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { SupplierCategoryComponent } from './supplierCategory/supplierCategory.component';
 import { CreateOrEditSupplierCategoryModalComponent } from './supplierCategory/create-or-edit-supplierCategory-modal/create-or-edit-supplierCategory-modal.component';
@@ -76,9 +72,6 @@ import { RadioButtonModule } from 'primeng/radiobutton';
         ProductCategoryComponent, CreateOrEditProductCategoryModalComponent,
         ProductComponent, CreateOrEditProductModalComponent,
         PlanComponent, CreateOrEditPlanModalComponent, SubPlanComponent,
-        PurchaseComponent, CreateOrEditPurchaseModalComponent,
-        PurchaseHistoryComponent,
-        BudgetComponent,
         ProjectComponent, CreateOrEditProjectModalComponent,
         BidProfileComponent, CreateOrEditBidProfileModalComponent,
         PurchaseContractComponent, CreateOrEditPurchaseContractModalComponent,
@@ -86,8 +79,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
         SubmissionComponent, CreateOrEditSubmissionModalComponent,
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
         ProductComponent, CreateOrEditProductModalComponent,
-        PlanComponent, CreateOrEditPlanModalComponent, PurchaseComponent, CreateOrEditPurchaseModalComponent, PurchaseHistoryComponent,
-        BudgetComponent,
+        PlanComponent, CreateOrEditPlanModalComponent,
         SupplierComponent,
         CreateOrEditSupplierComponent,
         BiddingComponent
