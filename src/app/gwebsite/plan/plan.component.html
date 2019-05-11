@@ -105,7 +105,7 @@
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th pSortableColumn="ordinalNumber">
-                                        {{l('Ordinal Number')}}
+                                        {{l('Number')}}
                                         <p-sortIcon field="ordinalNumber"></p-sortIcon>
                                     </th>
                                     <th pSortableColumn="planId">
@@ -120,9 +120,9 @@
                                         {{l('Total Price')}}
                                         <p-sortIcon field="totalPrice"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="unitId">
-                                        {{l('Unit Id')}}
-                                        <p-sortIcon field="unitId"></p-sortIcon>
+                                    <th pSortableColumn="unitCode">
+                                        {{l('Unit Code')}}
+                                        <p-sortIcon field="unitCode"></p-sortIcon>
                                     </th>
                                     <th pSortableColumn="status">
                                         {{l('Status')}}
@@ -138,7 +138,7 @@
                             <ng-template pTemplate="body" let-record="$implicit">
                                 <tr>
                                     <td>
-                                        <span class="ui-column-title">{{l('Ordinal Number')}}</span>
+                                        <span class="ui-column-title">{{l('Number')}}</span>
                                         <span
                                             title="{{record.ordinalNumber}}">{{truncateString(record.ordinalNumber)}}</span>
                                     </td>
@@ -159,8 +159,8 @@
                                         <span title="{{record.totalPrice}}">{{ record.totalPrice }}</span>
                                     </td>
                                     <td>
-                                        <span class="ui-column-title">{{l('Unit Id')}}</span>
-                                        <span title="{{record.unitId}}">{{ record.unitId }}</span>
+                                        <span class="ui-column-title">{{l('Unit Code')}}</span>
+                                        <span title="{{record.unitCode}}">{{ record.unitCode }}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">{{l('Status')}}</span>
@@ -171,11 +171,6 @@
                                         <span title="{{record.countChanged}}">{{ record.countChanged }}</span>
                                     </td>
                                     <td>
-                                        <button
-                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
-                                            (click)="createOrEditModal.show(record.id)" title="{{l('Edit')}}">
-                                            <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
-                                        </button>
                                         <button
                                             class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
                                             (click)="createOrEditModal.show(record.id)" title="{{l('Approved')}}">
