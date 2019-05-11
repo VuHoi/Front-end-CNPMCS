@@ -117,10 +117,11 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
     return abp.utils.truncateStringWithPostfix(text, 32, '...');
   }
 
-  public SearchSubPlan(): void {
-    console.log(this.approvalStatus + '___' + this.yearImplement + '__');
+  public searchSubPlan(): void {
+
   }
-  public ApprovedPlan(): void {
+  public approvedPlan(): void {
+    // this.planId: approved theo planId
     if (this.approvalStatus === 2) {
 
     }

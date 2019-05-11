@@ -11,3 +11,11 @@ div.btn-approved {
 #searchPlan{
   text-align: center!important;
 }
+
+.table-row:hover {
+  cursor: pointer;
+}
+
+/* td:hover {
+  cursor: pointer;
+} */

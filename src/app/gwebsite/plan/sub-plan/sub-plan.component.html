@@ -20,12 +20,12 @@
   <div class="m-content">
     <div class="m-portlet m-portlet--mobile">
       <div class="m-portlet__body">
-        <form autocomplete="off" (ngSubmit)="SearchSubPlan()">
+        <form autocomplete="off" (ngSubmit)="searchSubPlan()">
           <div class="m-form m-form--label-align-right" id="TextsFilterForm">
             <div class="row align-items-center m--margin-bottom-10">
               <div class="col-sm-12">
                 <div class="btn-approved float-left">
-                  <button (click)="ApprovedPlan()" type="button" [disabled]="approvalStatus === 1" class="right btn"
+                  <button (click)="approvedPlan()" type="button" [disabled]="approvalStatus === 1" class="right btn"
                     [ngClass]="{'btn-success': approvalStatus === 1, 'btn-danger': approvalStatus === 2}"
                     title="{{l('Approved Plan Include All SubPlan')}}">{{l("Approved")}}</button>
                 </div>

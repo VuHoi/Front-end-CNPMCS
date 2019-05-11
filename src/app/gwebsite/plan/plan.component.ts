@@ -30,6 +30,7 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
      * tạo các biến dể filters
      */
     public filterText: string;
+    public approvalStatusEnum = ApprovalStatusEnum;
     public approvalStatus = 3; // all status
     public ApprovalStatusList = [
         {
@@ -46,11 +47,95 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
         }
     ];
 
-    public UnitCodeList = ['HN', 'HP', 'DN', 'TPHCM', 'CT'];
+    public UnitCodeList = ['All Units', 'HN', 'HP', 'DN', 'TPHCM', 'CT'];
     public unitCode = this.UnitCodeList[0];
 
-    public DepartmentCodeList = ['IT', 'HR', 'Acco', 'Mark', 'Sale', 'PR'];
+    public DepartmentCodeList = ['All Departments', 'IT', 'HR', 'Acco', 'Mark', 'Sale', 'PR'];
     public deparmentCode = this.DepartmentCodeList[0];
+
+    public datas = [
+        {
+            planId: 11,
+            effectiveDate: '01/01/2019',
+            totalPrice: 1000000,
+            unitCode: 'IT',
+            status: ApprovalStatusEnum.AwaitingApproval,
+            countChanged: 1
+        },
+        {
+            planId: 22,
+            effectiveDate: '02/01/2019',
+            totalPrice: 2000000,
+            unitCode: 'HR',
+            status: ApprovalStatusEnum.Approved,
+            countChanged: 3
+        },
+        {
+            planId: 33,
+            effectiveDate: '03/01/2019',
+            totalPrice: 3000000,
+            unitCode: 'Acco',
+            status: ApprovalStatusEnum.Approved,
+            countChanged: 2
+        },
+        {
+            planId: 44,
+            effectiveDate: '04/01/2019',
+            totalPrice: 4000000,
+            unitCode: 'Mark',
+            status: ApprovalStatusEnum.AwaitingApproval,
+            countChanged: 1
+        },
+        {
+            planId: 55,
+            effectiveDate: '01/01/2019',
+            totalPrice: 1000000,
+            unitCode: 'IT',
+            status: ApprovalStatusEnum.AwaitingApproval,
+            countChanged: 5
+        },
+        {
+            planId: 66,
+            effectiveDate: '02/01/2019',
+            totalPrice: 2000000,
+            unitCode: 'HR',
+            status: ApprovalStatusEnum.Approved,
+            countChanged: 3
+        },
+        {
+            planId: 77,
+            effectiveDate: '03/01/2019',
+            totalPrice: 3000000,
+            unitCode: 'Acco',
+            status: ApprovalStatusEnum.Approved,
+            countChanged: 2
+        },
+        {
+            planId: 88,
+            effectiveDate: '04/01/2019',
+            totalPrice: 4000000,
+            unitCode: 'Mark',
+            status: ApprovalStatusEnum.AwaitingApproval,
+            countChanged: 6
+        },
+        {
+            planId: 99,
+            effectiveDate: '01/01/2019',
+            totalPrice: 1000000,
+            unitCode: 'IT',
+            status: ApprovalStatusEnum.AwaitingApproval,
+            countChanged: 4
+        },
+        {
+            planId: 100,
+            effectiveDate: '02/01/2019',
+            totalPrice: 2000000,
+            unitCode: 'HR',
+            status: ApprovalStatusEnum.Approved,
+            countChanged: 2
+        }
+    ];
+
 
     constructor(
         injector: Injector,
@@ -92,17 +177,19 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
          * Sử dụng _apiService để call các api của backend
          */
 
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.get('api/MenuClient/GetMenuClientsByFilter',
-            [{ fieldName: 'Name', value: this.filterText }],
-            this.primengTableHelper.getSorting(this.dataTable),
-            this.primengTableHelper.getMaxResultCount(this.paginator, event),
-            this.primengTableHelper.getSkipCount(this.paginator, event),
-        ).subscribe(result => {
-            this.primengTableHelper.totalRecordsCount = result.totalCount;
-            this.primengTableHelper.records = result.items;
-            this.primengTableHelper.hideLoadingIndicator();
-        });
+        // this._apiService.get('api/MenuClient/GetMenuClientsByFilter',
+        //     [{ fieldName: 'Name', value: this.filterText }],
+        //     this.primengTableHelper.getSorting(this.dataTable),
+        //     this.primengTableHelper.getMaxResultCount(this.paginator, event),
+        //     this.primengTableHelper.getSkipCount(this.paginator, event),
+        // ).subscribe(result => {
+        //     this.primengTableHelper.totalRecordsCount = result.totalCount;
+        //     this.primengTableHelper.records = result.items;
+        //     this.primengTableHelper.hideLoadingIndicator();
+        // });
+        this.primengTableHelper.totalRecordsCount = 16;
+        this.primengTableHelper.records = this.datas;
+        this.primengTableHelper.hideLoadingIndicator();
     }
 
     init(): void {
@@ -144,11 +231,16 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
     createPlan() {
         this.createOrEditModal.show();
     }
-    public SearchPlan(): void {
-        console.log(this.approvalStatus + '__' + this.unitCode);
+    public searchPlan(): void {
+
     }
 
-    public ViewPlanDetail(planId: number): void {
-        this._router.navigate(['app/gwebsite/plan', planId]);
+    public approvalPlan(planId: number, $event: Event, index: number): void {
+        $event.stopPropagation();
+        this.datas[index].status = ApprovalStatusEnum.Approved;
+    }
+    public gotoPlanDetail(planId: number, $event: Event): void {
+        console.log('godetail');
+        //goto detail page by planId: http://localhost:4200/app/gwebsite/plan/11
     }
 }

@@ -20,7 +20,7 @@
     <div class="m-content">
         <div class="m-portlet m-portlet--mobile">
             <div class="m-portlet__body">
-                <form autocomplete="off" (ngSubmit)="SearchPlan()">
+                <form autocomplete="off" (ngSubmit)="searchPlan()">
                     <div class="m-form m-form--label-align-right" id="TextsFilterForm">
                         <!-- filter -->
                         <div class="row m--margin-bottom-10">
@@ -135,12 +135,11 @@
                                     <th>{{l('Action')}}</th>
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" let-record="$implicit">
-                                <tr>
+                            <ng-template pTemplate="body" let-record="$implicit" let-index="rowIndex">
+                                <tr class="table-row" (click)="gotoPlanDetail(record.planId, $event)">
                                     <td>
                                         <span class="ui-column-title">{{l('Number')}}</span>
-                                        <span
-                                            title="{{record.ordinalNumber}}">{{truncateString(record.ordinalNumber)}}</span>
+                                        <span title="{{record.ordinalNumber}}">{{truncateString(index + 1)}}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">{{l('Plan Id')}}</span>
@@ -149,10 +148,6 @@
                                     <td>
                                         <span class="ui-column-title">{{l('Effective Date')}}</span>
                                         <span title="{{record.effectiveDate}}">{{ record.effectiveDate }}</span>
-                                    </td>
-                                    <td>
-                                        <span class="ui-column-title">{{l('Update Date')}}</span>
-                                        <span title="{{record.updateDate}}">{{ record.updateDate }}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">{{l('Total Price')}}</span>
@@ -164,17 +159,24 @@
                                     </td>
                                     <td>
                                         <span class="ui-column-title">{{l('Status')}}</span>
-                                        <span title="{{record.updateDate}}">{{ record.status }}</span>
+                                        <span
+                                            title="{{record.status}}">{{ record.status === approvalStatusEnum.Approved ? 'Approved' : 'Awaiting Approval' }}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">{{l('Count Changed')}}</span>
                                         <span title="{{record.countChanged}}">{{ record.countChanged }}</span>
                                     </td>
                                     <td>
-                                        <button
+                                        <!-- <button
                                             class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
                                             (click)="createOrEditModal.show(record.id)" title="{{l('Approved')}}">
                                             <i class="fa fa-edit" [attr.aria-label]="l('Approved')"></i>
+                                        </button> -->
+                                        <button class="btn"
+                                            [ngClass]="{'btn-success': record.status === approvalStatusEnum.Approved, 'btn-danger': record.status === approvalStatusEnum.AwaitingApproval}"
+                                            [disabled]="record.status === approvalStatusEnum.Approved"
+                                            (click)="approvalPlan(record.id, $event, index)"
+                                            title="{{l(record.status === approvalStatusEnum.Approved ? 'Approved' : 'Awaiting Approval')}}">Approved
                                         </button>
                                     </td>
                                 </tr>
