@@ -20,7 +20,7 @@
   <div class="m-content">
     <div class="m-portlet m-portlet--mobile">
       <div class="m-portlet__body">
-        <form autocomplete="off" (ngSubmit)="searchSubPlan()">
+        <form autocomplete="off" (ngSubmit)="searchProductCode()">
           <div class="m-form m-form--label-align-right" id="TextsFilterForm">
             <div class="row align-items-center m--margin-bottom-10">
               <div class="col-sm-12">
@@ -76,7 +76,7 @@
                     </select>
                   </div>
                 </div>
-                <div class="row align-items-center m-b-5">
+                <div class="row align-items-center">
                   <div class="col-4 col-sm-4">
                     <span class="float-right">Effective Date:</span>
                   </div>
@@ -105,7 +105,7 @@
                       [attr.disabled]="true" name="implementPrice" class="form-control" required>
                   </div>
                 </div>
-                <div class="row align-items-center m-b-5">
+                <div class="row align-items-center">
                   <div class="col-4 col-sm-4">
                     <span class="float-right">Pesidual Price:</span>
                   </div>
@@ -113,6 +113,18 @@
                     <input type="text" value="{{residualPrice | currency:'VND':'symbol':'4.2-2'}}"
                       [attr.disabled]="true" name="residualPrice" class="form-control" required>
                   </div>
+                </div>
+              </div>
+            </div>
+            <div class="row align-items-center m--margin-bottom-10">
+              <div class="col-sm-12">
+                <div class="input-group">
+                  <input [(ngModel)]="productCode" name="productCode" autoFocus class="form-control"
+                    placeholder="{{l('Search Sub Plan By Product Code')}}" type="text">
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary btn-min-width" type="submit"><i class="icon-refresh"></i>
+                      {{l("Search")}}</button>
+                  </span>
                 </div>
               </div>
             </div>
@@ -128,7 +140,7 @@
               <ng-template pTemplate="header">
                 <tr>
                   <th pSortableColumn="ordinalNumber">
-                    {{l('Ordinal Number')}}
+                    {{l('Number')}}
                     <p-sortIcon field="ordinalNumber"></p-sortIcon>
                   </th>
                   <th pSortableColumn="productCode">
@@ -178,11 +190,11 @@
                   <th>{{l('Action')}}</th>
                 </tr>
               </ng-template>
-              <ng-template pTemplate="body" let-record="$implicit">
+              <ng-template pTemplate="body" let-record="$implicit" let-index="rowIndex">
                 <tr>
                   <td>
                     <span class="ui-column-title">{{l('Ordinal Number')}}</span>
-                    <span title="{{record.ordinalNumber}}">{{truncateString(record.ordinalNumber)}}</span>
+                    <span title="{{record.ordinalNumber}}">{{truncateString(index + 1)}}</span>
                   </td>
                   <td>
                     <span class="ui-column-title">{{l('Product Code')}}</span>
@@ -198,11 +210,16 @@
                   </td>
                   <td>
                     <span class="ui-column-title">{{l('Quantity')}}</span>
-                    <span title="{{record.quantity}}">{{truncateString(record.quantity)}}</span>
+
+                    <span *ngIf="!record.isEdit" title="{{record.quantity}}">{{truncateString(record.quantity)}}</span>
+
+                    <input *ngIf="record.isEdit" [(ngModel)]="record.quantityEdit" type="number" min="0"
+                      name="quantityEdit" class="form-control">
                   </td>
                   <td>
                     <span class="ui-column-title">{{l('Total Price')}}</span>
-                    <span title="{{record.totalPrice}}">{{truncateString(record.totalPrice)}}</span>
+                    <span
+                      title="{{record.totalPrice}}">{{truncateString(record.totalPrice | currency:'VND':'symbol':'4.2-2')}}</span>
                   </td>
                   <td>
                     <span class="ui-column-title">{{l('Schedule Month')}}</span>
@@ -214,7 +231,8 @@
                   </td>
                   <td>
                     <span class="ui-column-title">{{l('Implement Price')}}</span>
-                    <span title="{{record.implementPrice}}">{{truncateString(record.implementPrice)}}</span>
+                    <span
+                      title="{{record.implementPrice}}">{{truncateString(record.implementPrice | currency:'VND':'symbol':'4.2-2')}}</span>
                   </td>
                   <td>
                     <span class="ui-column-title">{{l('Im Month')}}</span>
@@ -226,17 +244,20 @@
                   </td>
                   <td>
                     <span class="ui-column-title">{{l('Pesidual Price')}}</span>
-                    <span title="{{record.pesidualPrice}}">{{ record.pesidualPrice }}</span>
+                    <span
+                      title="{{record.pesidualPrice}}">{{ record.pesidualPrice | currency:'VND':'symbol':'4.2-2'}}</span>
                   </td>
                   <td>
-                    <span class="ui-column-title">{{l('Total Price')}}</span>
-                    <span title="{{record.totalPrice}}">{{ record.totalPrice }}</span>
-                  </td>
-                  <td>
-                    <button class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
-                      (click)="createOrEditModal.show(record.id)" title="{{l('Edit')}}">
+                    <button *ngIf="!record.isEdit"
+                      class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                      [disabled]="approvalStatus === approvalStatusEnum.Approved" (click)="activeEditRow(record)"
+                      title="{{l(approvalStatus === approvalStatusEnum.Approved ? 'Disabled when plan was approved' : 'Edit Quantity')}}">
                       <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
                     </button>
+                    <div *ngIf="record.isEdit">
+                      <button type="button" (click)="cancelEditRow(record)" class="btn btn-warning">Cancel</button>
+                      <button type="button" (click)="saveEditRow(record)" class="btn btn-success">Save</button>
+                    </div>
                   </td>
                 </tr>
               </ng-template>

@@ -18,3 +18,7 @@ div.btn-approved {
   padding-left: 13px;
   color: #626262;
 }
+
+.btn-min-width {
+  min-width: 190px;
+}
