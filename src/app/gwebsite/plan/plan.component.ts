@@ -47,6 +47,8 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
         }
     ];
 
+    public YearImplementList = ['All Year', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'];
+    public yearImplement = this.YearImplementList[0];
     public UnitCodeList = ['All Units', 'HN', 'HP', 'DN', 'TPHCM', 'CT'];
     public unitCode = this.UnitCodeList[0];
 
