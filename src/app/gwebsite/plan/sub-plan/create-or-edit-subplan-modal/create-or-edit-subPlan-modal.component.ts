@@ -42,6 +42,11 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase {
         }
     ];
 
+    //because 'create' will create new product for this plan
+    //=> get all productCodes not assigned for this plan
+    public productCodeList = ['F001', 'F002', 'F003', 'F004', 'G001', 'G002', 'G003', 'G004'];
+    public productCode = this.productCodeList[0];
+
     constructor(
         injector: Injector,
         private _apiService: WebApiServiceProxy
@@ -117,5 +122,7 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase {
     close(): void {
         this.active = false;
         this.modal.hide();
+
+        console.log(this.productCode);
     }
 }
