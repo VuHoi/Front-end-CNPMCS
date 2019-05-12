@@ -39,14 +39,17 @@ export class CreateOrEditBidProfileModalComponent extends AppComponentBase {
     active = false;
     saving = false;
     val1 = 0;
+    edit = false;
     bidProfile: BidProfileDto = new BidProfileDto();
     bidProfiles: ComboboxItemDto[] = [];
     bidding: BiddingSaved = new BiddingSaved({ productId: 0, endDate: null, status: 0, supplierId: 0, startDate: null, price: 0, biddingType: 0 });
     selectItems: SelectItem[] = [];
     suppliers: SelectItem[] = [];
     rangeDates: Date[];
+
     constructor(injector: Injector, private _supplierServiceProxy: SupplierServiceProxy, private _productsServiceProxy: ProductsServiceProxy) {
         super(injector);
+        this.bidding.productId = 1;
     }
     getDataProduct() {
         this._productsServiceProxy.getProducts('', '', 1000, 0).subscribe(products => {
@@ -56,7 +59,7 @@ export class CreateOrEditBidProfileModalComponent extends AppComponentBase {
         });
     }
     getSupplierByProduct() {
-        this._supplierServiceProxy.getSupplierByProduct(0, 1000, +this.bidding.productId).subscribe(suppliers => {
+        this._supplierServiceProxy.getSupplierByProduct('', '', 1000, 0, +this.bidding.productId).subscribe(suppliers => {
             this.suppliers = [];
             this.suppliers.push({ value: '', label: 'Select supplier' });
             suppliers.items.map(i => this.suppliers.push({ value: i.id, label: i.name }));
@@ -64,18 +67,20 @@ export class CreateOrEditBidProfileModalComponent extends AppComponentBase {
     }
     dropdownChange() {
         this.getSupplierByProduct();
+        this.bidding.supplierId = 2;
+        console.log(this.bidding.productId);
     }
-    show(bidProfileId?: number | null | undefined): void {
+    show(bidProfile?: BiddingSaved | null | undefined): void {
         this.active = true;
+        this.edit = bidProfile !== undefined;
+        this.bidding = this.edit ? bidProfile : this.bidding;
         this.modal.show();
         this.getDataProduct();
     }
     dropdownSupplierChange() {
-        console.log(this.bidding);
+        console.log(this.bidding.productId);
     }
-    onChangeRadioButton() {
-        console.log(this.val1);
-    }
+
     save(): void {
         let input = this.bidProfile;
         this.saving = true;
@@ -85,19 +90,10 @@ export class CreateOrEditBidProfileModalComponent extends AppComponentBase {
         this._supplierServiceProxy.changeOwnerBiddingProduct(this.bidding).subscribe(item => {
             this.close();
             this.modalSave.emit(null);
-            console.log(item);
         });
     }
-    getAllProduct() {
 
-    }
-    insertBidProfile() {
 
-    }
-
-    updateBidProfile() {
-
-    }
 
     close(): void {
         this.active = false;

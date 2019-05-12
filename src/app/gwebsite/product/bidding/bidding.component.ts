@@ -60,7 +60,7 @@ export class BiddingComponent extends AppComponentBase {
     });
   }
   getSupplierByProduct() {
-    this._supplierServiceProxy.getSupplierByProduct(0, 1000, +this.selectedSupplierId).subscribe(suppliers => {
+    this._supplierServiceProxy.getSupplierByProduct('', '', 1000, 0, +this.selectedSupplierId).subscribe(suppliers => {
       this.suppliers = [];
       suppliers.items.map(i => {
         i.biddings.map(p => this.val1 = p.status === 1 ? i.id : 0);

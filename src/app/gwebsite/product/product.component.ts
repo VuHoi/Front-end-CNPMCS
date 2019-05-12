@@ -7,7 +7,7 @@ import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
 import { CreateOrEditProductModalComponent } from './create-or-edit-product-modal/create-or-edit-product-modal.component';
-import { ProductsServiceProxy, API_BASE_URL } from '@shared/service-proxies/service-proxies';
+import { ProductsServiceProxy, API_BASE_URL, ListResultDtoOfProductDto } from '@shared/service-proxies/service-proxies';
 
 @Component({
     selector: 'app-product',
@@ -65,7 +65,6 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
         if (!this.paginator || !this.dataTable) {
             return;
         }
-
         //show loading trong gridview
         this.primengTableHelper.showLoadingIndicator();
 
@@ -75,8 +74,8 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
         this._productService.getProducts(this.filterText, this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getMaxResultCount(this.paginator, event),
             this.primengTableHelper.getSkipCount(this.paginator, event))
-            .subscribe(result => {
-                this.primengTableHelper.totalRecordsCount = result.items.length;
+            .subscribe((result: any) => {
+                this.primengTableHelper.totalRecordsCount = result.totalCount;
                 this.primengTableHelper.records = result.items;
                 this.primengTableHelper.hideLoadingIndicator();
                 this.primengTableHelper.records.map(p => {

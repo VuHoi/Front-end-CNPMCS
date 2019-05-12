@@ -12,7 +12,7 @@
             </div>
             <div class="col-xs-6 text-right">
                 <button (click)="createBidProfile()" *ngIf="isGranted('Pages.Administration.MenuClient.Create')"
-                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("CreateNewBidProfile")}}</button>
+                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("Create New Bid Profile")}}</button>
             </div>
         </div>
     </div>
@@ -111,7 +111,7 @@
                                     <td *ngIf="item.status===1">
                                         <button
                                             class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
-                                            (click)="createOrEditModal.show(record.id)" title="{{l('Edit')}}">
+                                            (click)="createOrEditModal.show(record)" title="{{l('Edit')}}">
                                             <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
                                         </button>
                                     </td>

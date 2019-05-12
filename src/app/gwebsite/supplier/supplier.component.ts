@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Injector } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { Table } from 'primeng/table';
-import { Paginator } from 'primeng/primeng';
+import { Paginator, LazyLoadEvent } from 'primeng/primeng';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { SupplierServiceProxy } from '@shared/service-proxies/service-proxies';
@@ -34,13 +34,12 @@ export class SupplierComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getSupliers();
   }
 
 
 
 
-  getSupliers() {
+  getSupliers(event?: LazyLoadEvent) {
     if (!this.paginator || !this.dataTable) {
       return;
     }
@@ -52,11 +51,13 @@ export class SupplierComponent extends AppComponentBase implements OnInit {
      * Sử dụng _apiService để call các api của backend
      */
 
-    this._supplierServiceProxy.getAllBiddingPass().subscribe(result => {
-      this.primengTableHelper.totalRecordsCount = result.items.length;
-      this.primengTableHelper.records = result.items;
-      this.primengTableHelper.hideLoadingIndicator();
-    });
+    this._supplierServiceProxy.getAllBiddingPass(this.filterText, this.primengTableHelper.getSorting(this.dataTable),
+      this.primengTableHelper.getMaxResultCount(this.paginator, event),
+      this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(result => {
+        this.primengTableHelper.totalRecordsCount = 20;
+        this.primengTableHelper.records = result.items;
+        this.primengTableHelper.hideLoadingIndicator();
+      });
   }
 
   init(): void {

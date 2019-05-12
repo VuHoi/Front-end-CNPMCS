@@ -6792,17 +6792,23 @@ export class SupplierServiceProxy {
     }
 
     /**
-     * @start (optional) 
-     * @numberItem (optional) 
+     * @name (optional) 
+     * @sorting (optional) 
+     * @maxResultCount (optional) 
+     * @skipCount (optional) 
      * @productId (optional) 
      * @return Success
      */
-    getSupplierByProduct(start: number | null | undefined, numberItem: number | null | undefined, productId: number | null | undefined): Observable<ListResultDtoOfSupplierDto> {
+    getSupplierByProduct(name: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined, productId: number | null | undefined): Observable<ListResultDtoOfSupplierDto> {
         let url_ = this.baseUrl + "/api/Supplier/GetSupplierByProduct?";
-        if (start !== undefined)
-            url_ += "start=" + encodeURIComponent("" + start) + "&"; 
-        if (numberItem !== undefined)
-            url_ += "numberItem=" + encodeURIComponent("" + numberItem) + "&"; 
+        if (name !== undefined)
+            url_ += "Name=" + encodeURIComponent("" + name) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
         if (productId !== undefined)
             url_ += "productId=" + encodeURIComponent("" + productId) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
@@ -6853,10 +6859,22 @@ export class SupplierServiceProxy {
     }
 
     /**
+     * @name (optional) 
+     * @sorting (optional) 
+     * @maxResultCount (optional) 
+     * @skipCount (optional) 
      * @return Success
      */
-    getAllBiddingPass(): Observable<ListResultDtoOfSupplierDto> {
-        let url_ = this.baseUrl + "/api/Supplier/GetAllBiddingPass";
+    getAllBiddingPass(name: string | null | undefined, sorting: string | null | undefined, maxResultCount: number | null | undefined, skipCount: number | null | undefined): Observable<ListResultDtoOfSupplierDto> {
+        let url_ = this.baseUrl + "/api/Supplier/GetAllBiddingPass?";
+        if (name !== undefined)
+            url_ += "Name=" + encodeURIComponent("" + name) + "&"; 
+        if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
+        if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
+        if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {

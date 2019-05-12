@@ -60,12 +60,11 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
         this.bidding.startDate = this.rangeDates ? moment(this.rangeDates[0]) : moment(new Date());
         this.bidding.endDate = this.rangeDates && this.rangeDates.length > 1 ? moment(this.rangeDates[1]) : moment(new Date());
         // this.bidding.status = 0;
-        console.log('ss');
-        // this._supplierServiceProxy.changeOwnerBiddingProduct(this.bidding).subscribe(item => {
-        //     this.close();
-        //     this.modalSave.emit(null);
-        //     console.log(item);
-        // }, err => console.log(err));
+        this._supplierServiceProxy.changeOwnerBiddingProduct(this.bidding).subscribe(item => {
+            this.close();
+            this.modalSave.emit(null);
+            console.log(item);
+        });
 
     }
     dropdownChange() {
@@ -80,7 +79,7 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
     }
 
     getSupplierByProduct() {
-        this._supplierServiceProxy.getSupplierByProduct(0, 1000, +this.bidding.productId).subscribe(suppliers => {
+        this._supplierServiceProxy.getSupplierByProduct('', '', 1000, 0, +this.bidding.productId).subscribe(suppliers => {
             this.suppliers = [];
             this.suppliers.push({ value: '', label: 'Select supplier' });
             suppliers.items.map(i => this.suppliers.push({ value: i.id, label: i.name }));
