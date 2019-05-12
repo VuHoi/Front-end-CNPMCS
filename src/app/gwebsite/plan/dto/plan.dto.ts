@@ -31,3 +31,13 @@ export enum ApprovalStatusEnum {
     AllStatus = 3
 }
 
+// create sub plan by model
+export class SubPlanDto {
+    id: number;
+    purchaseProducts: PurchaseProducts;
+    userId: number;
+    status: number;
+    comment: string;
+    departmentId: number;
+    raisedDate: string;
+}

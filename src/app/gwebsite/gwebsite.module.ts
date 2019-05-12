@@ -41,6 +41,8 @@ import { BiddingComponent } from './product/bidding/bidding.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ViewBidProfileComponent } from './bids/view-bid-profile/view-bid-profile.component';
+import { CreateOrEditSubPlanModalComponent } from './plan/sub-plan/create-or-edit-subplan-modal/create-or-edit-subplan-modal.component';
+
 
 @NgModule({
     imports: [
@@ -80,7 +82,7 @@ import { ViewBidProfileComponent } from './bids/view-bid-profile/view-bid-profil
         SubmissionComponent, CreateOrEditSubmissionModalComponent,
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
         ProductComponent, CreateOrEditProductModalComponent,
-        PlanComponent, CreateOrEditPlanModalComponent,
+        PlanComponent, CreateOrEditPlanModalComponent, CreateOrEditSubPlanModalComponent,
         SupplierComponent,
         CreateOrEditSupplierComponent,
         BiddingComponent,

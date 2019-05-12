@@ -8,6 +8,7 @@ import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { ApprovalStatusEnum } from '../dto/plan.dto';
+import { CreateOrEditSubPlanModalComponent } from './create-or-edit-subplan-modal/create-or-edit-subplan-modal.component';
 
 @Component({
   selector: 'app-sub-plan',
@@ -21,6 +22,7 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
    * @ViewChild là dùng get control và call thuộc tính, functions của control đó
    */
   @ViewChild('textsTable') textsTable: ElementRef;
+  @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditSubPlanModalComponent;
   @ViewChild('dataTable') dataTable: Table;
   @ViewChild('paginator') paginator: Paginator;
 
@@ -295,5 +297,22 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
 
   public cancelEditRow(row: any): void {
     row.isEdit = false;
+  }
+
+  //Refresh grid khi thực hiện create or edit thành công
+  refreshValueFromModal(): void {
+    if (this.createOrEditModal.subPlan.id) {
+      for (let i = 0; i < this.primengTableHelper.records.length; i++) {
+        if (this.primengTableHelper.records[i].id === this.createOrEditModal.subPlan.id) {
+          this.primengTableHelper.records[i] = this.createOrEditModal.subPlan;
+          return;
+        }
+      }
+    } else { this.reloadPage(); }
+  }
+
+  //hàm show view create Plan
+  createSubPlan() {
+    this.createOrEditModal.show();
   }
 }
