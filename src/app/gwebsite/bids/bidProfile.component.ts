@@ -9,6 +9,7 @@ import { Table } from 'primeng/components/table/table';
 import { CreateOrEditBidProfileModalComponent } from './create-or-edit-bidProfile-modal/create-or-edit-bidProfile-modal.component';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { SupplierServiceProxy } from '@shared/service-proxies/service-proxies';
+import { ViewBidProfileComponent } from './view-bid-profile/view-bid-profile.component';
 
 @Component({
     selector: 'app-bidProfile',
@@ -23,6 +24,7 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
      */
     @ViewChild('textsTable') textsTable: ElementRef;
     @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditBidProfileModalComponent;
+    @ViewChild('viewModal') viewModal: ViewBidProfileComponent;
     @ViewChild('dataTable') dataTable: Table;
     @ViewChild('paginator') paginator: Paginator;
 

@@ -40,6 +40,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { BiddingComponent } from './product/bidding/bidding.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { ViewBidProfileComponent } from './bids/view-bid-profile/view-bid-profile.component';
 
 @NgModule({
     imports: [
@@ -82,7 +83,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
         PlanComponent, CreateOrEditPlanModalComponent,
         SupplierComponent,
         CreateOrEditSupplierComponent,
-        BiddingComponent
+        BiddingComponent,
+        ViewBidProfileComponent
     ],
 
     providers: [

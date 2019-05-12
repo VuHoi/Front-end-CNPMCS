@@ -49,13 +49,14 @@ export class CreateOrEditBidProfileModalComponent extends AppComponentBase {
 
     constructor(injector: Injector, private _supplierServiceProxy: SupplierServiceProxy, private _productsServiceProxy: ProductsServiceProxy) {
         super(injector);
-        this.bidding.productId = 1;
+
     }
     getDataProduct() {
         this._productsServiceProxy.getProducts('', '', 1000, 0).subscribe(products => {
             this.selectItems = [];
             this.selectItems.push({ value: '', label: 'Select product' });
             products.items.map(i => this.selectItems.push({ value: i.id, label: i.name }));
+            this.getSupplierByProduct();
         });
     }
     getSupplierByProduct() {
@@ -67,15 +68,17 @@ export class CreateOrEditBidProfileModalComponent extends AppComponentBase {
     }
     dropdownChange() {
         this.getSupplierByProduct();
-        this.bidding.supplierId = 2;
-        console.log(this.bidding.productId);
     }
+
+
     show(bidProfile?: BiddingSaved | null | undefined): void {
         this.active = true;
         this.edit = bidProfile !== undefined;
-        this.bidding = this.edit ? bidProfile : this.bidding;
         this.modal.show();
         this.getDataProduct();
+        this.bidding = this.edit ? bidProfile : this.bidding;
+        this.rangeDates = [this.bidding.startDate.toDate(), this.bidding.endDate.toDate()];
+        console.log(this.bidding);
     }
     dropdownSupplierChange() {
         console.log(this.bidding.productId);
