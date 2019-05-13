@@ -11,8 +11,10 @@
         </span>
       </div>
       <div class="col-xs-6 text-right">
-        <button (click)="createSubPlan()" *ngIf="isGranted('Pages.Administration.MenuClient.Create')"
-          class="btn btn-primary"><i class="fa fa-plus"></i> {{l("CreateNewSubPlan")}}</button>
+        <button (click)="createSubPlan()" [disabled]="approvalStatus === approvalStatusEnum.Approved"
+          title="{{l(approvalStatus === approvalStatusEnum.Approved ? 'Disabled when plan was approved' : 'Create new subplan')}}"
+          *ngIf="isGranted('Pages.Administration.MenuClient.Create')" class="btn btn-primary"><i class="fa fa-plus"></i>
+          {{l("CreateNewSubPlan")}}</button>
       </div>
     </div>
   </div>
@@ -25,8 +27,9 @@
             <div class="row align-items-center m--margin-bottom-10">
               <div class="col-sm-12">
                 <div class="btn-approved float-left">
-                  <button (click)="approvedPlan()" type="button" [disabled]="approvalStatus === 1" class="right btn"
-                    [ngClass]="{'btn-success': approvalStatus === 1, 'btn-danger': approvalStatus === 2}"
+                  <button (click)="approvedPlan()" type="button"
+                    [disabled]="approvalStatus === approvalStatusEnum.Approved" class="right btn" [ngClass]="{'btn-success': approvalStatus === approvalStatusEnum.Approved, 
+                                'btn-danger': approvalStatus === approvalStatusEnum.AwaitingApproval}"
                     title="{{l('Approved Plan Include All SubPlan')}}">{{l("Approved")}}</button>
                 </div>
               </div>

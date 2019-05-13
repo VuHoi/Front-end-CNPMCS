@@ -313,6 +313,6 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
 
   //hàm show view create Plan
   createSubPlan() {
-    this.createOrEditModal.show();
+    this.createOrEditModal.show(this.planId);
   }
 }

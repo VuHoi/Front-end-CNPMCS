@@ -44,8 +44,43 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase {
 
     //because 'create' will create new product for this plan
     //=> get all productCodes not assigned for this plan
-    public productCodeList = ['F001', 'F002', 'F003', 'F004', 'G001', 'G002', 'G003', 'G004'];
-    public productCode = this.productCodeList[0];
+    //results include: productCode, productName, CalUnit
+    public productsNotAssignThisPlan = [
+        {
+            productCode: 'F001',
+            productName: 'Computer Screen',
+            calUnit: 'Int',
+            unitPrice: 20000
+        },
+        {
+            productCode: 'F002',
+            productName: 'Computer CPU',
+            calUnit: 'Int',
+            unitPrice: 50000
+        },
+        {
+            productCode: 'G001',
+            productName: 'Fridge',
+            calUnit: 'Int',
+            unitPrice: 30000
+        },
+        {
+            productCode: 'G002',
+            productName: 'Water Purifier',
+            calUnit: 'Int',
+            unitPrice: 40000
+        }
+    ];
+
+    public productCodeList = [];
+    public productNameList = [];
+    public ProductCalUnitList = [];
+    public productUnitPriceList = [];
+
+    public productCode = '';
+    public productName = '';
+    public productCalUnit = '';
+    public productUnitPrice = 0;
 
     constructor(
         injector: Injector,
@@ -54,37 +89,42 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase {
         super(injector);
     }
 
-    show(subPlanId?: number | null | undefined): void {
-        this._apiService.get('api/Products/GetProducts').subscribe(result => {
-            this.products = result.items;
-            this.modal.show();
-            setTimeout(() => {
-                $(this.subPlanCombobox.nativeElement).selectpicker('refresh');
-            }, 0);
-        });
+    show(planId: number): void {
 
-        if (subPlanId) {
-            this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', subPlanId).subscribe(result => {
-                // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-                this.subPlan = result.menuClient;
-                this.modal.show();
-                setTimeout(() => {
-                    $(this.subPlanCombobox.nativeElement).selectpicker('refresh');
-                }, 0);
+        // this._apiService.get('api/Products/GetProducts').subscribe(result => {
+        //     this.products = result.items;
+        //     this.modal.show();
+        //     setTimeout(() => {
+        //         $(this.subPlanCombobox.nativeElement).selectpicker('refresh');
+        //     }, 0);
+        // });
+
+        // get all productCodes not assigned for this plan
+        // by planId
+        if (planId) {
+            // this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', planId).subscribe(result => {
+            //     this.productsNotAssignThisPlan = result.products;
+            //     this.modal.show();
+            //     setTimeout(() => {
+            //         $(this.subPlanCombobox.nativeElement).selectpicker('refresh');
+            //     }, 0);
+            // });
+
+            this.productsNotAssignThisPlan.forEach((item, i) => {
+                this.productCodeList.push(item.productCode);
+                this.productNameList.push(item.productName);
+                this.ProductCalUnitList.push(item.calUnit);
+                this.productUnitPriceList.push(item.unitPrice);
             });
 
-            this.isEdit = true;
-        } else {
-            this.subPlan.id = 0;
-            this.subPlan.comment = '';
-            this.subPlan.departmentId = 0;
-            this.subPlan.status = 1;
-            this.purchaseProducts.quantity = 0;
-            this.purchaseProducts.productId = 0;
-            this.subPlan.purchaseProducts = this.purchaseProducts;
-        }
+            this.productCode = this.productCodeList[0];
+            this.productName = this.productNameList[0];
+            this.productCalUnit = this.ProductCalUnitList[0];
+            this.productUnitPrice = this.productUnitPriceList[0];
 
-        this.active = true;
+            this.modal.show();
+            this.active = true;
+        }
     }
 
     save(): void {
