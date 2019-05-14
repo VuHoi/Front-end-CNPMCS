@@ -101,10 +101,10 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase implemen
             //     }, 0);
             // });
 
+            this.saving = false;
             this.productCode = this.productsNotAssignThisPlan[0].productCode;
             this.productInfoList = [];
             this.quantity = 0;
-            this.saving = false;
 
             this.productsNotAssignThisPlan.forEach((item, i) => {
                 this.productInfoList.push(new ProductSubPlanDto(item.productCode,
