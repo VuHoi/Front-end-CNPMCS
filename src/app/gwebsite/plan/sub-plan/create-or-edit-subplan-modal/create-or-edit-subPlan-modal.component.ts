@@ -27,7 +27,6 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase implemen
 
     isEdit = false;
 
-    subPlan: SubPlanDto = new SubPlanDto();
     purchaseProducts: PurchaseProducts = new PurchaseProducts();
     products: ComboboxItemDto[] = [];
 
@@ -65,6 +64,8 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase implemen
     public productInfoList: ProductSubPlanDto[] = [];
     public productCode = '';
     public quantity = 0;
+    public planId = 0;
+    public newProduct: SubPlanDto;
 
     constructor(
         injector: Injector,
@@ -93,6 +94,7 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase implemen
         // get all productCodes not assigned for this plan
         // by planId
         if (planId) {
+            this.planId = planId;
             // this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', planId).subscribe(result => {
             //     this.productsNotAssignThisPlan = result.products;
             //     this.modal.show();
@@ -117,20 +119,25 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase implemen
     }
 
     save(): void {
-        let input = this.subPlan;
         this.saving = true;
-        // if (input.planId) {
+
+        this.newProduct = new SubPlanDto(this.planId, this.productCode, this.quantity);
+
+        //call api create, send newProduct
+        // if (this.planId) {
         //     this.updateSubPlan();
         // } else {
         //     this.insertSubPlan();
         // }
+
+        console.log(this.newProduct.planId + '--' + this.newProduct.productCode + '--' + this.newProduct.quantity);
         console.log(this.productCode + '--' + this.quantity);
 
         this.close();
     }
 
     insertSubPlan() {
-        this._apiService.post('api/Purchase/CreatePurchase', this.subPlan)
+        this._apiService.post('api/Purchase/CreatePurchase', this.newProduct)
             .pipe(finalize(() => this.saving = false))
             .subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));
@@ -140,7 +147,7 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase implemen
     }
 
     updateSubPlan() {
-        this._apiService.put('api/MenuClient/UpdateMenuClient', this.subPlan)
+        this._apiService.put('api/MenuClient/UpdateMenuClient', this.newProduct)
             .pipe(finalize(() => this.saving = false))
             .subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));

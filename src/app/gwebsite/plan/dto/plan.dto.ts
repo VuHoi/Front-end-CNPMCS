@@ -37,6 +37,12 @@ export class SubPlanDto {
     productCode: string;
     quantity: number;
     // month schedule: time now
+
+    constructor(planId: number, productCode: string, quantity: number) {
+        this.planId = planId;
+        this.productCode = productCode;
+        this.quantity = quantity;
+    }
 }
 
 export class ProductSubPlanDto {
