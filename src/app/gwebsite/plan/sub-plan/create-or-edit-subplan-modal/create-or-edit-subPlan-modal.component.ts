@@ -63,7 +63,7 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase implemen
     ];
 
     public productInfoList: ProductSubPlanDto[] = [];
-    public productCode = 0;
+    public productCode = '';
     public quantity = 0;
 
     constructor(
@@ -77,9 +77,9 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase implemen
     }
 
 
-    onChangeProductCode(): void {
-        console.log(this.productCode + '--' + this.quantity);
-    }
+    // onChangeProductCode(): void {
+    //     console.log(this.productCode + '--' + this.quantity);
+    // }
 
     show(planId: number): void {
         // this._apiService.get('api/Products/GetProducts').subscribe(result => {
@@ -101,6 +101,7 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase implemen
             //     }, 0);
             // });
 
+            this.productCode = this.productsNotAssignThisPlan[0].productCode;
             this.productInfoList = [];
             this.quantity = 0;
             this.saving = false;
@@ -123,6 +124,8 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase implemen
         // } else {
         //     this.insertSubPlan();
         // }
+        console.log(this.productCode + '--' + this.quantity);
+
         this.close();
     }
 
