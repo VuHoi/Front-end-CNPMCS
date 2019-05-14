@@ -1,17 +1,17 @@
-import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ElementRef, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
 import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { SubPlanDto, PurchaseProducts, StatusEnum } from '../../dto/plan.dto';
+import { SubPlanDto, ProductSubPlanDto, PurchaseProducts, StatusEnum } from '../../dto/plan.dto';
 
 @Component({
     selector: 'createOrEditSubPlanModal',
     templateUrl: './create-or-edit-subPlan-modal.component.html',
     styleUrls: ['./create-or-edit-subPlan-modal.component.css']
 })
-export class CreateOrEditSubPlanModalComponent extends AppComponentBase {
+export class CreateOrEditSubPlanModalComponent extends AppComponentBase implements OnInit {
 
     @ViewChild('createOrEditModal') modal: ModalDirective;
     @ViewChild('subPlanCombobox') subPlanCombobox: ElementRef;
@@ -31,16 +31,6 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase {
     purchaseProducts: PurchaseProducts = new PurchaseProducts();
     products: ComboboxItemDto[] = [];
 
-    public statusData = [
-        {
-            id: StatusEnum.Draft,
-            name: 'Draft'
-        },
-        {
-            id: StatusEnum.Official,
-            name: 'Official '
-        }
-    ];
 
     //because 'create' will create new product for this plan
     //=> get all productCodes not assigned for this plan
@@ -55,32 +45,26 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase {
         {
             productCode: 'F002',
             productName: 'Computer CPU',
-            calUnit: 'Int',
+            calUnit: 'Char',
             unitPrice: 50000
         },
         {
             productCode: 'G001',
             productName: 'Fridge',
-            calUnit: 'Int',
+            calUnit: 'Float',
             unitPrice: 30000
         },
         {
             productCode: 'G002',
             productName: 'Water Purifier',
-            calUnit: 'Int',
+            calUnit: 'Bool',
             unitPrice: 40000
         }
     ];
 
-    public productCodeList = [];
-    public productNameList = [];
-    public ProductCalUnitList = [];
-    public productUnitPriceList = [];
-
-    public productCode = '';
-    public productName = '';
-    public productCalUnit = '';
-    public productUnitPrice = 0;
+    public productInfoList: ProductSubPlanDto[] = [];
+    public productCode = 0;
+    public quantity = 0;
 
     constructor(
         injector: Injector,
@@ -89,8 +73,15 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase {
         super(injector);
     }
 
-    show(planId: number): void {
+    ngOnInit(): void {
+    }
 
+
+    onChangeProductCode(): void {
+        console.log(this.productCode + '--' + this.quantity);
+    }
+
+    show(planId: number): void {
         // this._apiService.get('api/Products/GetProducts').subscribe(result => {
         //     this.products = result.items;
         //     this.modal.show();
@@ -110,17 +101,14 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase {
             //     }, 0);
             // });
 
-            this.productsNotAssignThisPlan.forEach((item, i) => {
-                this.productCodeList.push(item.productCode);
-                this.productNameList.push(item.productName);
-                this.ProductCalUnitList.push(item.calUnit);
-                this.productUnitPriceList.push(item.unitPrice);
-            });
+            this.productInfoList = [];
+            this.quantity = 0;
+            this.saving = false;
 
-            this.productCode = this.productCodeList[0];
-            this.productName = this.productNameList[0];
-            this.productCalUnit = this.ProductCalUnitList[0];
-            this.productUnitPrice = this.productUnitPriceList[0];
+            this.productsNotAssignThisPlan.forEach((item, i) => {
+                this.productInfoList.push(new ProductSubPlanDto(item.productCode,
+                    `${item.productCode} - ${item.productName} - VND${item.unitPrice}/${item.calUnit}`));
+            });
 
             this.modal.show();
             this.active = true;
@@ -130,15 +118,15 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase {
     save(): void {
         let input = this.subPlan;
         this.saving = true;
-        if (input.id) {
-            this.updateSubPlan();
-        } else {
-            this.insertSubPlan();
-        }
+        // if (input.planId) {
+        //     this.updateSubPlan();
+        // } else {
+        //     this.insertSubPlan();
+        // }
+        this.close();
     }
 
     insertSubPlan() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
         this._apiService.post('api/Purchase/CreatePurchase', this.subPlan)
             .pipe(finalize(() => this.saving = false))
             .subscribe(() => {
@@ -149,7 +137,6 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase {
     }
 
     updateSubPlan() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
         this._apiService.put('api/MenuClient/UpdateMenuClient', this.subPlan)
             .pipe(finalize(() => this.saving = false))
             .subscribe(() => {
@@ -162,7 +149,5 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase {
     close(): void {
         this.active = false;
         this.modal.hide();
-
-        console.log(this.productCode);
     }
 }

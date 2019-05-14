@@ -33,11 +33,18 @@ export enum ApprovalStatusEnum {
 
 // create sub plan by model
 export class SubPlanDto {
-    id: number;
-    purchaseProducts: PurchaseProducts;
-    userId: number;
-    status: number;
-    comment: string;
-    departmentId: number;
-    raisedDate: string;
+    planId: number;
+    productCode: string;
+    quantity: number;
+    // month schedule: time now
+}
+
+export class ProductSubPlanDto {
+    productCode: string;
+    productInfo: string;
+
+    constructor(productCode: string, productInfo: string) {
+        this.productCode = productCode;
+        this.productInfo = productInfo;
+    }
 }

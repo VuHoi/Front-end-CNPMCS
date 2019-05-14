@@ -301,9 +301,9 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
 
   //Refresh grid khi thực hiện create or edit thành công
   refreshValueFromModal(): void {
-    if (this.createOrEditModal.subPlan.id) {
+    if (this.createOrEditModal.subPlan.planId) {
       for (let i = 0; i < this.primengTableHelper.records.length; i++) {
-        if (this.primengTableHelper.records[i].id === this.createOrEditModal.subPlan.id) {
+        if (this.primengTableHelper.records[i].id === this.createOrEditModal.subPlan.planId) {
           this.primengTableHelper.records[i] = this.createOrEditModal.subPlan;
           return;
         }
