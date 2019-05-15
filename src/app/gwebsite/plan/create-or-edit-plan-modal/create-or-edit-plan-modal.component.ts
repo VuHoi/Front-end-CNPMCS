@@ -4,7 +4,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
 import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { PlanDto, UserInfo, PurchaseProducts, StatusEnum } from '../dto/plan.dto';
+import { PlanDto, NewPlanProducts, ProductSubPlanDto, UserInfo, PurchaseProducts, StatusEnum } from '../dto/plan.dto';
 
 @Component({
     selector: 'createOrEditPlanModal',
@@ -48,6 +48,41 @@ export class CreateOrEditPlanModalComponent extends AppComponentBase {
         departmentCode: 'IT'
     };
 
+    //get all product
+    public productsNotAssignThisPlan = [
+        {
+            productCode: 'F001',
+            productName: 'Computer Screen',
+            calUnit: 'Int',
+            unitPrice: 20000
+        },
+        {
+            productCode: 'F002',
+            productName: 'Computer CPU',
+            calUnit: 'Char',
+            unitPrice: 50000
+        },
+        {
+            productCode: 'G001',
+            productName: 'Fridge',
+            calUnit: 'Float',
+            unitPrice: 30000
+        },
+        {
+            productCode: 'G002',
+            productName: 'Water Purifier',
+            calUnit: 'Bool',
+            unitPrice: 40000
+        }
+    ];
+
+    public productInfoList: ProductSubPlanDto[] = [];
+    public quantity = 0;
+    public newPlanProductList: NewPlanProducts[] = [];
+    public isAdd = false;
+    public emptyText = '';
+    public productCode = '';
+
     constructor(
         injector: Injector,
         private _apiService: WebApiServiceProxy
@@ -57,7 +92,7 @@ export class CreateOrEditPlanModalComponent extends AppComponentBase {
 
     show(): void {
         // this._apiService.get('api/Products/GetProducts').subscribe(result => {
-        //     this.products = result.items;
+        //     this.productsNotAssignThisPlan = result.products;
         //     this.modal.show();
         //     setTimeout(() => {
         //             $(this.planCombobox.nativeElement).selectpicker('refresh');
@@ -76,23 +111,66 @@ export class CreateOrEditPlanModalComponent extends AppComponentBase {
         this.UserInfo = this.FakeDataUser;
         this.unitDepartment = `${this.UserInfo.unitCode} - ${this.UserInfo.departmentCode}`;
 
-        console.log(this.unitDepartment);
+        //get all product
+        this.newPlanProductList = [];
+        this.productInfoList = [];
+        this.productCode = '';
+        this.quantity = 0;
+        this.saving = false;
+        this.isAdd = false;
+
+        this.productsNotAssignThisPlan.forEach((item, i) => {
+            this.productInfoList.push(new ProductSubPlanDto(item.productCode,
+                `${item.productCode} - ${item.productName} - VND${item.unitPrice}/${item.calUnit}`));
+        });
+
         this.modal.show();
         this.active = true;
+    }
+
+    addProduct(): void {
+        if (this.isAdd && this.productCode && this.productCode !== '' && this.quantity > 0) {
+            this.newPlanProductList.push(new NewPlanProducts(this.productCode, this.quantity));
+            this.productInfoList = this.productInfoList.filter(x => x.productCode !== this.productCode);
+            this.isAdd = false;
+        }
+    }
+    activeAddProduct(): void {
+        console.log(this.quantity);
+        if (!this.isAdd) {
+            this.quantity = 0;
+            this.productCode = '';
+            this.isAdd = true;
+        }
+    }
+
+    cancelAdd(): void {
+        this.isAdd = false;
     }
 
     save(): void {
         let input = this.plan;
         this.saving = true;
-        if (input.id) {
-            this.updatePlan();
-        } else {
-            this.insertPlan();
+
+        // post this.newPlanProductList;
+        // BE sẽ lưu ở cả table Plan và SubPlan
+
+        if (this.newPlanProductList.length && this.newPlanProductList.length > 0) {
+            this.newPlanProductList.forEach((item, i) => {
+                console.log(item.productCode + '--' + item.quantity);
+            });
         }
+
+        // if (input.id) {
+        //     this.updatePlan();
+        // } else {
+        //     this.insertPlan();
+        // }
+
+        this.close();
     }
 
     insertPlan() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
         this._apiService.post('api/Purchase/CreatePurchase', this.plan)
             .pipe(finalize(() => this.saving = false))
             .subscribe(() => {
@@ -103,7 +181,6 @@ export class CreateOrEditPlanModalComponent extends AppComponentBase {
     }
 
     updatePlan() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
         this._apiService.put('api/MenuClient/UpdateMenuClient', this.plan)
             .pipe(finalize(() => this.saving = false))
             .subscribe(() => {

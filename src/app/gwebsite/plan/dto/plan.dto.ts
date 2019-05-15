@@ -64,3 +64,13 @@ export class UserInfo {
         this.departmentCode = departmentCode;
     }
 }
+
+export class NewPlanProducts {
+    productCode: string;
+    quantity: number;
+
+    constructor(productCode: string, quantity: number) {
+        this.productCode = productCode;
+        this.quantity = quantity;
+    }
+}
