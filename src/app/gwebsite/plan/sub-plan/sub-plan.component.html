@@ -30,7 +30,7 @@
                   <button (click)="approvedPlan()" type="button"
                     [disabled]="approvalStatus === approvalStatusEnum.Approved" class="right btn" [ngClass]="{'btn-success': approvalStatus === approvalStatusEnum.Approved, 
                                 'btn-danger': approvalStatus === approvalStatusEnum.AwaitingApproval}"
-                    title="{{l('Approved Plan Include All SubPlan')}}">{{l("Approved")}}</button>
+                    title="{{l(approvalStatus === approvalStatusEnum.Approved ? 'Disabled when plan was approved' : 'Approved Plan Include All SubPlan')}}">{{l("Approved")}}</button>
                 </div>
               </div>
             </div>
