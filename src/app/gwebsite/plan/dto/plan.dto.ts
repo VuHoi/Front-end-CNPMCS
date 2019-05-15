@@ -54,3 +54,13 @@ export class ProductSubPlanDto {
         this.productInfo = productInfo;
     }
 }
+
+export class UserInfo {
+    unitCode: string;
+    departmentCode: string;
+
+    constructor(unitCode: string, departmentCode: string) {
+        this.unitCode = unitCode;
+        this.departmentCode = departmentCode;
+    }
+}

@@ -4,7 +4,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
 import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { PlanDto, PurchaseProducts, StatusEnum } from '../dto/plan.dto';
+import { PlanDto, UserInfo, PurchaseProducts, StatusEnum } from '../dto/plan.dto';
 
 @Component({
     selector: 'createOrEditPlanModal',
@@ -25,7 +25,6 @@ export class CreateOrEditPlanModalComponent extends AppComponentBase {
     active = false;
     saving = false;
 
-    isEdit = false;
 
     plan: PlanDto = new PlanDto();
     purchaseProducts: PurchaseProducts = new PurchaseProducts();
@@ -33,14 +32,21 @@ export class CreateOrEditPlanModalComponent extends AppComponentBase {
 
     public statusData = [
         {
-          id: StatusEnum.Draft,
-          name: 'Draft'
+            id: StatusEnum.Draft,
+            name: 'Draft'
         },
         {
-          id: StatusEnum.Official,
-          name: 'Official '
+            id: StatusEnum.Official,
+            name: 'Official '
         }
-      ];
+    ];
+
+    public unitDepartment = '';
+    public UserInfo: UserInfo;
+    public FakeDataUser = {
+        unitCode: 'HN',
+        departmentCode: 'IT'
+    };
 
     constructor(
         injector: Injector,
@@ -49,36 +55,29 @@ export class CreateOrEditPlanModalComponent extends AppComponentBase {
         super(injector);
     }
 
-    show(planId?: number | null | undefined): void {
-        this._apiService.get('api/Products/GetProducts').subscribe(result => {
-            this.products = result.items;
-            this.modal.show();
-            setTimeout(() => {
-                    $(this.planCombobox.nativeElement).selectpicker('refresh');
-            }, 0);
-        });
+    show(): void {
+        // this._apiService.get('api/Products/GetProducts').subscribe(result => {
+        //     this.products = result.items;
+        //     this.modal.show();
+        //     setTimeout(() => {
+        //             $(this.planCombobox.nativeElement).selectpicker('refresh');
+        //     }, 0);
+        // });
 
-        if (planId) {
-            this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', planId).subscribe(result => {
-                // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-                this.plan = result.menuClient;
-                this.modal.show();
-                setTimeout(() => {
-                        $(this.planCombobox.nativeElement).selectpicker('refresh');
-                }, 0);
-            });
+        // this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', planId).subscribe(result => {
+        //     this.plan = result.menuClient;
+        //     this.modal.show();
+        //     setTimeout(() => {
+        //             $(this.planCombobox.nativeElement).selectpicker('refresh');
+        //     }, 0);
+        // });
 
-            this.isEdit = true;
-        } else {
-            this.plan.id = 0;
-            this.plan.comment = '';
-            this.plan.departmentId = 0;
-            this.plan.status = 1;
-            this.purchaseProducts.quantity = 0;
-            this.purchaseProducts.productId = 0;
-            this.plan.purchaseProducts = this.purchaseProducts;
-        }
+        //get unit code, department code by user id
+        this.UserInfo = this.FakeDataUser;
+        this.unitDepartment = `${this.UserInfo.unitCode} - ${this.UserInfo.departmentCode}`;
 
+        console.log(this.unitDepartment);
+        this.modal.show();
         this.active = true;
     }
 

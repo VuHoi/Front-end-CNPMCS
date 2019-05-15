@@ -293,6 +293,9 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
     row.quantity = row.quantityEdit;
     //done save
     row.isEdit = false;
+
+    // Chú ý: mỗi lần save change một subplan thành công, thì dưới BE tự tăng CountChanged++ cho Plan lớn (bao gồm các subplan)
+    // theo planId.
   }
 
   public cancelEditRow(row: any): void {
