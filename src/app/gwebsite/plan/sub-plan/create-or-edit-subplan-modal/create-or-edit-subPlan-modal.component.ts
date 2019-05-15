@@ -130,8 +130,10 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase implemen
         //     this.insertSubPlan();
         // }
 
-        console.log(this.newProduct.planId + '--' + this.newProduct.productCode + '--' + this.newProduct.quantity);
-        console.log(this.productCode + '--' + this.quantity);
+        //post this.newProduct
+
+        // console.log(this.newProduct.planId + '--' + this.newProduct.productCode + '--' + this.newProduct.quantity);
+        // console.log(this.productCode + '--' + this.quantity);
 
         this.close();
     }
