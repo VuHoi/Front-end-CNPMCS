@@ -4,7 +4,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
 import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { PlanDto, NewPlanProducts, ProductSubPlanDto, UserInfo, PurchaseProducts, StatusEnum } from '../dto/plan.dto';
+import { PlanDto, NewPlanProducts, NewProductAddList, ProductSubPlanDto, UserInfo, PurchaseProducts, StatusEnum } from '../dto/plan.dto';
 
 @Component({
     selector: 'createOrEditPlanModal',
@@ -79,9 +79,11 @@ export class CreateOrEditPlanModalComponent extends AppComponentBase {
     public productInfoList: ProductSubPlanDto[] = [];
     public quantity = 0;
     public newPlanProductList: NewPlanProducts[] = [];
+    public newProductTableList: NewProductAddList[] = [];
     public isAdd = false;
     public emptyText = '';
     public productCode = '';
+    public isExistAdd = false;
 
     constructor(
         injector: Injector,
@@ -118,6 +120,7 @@ export class CreateOrEditPlanModalComponent extends AppComponentBase {
         this.quantity = 0;
         this.saving = false;
         this.isAdd = false;
+        this.newProductTableList = [];
 
         this.productsNotAssignThisPlan.forEach((item, i) => {
             this.productInfoList.push(new ProductSubPlanDto(item.productCode,
@@ -130,13 +133,29 @@ export class CreateOrEditPlanModalComponent extends AppComponentBase {
 
     addProduct(): void {
         if (this.isAdd && this.productCode && this.productCode !== '' && this.quantity > 0) {
-            this.newPlanProductList.push(new NewPlanProducts(this.productCode, this.quantity));
+            this.newProductTableList.push(new NewProductAddList(this.productCode, this.quantity, false));
             this.productInfoList = this.productInfoList.filter(x => x.productCode !== this.productCode);
             this.isAdd = false;
+            //newPlanProductList exist >= 1item
+            if (!this.isExistAdd) {
+                this.isExistAdd = true;
+            }
         }
     }
+
+    editQuantity(row: NewProductAddList): void {
+        row.isEdit = true;
+    }
+
+    saveEditQuantity(row: NewProductAddList): void {
+        row.isEdit = false;
+    }
+
+    removeProduct(i: number): void {
+        this.newProductTableList.splice(i, 1);
+    }
+
     activeAddProduct(): void {
-        console.log(this.quantity);
         if (!this.isAdd) {
             this.quantity = 0;
             this.productCode = '';
@@ -152,12 +171,18 @@ export class CreateOrEditPlanModalComponent extends AppComponentBase {
         let input = this.plan;
         this.saving = true;
 
+        //post xuống với url theo userId và model là listproduct
+
         // post this.newPlanProductList;
         // BE sẽ lưu ở cả table Plan và SubPlan
+        this.newPlanProductList = [];
+        this.newProductTableList.forEach((item, i) => {
+            this.newPlanProductList.push(new NewPlanProducts(item.productCode, item.quantity));
+        });
 
         if (this.newPlanProductList.length && this.newPlanProductList.length > 0) {
             this.newPlanProductList.forEach((item, i) => {
-                console.log(item.productCode + '--' + item.quantity);
+                console.log(item.productCode + '---' + item.quantity);
             });
         }
 

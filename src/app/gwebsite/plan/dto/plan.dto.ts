@@ -74,3 +74,14 @@ export class NewPlanProducts {
         this.quantity = quantity;
     }
 }
+export class NewProductAddList {
+    productCode: string;
+    quantity: number;
+    isEdit: boolean;
+
+    constructor(productCode: string, quantity: number, isEdit: boolean) {
+        this.productCode = productCode;
+        this.quantity = quantity;
+        this.isEdit = isEdit;
+    }
+}
