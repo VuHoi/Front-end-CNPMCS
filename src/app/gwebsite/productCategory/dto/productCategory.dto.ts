@@ -18,3 +18,9 @@ export class GetProductCategoryOutput {
     productCategory: ProductCategoryDto;
     productCategorys: ComboboxItemDto[];
 }
+
+export enum StatusEnum {
+    Open = 1,
+    Close = 2,
+    All = 3
+}

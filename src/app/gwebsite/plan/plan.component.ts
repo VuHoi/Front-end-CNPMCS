@@ -54,6 +54,7 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
 
     public DepartmentCodeList = ['All Departments', 'IT', 'HR', 'Acco', 'Mark', 'Sale', 'PR'];
     public deparmentCode = this.DepartmentCodeList[0];
+    public planIdFilter = 0;
 
     public datas = [
         {
@@ -240,7 +241,10 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
     public approvalPlan(planId: number, $event: Event, index: number): void {
         $event.stopPropagation();
         this.datas[index].status = ApprovalStatusEnum.Approved;
+
+        //call api approved cho planId này.
     }
+
     public gotoPlanDetail(planId: number, $event: Event): void {
         console.log('godetail');
         //goto detail page by planId: http://localhost:4200/app/gwebsite/plan/11

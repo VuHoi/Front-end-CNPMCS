@@ -30,8 +30,8 @@
                                         <span class="float-right">Plan Id:</span>
                                     </div>
                                     <div class="col-8 col-sm-8 col-lg-8">
-                                        <input type="number" name="planId" [placeholder]="'Plan Id'"
-                                            class="form-control">
+                                        <input type="number" name="planId" min="0" [(ngModel)]="planIdFilter"
+                                            [placeholder]="'Plan Id'" class="form-control">
                                     </div>
                                 </div>
                                 <div class="row align-items-center m-b-5">
