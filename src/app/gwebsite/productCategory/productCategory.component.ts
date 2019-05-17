@@ -56,60 +56,70 @@ export class ProductCategoryComponent extends AppComponentBase implements AfterV
             id: 1,
             code: 'SA001',
             name: 'Stationery',
+            note: 'Electronic products such as computers',
             status: 1
         },
         {
             id: 2,
             code: 'CE002',
             name: 'Electronice Device',
+            note: 'Electronic products such as computers',
             status: 1
         },
         {
             id: 3,
             code: 'BM003',
             name: 'Building Materials',
+            note: 'Electronic products such as computers',
             status: 2
         },
         {
             id: 4,
             code: 'MA004',
             name: 'Mobile',
+            note: 'Electronic products such as computers',
             status: 1
         },
         {
             id: 5,
             code: 'WA005',
             name: 'Wooden',
+            note: 'Electronic products such as computers',
             status: 2
         },
         {
             id: 6,
             code: 'FA006',
             name: 'Food And Drink',
+            note: 'Electronic products such as computers',
             status: 1
         },
         {
             id: 7,
             code: 'VE007',
             name: 'Vehicle',
+            note: 'Electronic products such as computers',
             status: 1
         },
         {
             id: 8,
             code: 'CS008',
             name: 'Cleaning Stuff',
+            note: 'Electronic products such as computers',
             status: 2
         },
         {
             id: 9,
             code: 'TO009',
             name: 'Tool',
+            note: 'Electronic products such as computers',
             status: 2
         },
         {
             id: 10,
             code: 'CS010',
             name: 'Costume',
+            note: 'Electronic products such as computers',
             status: 1
         }
     ];

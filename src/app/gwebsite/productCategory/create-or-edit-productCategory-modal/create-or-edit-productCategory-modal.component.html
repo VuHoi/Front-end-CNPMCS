@@ -26,6 +26,11 @@
                         <!-- <validation-messages [formCtrl]="nameInput">Name is required!</validation-messages> -->
                     </div>
                     <div class="form-group">
+                        <label>{{l("Comment - Note")}} </label>
+                        <input class="form-control" type="text" name="note" [(ngModel)]="pcNote"
+                            [placeholder]="'Enter Product Category Note'">
+                    </div>
+                    <div class="form-group">
                         <label>{{l("Active Product Category Now")}} </label>
                         <input class="form-control largerCheckbox" type="checkbox" name="status"
                             [(ngModel)]="isCheckStatus" title="Active now">

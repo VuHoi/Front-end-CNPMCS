@@ -29,10 +29,12 @@ export class NewPCDto {
     code: string;
     name: string;
     status: number;
+    note: string;
 
-    constructor(code: string, name: string, status: number) {
+    constructor(code: string, name: string, status: number, note: string) {
         this.code = code;
         this.name = name;
         this.status = status;
+        this.note = note;
     }
 }

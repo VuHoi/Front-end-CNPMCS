@@ -18,3 +18,24 @@ export class GetSupplierCategoryOutput {
     supplierCategory: SupplierCategoryDto;
     supplierCategorys: ComboboxItemDto[];
 }
+
+export enum StatusEnum {
+    Open = 1,
+    Close = 2,
+    All = 3
+}
+
+export class NewSupDto {
+    code: string;
+    name: string;
+    status: number;
+    note: string;
+
+    constructor(code: string, name: string, status: number, note: string) {
+        this.code = code;
+        this.name = name;
+        this.status = status;
+        this.note = note;
+    }
+}
+

@@ -94,6 +94,10 @@
                                         {{l('Name')}}
                                         <p-sortIcon field="name"></p-sortIcon>
                                     </th>
+                                    <th pSortableColumn="note">
+                                        {{l('Description')}}
+                                        <p-sortIcon field="note"></p-sortIcon>
+                                    </th>
                                     <th pSortableColumn="status">
                                         {{l('Status')}}
                                         <p-sortIcon field="status"></p-sortIcon>
@@ -105,35 +109,43 @@
                                 <tr class="table-row" (click)="gotoPlanDetail(record.planId, $event)">
                                     <td>
                                         <span class="ui-column-title">{{l('Number')}}</span>
-                                        <span title="{{record.ordinalNumber}}">{{truncateString(index + 1)}}</span>
+                                        <span>{{truncateString(index + 1)}}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">{{l('Id')}}</span>
-                                        <span title="{{record.planId}}">{{truncateString(record.id)}}</span>
+                                        <span title="{{record.id}}">{{truncateString(record.id)}}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">{{l('Code')}}</span>
-                                        <span title="{{record.effectiveDate}}">{{ record.code }}</span>
+                                        <span title="{{record.code}}">{{ record.code }}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">{{l('Name')}}</span>
-                                        <span title="{{record.totalPrice}}">{{ record.name }}</span>
+                                        <span title="{{record.name}}">{{ record.name }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Note')}}</span>
+                                        <span title="{{record.note}}">{{ record.note }}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">{{l('Status')}}</span>
                                         <span
                                             title="{{record.status}}">{{ record.status === statusEnum.Close ? 'Close' : 'Open' }}</span>
                                     </td>
-                                    <td *ngIf="isRoleActionPC">
-                                        <button class="btn"
-                                            [ngClass]="{'btn-success': record.status === statusEnum.Close, 'btn-warning': record.status === statusEnum.Open}"
-                                            (click)="actionPCItem(record.id, record)"
-                                            title="{{l(record.status === statusEnum.Close ? 'Open this product catalog' : 'Close this')}}">
-                                            {{record.status === statusEnum.Close ? 'Open' : 'Close'}}
-                                        </button>
-                                        <button class="btn btn-danger" type="button"
-                                            (click)="removePcItem(record.id, record, index)"
-                                            title="Delete this">Remove</button>
+                                    <td *ngIf="isRoleActionPC" class="row m-l-30">
+                                        <div class="col-5 col-sm-5">
+                                            <button class="btn"
+                                                [ngClass]="{'btn-success': record.status === statusEnum.Close, 'btn-warning': record.status === statusEnum.Open}"
+                                                (click)="actionPCItem(record.id, record)"
+                                                title="{{l(record.status === statusEnum.Close ? 'Open this product catalog' : 'Close this')}}">
+                                                {{record.status === statusEnum.Close ? 'Open' : 'Close'}}
+                                            </button>
+                                        </div>
+                                        <div class="col-7 col-sm-7">
+                                            <button class="btn btn-danger" type="button"
+                                                (click)="removePcItem(record.id, record, index)"
+                                                title="Delete this">Remove</button>
+                                        </div>
                                     </td>
                                 </tr>
                             </ng-template>

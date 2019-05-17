@@ -28,6 +28,7 @@ export class CreateOrEditProductCategoryModalComponent extends AppComponentBase 
     public newProductCategory: NewPCDto;
     public pcCode = '';
     public pcName = '';
+    public pcNote = '';
     public status = StatusEnum.Open;
     public statusEnum = StatusEnum;
     public isCheckStatus = false;
@@ -46,6 +47,7 @@ export class CreateOrEditProductCategoryModalComponent extends AppComponentBase 
         this.isCheckStatus = false;
         this.pcCode = '';
         this.pcName = '';
+        this.pcNote = '';
 
         // this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', productCategoryId).subscribe(result => {
         //     this.productCategory = result.menuClient;
@@ -68,9 +70,10 @@ export class CreateOrEditProductCategoryModalComponent extends AppComponentBase 
 
             let status = this.isCheckStatus ? StatusEnum.Open : StatusEnum.Close;
 
-            this.newProductCategory = new NewPCDto(this.pcCode, this.pcName, status);
+            this.newProductCategory = new NewPCDto(this.pcCode, this.pcName, status, this.pcNote);
 
-            console.log(this.newProductCategory.code + '--' + this.newProductCategory.name + this.newProductCategory.status);
+            console.log(this.newProductCategory.code + '--' + this.newProductCategory.name
+                + '--' + this.newProductCategory.status + '--' + this.pcNote);
             // this.insertProductCategory();
 
             // call api create product category theo code,nam,status
