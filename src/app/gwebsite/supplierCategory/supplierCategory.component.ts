@@ -225,10 +225,10 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
 
     //Refresh grid khi thực hiện create or edit thành công
     refreshValueFromModal(): void {
-        if (this.createOrEditModal.supplierCategory.id) {
+        if (this.createOrEditModal.newProductCategory.code) {
             for (let i = 0; i < this.primengTableHelper.records.length; i++) {
-                if (this.primengTableHelper.records[i].id === this.createOrEditModal.supplierCategory.id) {
-                    this.primengTableHelper.records[i] = this.createOrEditModal.supplierCategory;
+                if (this.primengTableHelper.records[i].id === this.createOrEditModal.newProductCategory.code) {
+                    this.primengTableHelper.records[i] = this.createOrEditModal.newProductCategory;
                     return;
                 }
             }

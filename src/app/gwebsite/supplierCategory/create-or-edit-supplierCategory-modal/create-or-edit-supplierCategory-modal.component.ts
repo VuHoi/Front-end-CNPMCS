@@ -4,7 +4,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
 import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { SupplierCategoryDto } from '../dto/supplierCategory.dto';
+import { SupplierCategoryDto, NewSupDto, StatusEnum } from '../dto/supplierCategory.dto';
 
 @Component({
     selector: 'createOrEditSupplierCategoryModal',
@@ -25,8 +25,13 @@ export class CreateOrEditSupplierCategoryModalComponent extends AppComponentBase
     active = false;
     saving = false;
 
-    supplierCategory: SupplierCategoryDto = new SupplierCategoryDto();
-    supplierCategorys: ComboboxItemDto[] = [];
+    public newProductCategory: NewSupDto;
+    public pcCode = '';
+    public pcName = '';
+    public pcNote = '';
+    public status = StatusEnum.Open;
+    public statusEnum = StatusEnum;
+    public isCheckStatus = false;
 
     constructor(
         injector: Injector,
@@ -35,44 +40,55 @@ export class CreateOrEditSupplierCategoryModalComponent extends AppComponentBase
         super(injector);
     }
 
-    show(supplierCategoryId?: number | null | undefined): void {
+    show(): void {
         this.active = true;
+        this.saving = false;
 
-        this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', supplierCategoryId).subscribe(result => {
-            // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-            this.supplierCategory = result.menuClient;
-            this.supplierCategorys = result.menuClients;
-            this.modal.show();
-            setTimeout(() => {
-                    $(this.supplierCategoryCombobox.nativeElement).selectpicker('refresh');
-            }, 0);
-        });
+        this.isCheckStatus = false;
+        this.pcCode = '';
+        this.pcName = '';
+        this.pcNote = '';
+
+        // this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', supplierCategoryId).subscribe(result => {
+        //     this.supplierCategory = result.menuClient;
+        //     this.supplierCategorys = result.menuClients;
+        //     this.modal.show();
+        //     setTimeout(() => {
+        //         $(this.supplierCategoryCombobox.nativeElement).selectpicker('refresh');
+        //     }, 0);
+        // });
+
+        this.modal.show();
     }
 
     save(): void {
-        let input = this.supplierCategory;
-        this.saving = true;
-        if (input.id) {
-            this.updateSupplierCategory();
-        } else {
-            this.insertSupplierCategory();
+
+        if (this.pcCode && this.pcCode !== '') {
+
+            this.saving = true;
+
+            let status = this.isCheckStatus ? StatusEnum.Open : StatusEnum.Close;
+
+            this.newProductCategory = new NewSupDto(this.pcCode, this.pcName, status, this.pcNote);
+
+            console.log(this.newProductCategory.code + '--' + this.newProductCategory.name
+                + '--' + this.newProductCategory.status + '--' + this.pcNote);
+
+            // this.insertSupplierCategory();
+
+            // call api create product category theo code,nam,status
+            // add xuống, id tự tạo
+
+            //trước khi add nhớ check duplicat code.
+
+
+            this.close();
         }
     }
 
     insertSupplierCategory() {
         // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
         this._apiService.post('api/MenuClient/CreateMenuClient', this.supplierCategory)
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
-            });
-    }
-
-    updateSupplierCategory() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.put('api/MenuClient/UpdateMenuClient', this.supplierCategory)
             .pipe(finalize(() => this.saving = false))
             .subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));
