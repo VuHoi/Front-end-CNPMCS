@@ -43,6 +43,10 @@ export class CreateOrEditProductCategoryModalComponent extends AppComponentBase 
         this.active = true;
         this.saving = false;
 
+        this.isCheckStatus = false;
+        this.pcCode = '';
+        this.pcName = '';
+
         // this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', productCategoryId).subscribe(result => {
         //     this.productCategory = result.menuClient;
         //     this.productCategorys = result.menuClients;
