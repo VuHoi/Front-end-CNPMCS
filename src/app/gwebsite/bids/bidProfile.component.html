@@ -106,7 +106,7 @@
                                     <td *ngIf="item.status===1">
                                         <span class="ui-column-title">{{l('AddedDate')}}</span>
                                         <span
-                                            title="{{record.addedDate}}">{{ item.biddingType==0?'Đấu thầu':item.biddingType===1?'Chuyển nhượng':'Gì đó' }}</span>
+                                            title="{{record.addedDate}}">{{ item.biddingType==1?'Đấu thầu':item.biddingType===2?'Chuyển nhượng':'Gì đó' }}</span>
                                     </td>
                                     <td *ngIf="item.status===1">
                                         <button

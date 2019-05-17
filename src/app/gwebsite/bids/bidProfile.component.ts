@@ -76,7 +76,8 @@ export class BidProfileComponent extends AppComponentBase implements AfterViewIn
         this._supplierServiceProxy.getAllBiddingPass(this.filterText, this.primengTableHelper.getSorting(this.dataTable),
             this.primengTableHelper.getMaxResultCount(this.paginator, event),
             this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(result => {
-                this.primengTableHelper.totalRecordsCount = 20;
+                console.log(result);
+                this.primengTableHelper.totalRecordsCount = 30;
                 this.primengTableHelper.records = result.items;
                 this.primengTableHelper.hideLoadingIndicator();
             });
