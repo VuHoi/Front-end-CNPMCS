@@ -208,10 +208,10 @@ export class ProductCategoryComponent extends AppComponentBase implements AfterV
 
     //Refresh grid khi thực hiện create or edit thành công
     refreshValueFromModal(): void {
-        if (this.createOrEditModal.productCategory.id) {
+        if (this.createOrEditModal.newProductCategory.code) {
             for (let i = 0; i < this.primengTableHelper.records.length; i++) {
-                if (this.primengTableHelper.records[i].id === this.createOrEditModal.productCategory.id) {
-                    this.primengTableHelper.records[i] = this.createOrEditModal.productCategory;
+                if (this.primengTableHelper.records[i].id === this.createOrEditModal.newProductCategory.code) {
+                    this.primengTableHelper.records[i] = this.createOrEditModal.newProductCategory;
                     return;
                 }
             }

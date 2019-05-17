@@ -24,3 +24,15 @@ export enum StatusEnum {
     Close = 2,
     All = 3
 }
+
+export class NewPCDto {
+    code: string;
+    name: string;
+    status: number;
+
+    constructor(code: string, name: string, status: number) {
+        this.code = code;
+        this.name = name;
+        this.status = status;
+    }
+}
