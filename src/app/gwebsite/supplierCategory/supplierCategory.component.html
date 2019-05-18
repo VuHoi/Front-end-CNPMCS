@@ -82,10 +82,10 @@
                                         {{l('Number')}}
                                         <p-sortIcon field="ordinalNumber"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="id">
+                                    <!-- <th pSortableColumn="id">
                                         {{l('Id')}}
                                         <p-sortIcon field="id"></p-sortIcon>
-                                    </th>
+                                    </th> -->
                                     <th pSortableColumn="code">
                                         {{l('Code')}}
                                         <p-sortIcon field="code"></p-sortIcon>
@@ -111,46 +111,58 @@
                                         <span class="ui-column-title">{{l('Number')}}</span>
                                         <span>{{truncateString(index + 1)}}</span>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <span class="ui-column-title">{{l('Id')}}</span>
                                         <span title="{{record.id}}">{{truncateString(record.id)}}</span>
-                                    </td>
+                                    </td> -->
                                     <td>
                                         <span class="ui-column-title">{{l('Code')}}</span>
                                         <span title="{{record.code}}">{{ record.code }}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">{{l('Name')}}</span>
-                                        <span title="{{record.name}}">{{ record.name }}</span>
+                                        <span *ngIf="!record.isEdit" title="{{record.name}}">{{ record.name }}</span>
+                                        <input *ngIf="record.isEdit" type="text" name="recordName"
+                                            [(ngModel)]="record.name" class="form-control">
                                     </td>
                                     <td>
                                         <span class="ui-column-title">{{l('Note')}}</span>
-                                        <span title="{{record.note}}">{{ record.note }}</span>
+                                        <span *ngIf="!record.isEdit" title="{{record.note}}">{{ record.note }}</span>
+                                        <input *ngIf="record.isEdit" type="text" name="recordNote"
+                                            [(ngModel)]="record.note" class="form-control">
                                     </td>
                                     <td>
                                         <span class="ui-column-title">{{l('Status')}}</span>
                                         <span
                                             title="{{record.status}}">{{ record.status === statusEnum.Close ? 'Close' : 'Open' }}</span>
                                     </td>
-                                    <td *ngIf="isRoleActionPC" class="row m-l-30">
-                                        <div class="col-5 col-sm-5">
-                                            <button *ngIf="record.status === statusEnum.Close" class="btn btn-success"
-                                                (click)="actionPCItem(record.id, record)"
-                                                title="Open this product catalog">Open
-                                            </button>
+                                    <td *ngIf="isRoleActionPC" class="row m-l-60">
+                                        <button *ngIf="record.status === statusEnum.Close && !record.isEdit"
+                                            class="btn btn-success" (click)="actionPCItem(record.id, record)"
+                                            title="Open this supplier catalog">Open
+                                        </button>
 
-                                            <button *ngIf="record.status === statusEnum.Open"
-                                                [disabled]="record.isInCludeSupplier" class="btn btn-warning"
-                                                (click)="actionPCItem(record.id, record)"
-                                                title="{{record.isInCludeSupplier ? 'Cannot close supplier catalog exist reference': 'Close this'}}">
-                                                Close
-                                            </button>
-                                        </div>
-                                        <div class="col-7 col-sm-7">
-                                            <button class="btn btn-danger" [disabled]="record.isInCludeSupplier"
-                                                type="button" (click)="removePcItem(record.id, record, index)"
-                                                title="{{record.isInCludeSupplier ? 'Cannot remove supplier catalog exist reference': 'Delete this'}}">Remove</button>
-                                        </div>
+                                        <button *ngIf="record.status === statusEnum.Open && !record.isEdit"
+                                            [disabled]="record.isInCludeSupplier" class="btn btn-warning"
+                                            (click)="actionPCItem(record.id, record)"
+                                            title="{{record.isInCludeSupplier ? 'Cannot close supplier catalog exist reference': 'Close this'}}">
+                                            Close
+                                        </button>
+                                        <button *ngIf="!record.isEdit" class="btn btn-danger"
+                                            [disabled]="record.isInCludeSupplier" type="button"
+                                            (click)="removePcItem(record.id, record, index)"
+                                            title="{{record.isInCludeSupplier ? 'Cannot remove supplier catalog exist reference': 'Delete this'}}">
+                                            Remove</button>
+
+                                        <button *ngIf="!record.isEdit" class="btn btn-primary"
+                                            (click)="record.isEdit = true">Edit
+                                        </button>
+                                        <button *ngIf="record.isEdit" class="btn btn-success"
+                                            (click)="editItem(record.id, record)">Save
+                                        </button>
+                                        <button *ngIf="record.isEdit" class="btn btn-danger"
+                                            (click)="record.isEdit = false">Cancel
+                                        </button>
                                     </td>
                                 </tr>
                             </ng-template>

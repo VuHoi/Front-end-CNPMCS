@@ -199,6 +199,11 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
 
         this.primengTableHelper.totalRecordsCount = 14;
         this.primengTableHelper.records = this.supplierCatalogFakes;
+
+        this.primengTableHelper.records.forEach((item) => {
+            item.isEdit = false;
+        });
+
         this.primengTableHelper.hideLoadingIndicator();
     }
 
@@ -272,6 +277,20 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
             //call api edit status close/open cho Product category này thông qua id truyền vào
 
             row.status = row.status === this.statusEnum.Open ? this.statusEnum.Close : this.statusEnum.Open;
+        }
+
+    }
+
+    //chỉ những người có permission mới đc phép thực thi action với PC
+    public editItem(id: number, row: any): void {
+        if (this.isRoleActionPC && row.name && row.name !== '') {
+            //call api edit name, note cho Product category này thông qua id truyền vào
+
+            // vì bên html đã tự [(ngModel)] vào row.name và row.note rồi, nên ở đây ta chỉ cần lấy ra giá trị để update
+            console.log(id + '---' + row.name + '---' + row.note);
+
+            //save thành công
+            row.isEdit = false;
         }
 
     }
