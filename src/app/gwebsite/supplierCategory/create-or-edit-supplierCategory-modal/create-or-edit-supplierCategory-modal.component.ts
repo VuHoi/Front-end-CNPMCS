@@ -25,7 +25,7 @@ export class CreateOrEditSupplierCategoryModalComponent extends AppComponentBase
     active = false;
     saving = false;
 
-    public newProductCategory: NewSupDto;
+    public newSupplierCategory: NewSupDto;
     public pcCode = '';
     public pcName = '';
     public pcNote = '';
@@ -69,10 +69,10 @@ export class CreateOrEditSupplierCategoryModalComponent extends AppComponentBase
 
             let status = this.isCheckStatus ? StatusEnum.Open : StatusEnum.Close;
 
-            this.newProductCategory = new NewSupDto(this.pcCode, this.pcName, status, this.pcNote);
+            this.newSupplierCategory = new NewSupDto(this.pcCode, this.pcName, status, this.pcNote);
 
-            console.log(this.newProductCategory.code + '--' + this.newProductCategory.name
-                + '--' + this.newProductCategory.status + '--' + this.pcNote);
+            console.log(this.newSupplierCategory.code + '--' + this.newSupplierCategory.name
+                + '--' + this.newSupplierCategory.status + '--' + this.newSupplierCategory.note);
 
             // this.insertSupplierCategory();
 
@@ -87,8 +87,7 @@ export class CreateOrEditSupplierCategoryModalComponent extends AppComponentBase
     }
 
     insertSupplierCategory() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.post('api/MenuClient/CreateMenuClient', this.supplierCategory)
+        this._apiService.post('api/MenuClient/CreateMenuClient', this.newSupplierCategory)
             .pipe(finalize(() => this.saving = false))
             .subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));
