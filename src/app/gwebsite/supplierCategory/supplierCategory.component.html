@@ -134,17 +134,22 @@
                                     </td>
                                     <td *ngIf="isRoleActionPC" class="row m-l-30">
                                         <div class="col-5 col-sm-5">
-                                            <button class="btn"
-                                                [ngClass]="{'btn-success': record.status === statusEnum.Close, 'btn-warning': record.status === statusEnum.Open}"
+                                            <button *ngIf="record.status === statusEnum.Close" class="btn btn-success"
                                                 (click)="actionPCItem(record.id, record)"
-                                                title="{{l(record.status === statusEnum.Close ? 'Open this product catalog' : 'Close this')}}">
-                                                {{record.status === statusEnum.Close ? 'Open' : 'Close'}}
+                                                title="Open this product catalog">Open
+                                            </button>
+
+                                            <button *ngIf="record.status === statusEnum.Open"
+                                                [disabled]="record.isInCludeSupplier" class="btn btn-warning"
+                                                (click)="actionPCItem(record.id, record)"
+                                                title="{{record.isInCludeSupplier ? 'Cannot close supplier catalog exist reference': 'Close this'}}">
+                                                Close
                                             </button>
                                         </div>
                                         <div class="col-7 col-sm-7">
-                                            <button class="btn btn-danger" type="button"
-                                                (click)="removePcItem(record.id, record, index)"
-                                                title="Delete this">Remove</button>
+                                            <button class="btn btn-danger" [disabled]="record.isInCludeSupplier"
+                                                type="button" (click)="removePcItem(record.id, record, index)"
+                                                title="{{record.isInCludeSupplier ? 'Cannot remove supplier catalog exist reference': 'Delete this'}}">Remove</button>
                                         </div>
                                     </td>
                                 </tr>

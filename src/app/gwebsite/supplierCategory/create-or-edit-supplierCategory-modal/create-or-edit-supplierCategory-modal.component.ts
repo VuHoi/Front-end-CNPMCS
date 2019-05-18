@@ -87,7 +87,7 @@ export class CreateOrEditSupplierCategoryModalComponent extends AppComponentBase
     }
 
     insertSupplierCategory() {
-        this._apiService.post('api/MenuClient/CreateMenuClient', this.newSupplierCategory)
+         this._apiService.post('api/MenuClient/CreateMenuClient', this.newSupplierCategory)
             .pipe(finalize(() => this.saving = false))
             .subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));

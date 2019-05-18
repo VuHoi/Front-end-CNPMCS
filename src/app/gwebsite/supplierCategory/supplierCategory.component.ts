@@ -51,76 +51,93 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
         }
     ];
 
+    //get all supplier catalog
+    // chú ý: có get số supplier đc reference đến supplier catalog, mục đích để kiểm tra nếu SC đã tồn tại
+    // supplier rồi thì ko đc close hoặc remove.
+    // khi count supplier > 0 thì respone lên isInCludeSupplier = true
+    // chỉ đc phép close hoặc remove những SC có isInCludeSupplier: false
+
+    //status: 2(close) nghĩa là đang ko ref sup nào, lúc này fakes data ép buộc set isInCludeSupplier = false
     public supplierCatalogFakes = [
         {
             id: 1,
             code: 'SA001',
             name: 'Stationery',
             note: 'Electronic products such as computers',
-            status: 1
+            status: 2,
+            isInCludeSupplier: false
         },
         {
             id: 2,
             code: 'CE002',
             name: 'Electronice Device',
             note: 'Electronic products such as computers',
-            status: 1
+            status: 1,
+            isInCludeSupplier: false
         },
         {
             id: 3,
             code: 'BM003',
             name: 'Building Materials',
             note: 'Electronic products such as computers',
-            status: 2
+            status: 2,
+            isInCludeSupplier: false
         },
         {
             id: 4,
             code: 'MA004',
             name: 'Mobile',
             note: 'Electronic products such as computers',
-            status: 1
+            status: 1,
+            isInCludeSupplier: false
         },
         {
             id: 5,
             code: 'WA005',
             name: 'Wooden',
             note: 'Electronic products such as computers',
-            status: 2
+            status: 2,
+            isInCludeSupplier: false
         },
         {
             id: 6,
             code: 'FA006',
             name: 'Food And Drink',
             note: 'Electronic products such as computers',
-            status: 1
+            status: 1,
+            isInCludeSupplier: true
         },
         {
             id: 7,
             code: 'VE007',
             name: 'Vehicle',
             note: 'Electronic products such as computers',
-            status: 1
+            status: 1,
+            isInCludeSupplier: true
         },
         {
             id: 8,
             code: 'CS008',
             name: 'Cleaning Stuff',
             note: 'Electronic products such as computers',
-            status: 2
+            status: 2,
+            isInCludeSupplier: false
         },
         {
             id: 9,
             code: 'TO009',
             name: 'Tool',
             note: 'Electronic products such as computers',
-            status: 2
+            status: 2,
+            isInCludeSupplier: false
         },
         {
             id: 10,
             code: 'CS010',
             name: 'Costume',
             note: 'Electronic products such as computers',
-            status: 1
+            status: 1,
+            isInCludeSupplier: true
         }
     ];
 
@@ -225,10 +242,10 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
 
     //Refresh grid khi thực hiện create or edit thành công
     refreshValueFromModal(): void {
-        if (this.createOrEditModal.newProductCategory.code) {
+        if (this.createOrEditModal.newSupplierCategory.code) {
             for (let i = 0; i < this.primengTableHelper.records.length; i++) {
-                if (this.primengTableHelper.records[i].id === this.createOrEditModal.newProductCategory.code) {
-                    this.primengTableHelper.records[i] = this.createOrEditModal.newProductCategory;
+                if (this.primengTableHelper.records[i].id === this.createOrEditModal.newSupplierCategory.code) {
+                    this.primengTableHelper.records[i] = this.createOrEditModal.newSupplierCategory;
                     return;
                 }
             }
