@@ -2,7 +2,21 @@
   aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      {{bidding|json}}
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-4">
+
+          </div>
+          <div class="col-8">
+
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+
+      </div>
     </div>
+
   </div>
-</div>
