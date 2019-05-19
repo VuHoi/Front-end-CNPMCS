@@ -24,7 +24,7 @@
       <div class="m-portlet__body">
         <form autocomplete="off" (ngSubmit)="searchProductCode()">
           <div class="m-form m-form--label-align-right" id="TextsFilterForm">
-            <div class="row align-items-center m--margin-bottom-10">
+            <div *ngIf="isRoleApprovedMan" class="row align-items-center m--margin-bottom-10">
               <div class="col-sm-12">
                 <div class="btn-approved float-left">
                   <button (click)="approvedPlan()" type="button"
@@ -123,7 +123,7 @@
               <div class="col-sm-12">
                 <div class="input-group">
                   <input [(ngModel)]="productCode" name="productCode" autoFocus class="form-control"
-                    placeholder="{{l('Search Sub Plan By Product Code')}}" type="text">
+                    placeholder="{{l('Search Sub Plan By Product Code, Product Name')}}" type="text">
                   <span class="input-group-btn">
                     <button class="btn btn-primary btn-min-width" type="submit"><i class="icon-refresh"></i>
                       {{l("Search")}}</button>
@@ -253,7 +253,8 @@
                   <td>
                     <button *ngIf="!record.isEdit"
                       class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
-                      [disabled]="approvalStatus === approvalStatusEnum.Approved" (click)="activeEditRow(record)"
+                      [disabled]="approvalStatus === approvalStatusEnum.Approved && !isRoleApprovedMan"
+                      (click)="activeEditRow(record)"
                       title="{{l(approvalStatus === approvalStatusEnum.Approved ? 'Disabled when plan was approved' : 'Edit Quantity')}}">
                       <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
                     </button>

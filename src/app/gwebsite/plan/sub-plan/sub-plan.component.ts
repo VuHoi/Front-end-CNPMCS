@@ -180,6 +180,8 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
     }
   ];
 
+  public isRoleApprovedMan = false;
+
   constructor(
     injector: Injector,
     private _router: Router,
@@ -193,6 +195,12 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
    * Hàm xử lý trước khi View được init
    */
   ngOnInit(): void {
+    //dựa vào user id, get role approve cho user đó
+    // nếu người đó có quyền duyệt thì cũng có quyền editQty(phòng ban tạo plan cũng edit đc)
+    // nhưng nếu như đã duyệt, thì chỉ có role approved thì mới có quyền edit, còn role department ko đc quyền edit khi đã duyệt
+
+    //nếu là roles approved thì
+    this.isRoleApprovedMan = true;
   }
 
   /**
