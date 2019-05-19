@@ -137,7 +137,7 @@
                                         {{l('Count Changed')}}
                                         <p-sortIcon field="countChanged"></p-sortIcon>
                                     </th>
-                                    <th>{{l('Action')}}</th>
+                                    <th *ngIf="isRoleApprovedMan">{{l('Action')}}</th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-record="$implicit" let-index="rowIndex">
@@ -171,7 +171,7 @@
                                         <span class="ui-column-title">{{l('Count Changed')}}</span>
                                         <span title="{{record.countChanged}}">{{ record.countChanged }}</span>
                                     </td>
-                                    <td>
+                                    <td *ngIf="isRoleApprovedMan">
                                         <!-- <button
                                             class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
                                             (click)="createOrEditModal.show(record.id)" title="{{l('Approved')}}">

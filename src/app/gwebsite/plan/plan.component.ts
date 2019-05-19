@@ -138,7 +138,7 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
             countChanged: 2
         }
     ];
-
+    public isRoleApprovedMan = false;
 
     constructor(
         injector: Injector,
@@ -153,6 +153,11 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
      * Hàm xử lý trước khi View được init
      */
     ngOnInit(): void {
+        //dựa vào user id, get role approve cho user đó
+        // nếu người đó có quyền duyệt thì mới cho hiện btn Approved lên
+
+        //nếu là roles approved thì
+        this.isRoleApprovedMan = true;
     }
 
     /**
