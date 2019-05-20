@@ -146,6 +146,7 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
     public isRoleActionPC = false;
 
 
+
     constructor(
         injector: Injector,
         private _router: Router,
@@ -159,6 +160,9 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
      * Hàm xử lý trước khi View được init
      */
     ngOnInit(): void {
+        //get permission open/close PC item for this user:
+        // nếu kq trả về true, nghĩa là đc phép action thì gán, để UI xuất hiện action
+        this.isRoleActionPC = true;
     }
 
     /**
@@ -208,10 +212,6 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
     }
 
     init(): void {
-
-        //get permission open/close PC item for this user:
-        // nếu kq trả về true, nghĩa là đc phép action thì gán, để UI xuất hiện action
-        this.isRoleActionPC = true;
 
         //get params từ url để thực hiện filter
         this._activatedRoute.params.subscribe((params: Params) => {
