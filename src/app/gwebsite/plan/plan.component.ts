@@ -61,7 +61,8 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
             planId: 11,
             effectiveDate: '01/01/2019',
             totalPrice: 1000000,
-            unitCode: 'IT',
+            unitCode: 'HN',
+            departmentCode: 'IT',
             status: ApprovalStatusEnum.AwaitingApproval,
             countChanged: 1
         },
@@ -69,7 +70,8 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
             planId: 22,
             effectiveDate: '02/01/2019',
             totalPrice: 2000000,
-            unitCode: 'HR',
+            unitCode: 'TPHCM1',
+            departmentCode: 'HR',
             status: ApprovalStatusEnum.Approved,
             countChanged: 3
         },
@@ -77,7 +79,8 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
             planId: 33,
             effectiveDate: '03/01/2019',
             totalPrice: 3000000,
-            unitCode: 'Acco',
+            unitCode: 'HP',
+            departmentCode: 'Acco',
             status: ApprovalStatusEnum.Approved,
             countChanged: 2
         },
@@ -85,7 +88,8 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
             planId: 44,
             effectiveDate: '04/01/2019',
             totalPrice: 4000000,
-            unitCode: 'Mark',
+            unitCode: 'DN',
+            departmentCode: 'Mark',
             status: ApprovalStatusEnum.AwaitingApproval,
             countChanged: 1
         },
@@ -93,7 +97,8 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
             planId: 55,
             effectiveDate: '01/01/2019',
             totalPrice: 1000000,
-            unitCode: 'IT',
+            unitCode: 'TPHCM2',
+            departmentCode: 'IT',
             status: ApprovalStatusEnum.AwaitingApproval,
             countChanged: 5
         },
@@ -101,7 +106,8 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
             planId: 66,
             effectiveDate: '02/01/2019',
             totalPrice: 2000000,
-            unitCode: 'HR',
+            unitCode: 'CT',
+            departmentCode: 'Sale',
             status: ApprovalStatusEnum.Approved,
             countChanged: 3
         },
@@ -109,7 +115,8 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
             planId: 77,
             effectiveDate: '03/01/2019',
             totalPrice: 3000000,
-            unitCode: 'Acco',
+            unitCode: 'DN',
+            departmentCode: 'IT',
             status: ApprovalStatusEnum.Approved,
             countChanged: 2
         },
@@ -117,7 +124,8 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
             planId: 88,
             effectiveDate: '04/01/2019',
             totalPrice: 4000000,
-            unitCode: 'Mark',
+            unitCode: 'HN2',
+            departmentCode: 'Marketing',
             status: ApprovalStatusEnum.AwaitingApproval,
             countChanged: 6
         },
@@ -125,7 +133,8 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
             planId: 99,
             effectiveDate: '01/01/2019',
             totalPrice: 1000000,
-            unitCode: 'IT',
+            unitCode: 'NT',
+            departmentCode: 'PR',
             status: ApprovalStatusEnum.AwaitingApproval,
             countChanged: 4
         },
@@ -133,7 +142,8 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
             planId: 100,
             effectiveDate: '02/01/2019',
             totalPrice: 2000000,
-            unitCode: 'HR',
+            unitCode: 'TPHCM3',
+            departmentCode: 'HR',
             status: ApprovalStatusEnum.Approved,
             countChanged: 2
         }

@@ -129,6 +129,10 @@
                                         {{l('Unit Code')}}
                                         <p-sortIcon field="unitCode"></p-sortIcon>
                                     </th>
+                                    <th pSortableColumn="departmentCode">
+                                        {{l('Department Code')}}
+                                        <p-sortIcon field="departmentCode"></p-sortIcon>
+                                    </th>
                                     <th pSortableColumn="status">
                                         {{l('Status')}}
                                         <p-sortIcon field="status"></p-sortIcon>
@@ -162,6 +166,10 @@
                                     <td>
                                         <span class="ui-column-title">{{l('Unit Code')}}</span>
                                         <span title="{{record.unitCode}}">{{ record.unitCode }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Department Code')}}</span>
+                                        <span title="{{record.departmentCode}}">{{ record.departmentCode }}</span>
                                     </td>
                                     <td>
                                         <span class="ui-column-title">{{l('Status')}}</span>
