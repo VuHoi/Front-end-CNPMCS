@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router, ParamMap } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import * as _ from 'lodash';
@@ -9,6 +9,7 @@ import { Table } from 'primeng/components/table/table';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { ApprovalStatusEnum } from '../dto/plan.dto';
 import { CreateOrEditSubPlanModalComponent } from './create-or-edit-subplan-modal/create-or-edit-subplan-modal.component';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sub-plan',
@@ -31,7 +32,6 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
    */
   public filterText: string;
   public productCode: string;
-  public planId = 100;
   public yearImplement = 2019; //get by plan id
   public YearImplementList = [this.yearImplement];
   public approvalStatusEnum = ApprovalStatusEnum;
@@ -181,6 +181,7 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
   ];
 
   public isRoleApprovedMan = false;
+  public planId: number;
 
   constructor(
     injector: Injector,
@@ -201,6 +202,20 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
 
     //nếu là roles approved thì
     this.isRoleApprovedMan = true;
+
+    //https://angular.io/guide/router
+
+    // let planObject = this._activatedRoute.paramMap.pipe(
+    //   switchMap((params: ParamMap) =>
+    //     // this.service.getHero(params.get('id')))
+    //     this.id = params.get('id'))
+    // );
+
+    // id lấy từ url là sting, phải dùng + để parse sang number
+    this.planId = +this._activatedRoute.snapshot.paramMap.get('id');
+    console.log(this.planId);
+
+    // như v, tại đây đã có đc planId
   }
 
   /**

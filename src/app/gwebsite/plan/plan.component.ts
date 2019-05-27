@@ -261,7 +261,6 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
     }
 
     public gotoPlanDetail(planId: number, $event: Event): void {
-        console.log('godetail');
-        //goto detail page by planId: http://localhost:4200/app/gwebsite/plan/11
+        this._router.navigate(['app/gwebsite/plan/detail/', planId]);
     }
 }
