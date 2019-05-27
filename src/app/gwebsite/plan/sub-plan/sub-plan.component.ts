@@ -11,6 +11,26 @@ import { ApprovalStatusEnum } from '../dto/plan.dto';
 import { CreateOrEditSubPlanModalComponent } from './create-or-edit-subplan-modal/create-or-edit-subplan-modal.component';
 import { switchMap } from 'rxjs/operators';
 
+
+import { ScrollableView } from 'primeng/table';
+import ResizeObserver from 'resize-observer-polyfill';
+
+// https://www.npmjs.com/package/resize-observer-polyfill
+// https://stackblitz.com/edit/primeng-dynamic-scrollable
+
+
+ScrollableView.prototype.ngAfterViewChecked = function () {
+  if (!this.initialized && this.el.nativeElement.offsetParent) {
+    //this.alignScrollBar();
+    this.initialized = true;
+
+    new ResizeObserver(entries => {
+      //for (let entry of entries)
+      this.alignScrollBar();
+    }).observe(this.scrollBodyViewChild.nativeElement);
+  }
+};
+
 @Component({
   selector: 'app-sub-plan',
   templateUrl: './sub-plan.component.html',

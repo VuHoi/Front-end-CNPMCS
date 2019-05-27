@@ -137,9 +137,9 @@
         <div class="row align-items-center">
           <!--<Primeng-TurboTable-Start>-->
           <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
-            <p-table #dataTable (onLazyLoad)="getSubPlans($event)" [value]="primengTableHelper.records"
-              rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
-              [responsive]="primengTableHelper.isResponsive">
+            <p-table #dataTable (onLazyLoad)="getSubPlans($event)" [scrollable]="true"
+              [value]="primengTableHelper.records" rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+              [paginator]="false" [lazy]="true" [responsive]="primengTableHelper.isResponsive">
               <ng-template pTemplate="header">
                 <tr>
                   <th pSortableColumn="ordinalNumber">
