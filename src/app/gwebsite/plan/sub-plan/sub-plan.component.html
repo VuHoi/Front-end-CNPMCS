@@ -137,135 +137,140 @@
         <div class="row align-items-center">
           <!--<Primeng-TurboTable-Start>-->
           <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
-            <p-table #dataTable (onLazyLoad)="getSubPlans($event)" [scrollable]="true"
-              [value]="primengTableHelper.records" rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
-              [paginator]="false" [lazy]="true" [responsive]="primengTableHelper.isResponsive">
-              <ng-template pTemplate="header">
-                <tr>
-                  <th pSortableColumn="ordinalNumber">
-                    {{l('Number')}}
-                    <p-sortIcon field="ordinalNumber"></p-sortIcon>
-                  </th>
-                  <th pSortableColumn="productCode">
-                    {{l('Product Code')}}
-                    <p-sortIcon field="productCode"></p-sortIcon>
-                  </th>
-                  <th pSortableColumn="productName">
-                    {{l('Product Name')}}
-                    <p-sortIcon field="productName"></p-sortIcon>
-                  </th>
-                  <th pSortableColumn="calculationUnit">
-                    {{l('Cal Unit')}}
-                    <p-sortIcon field="calculationUnit"></p-sortIcon>
-                  </th>
-                  <th pSortableColumn="quantity">
-                    {{l('Quantity')}}
-                    <p-sortIcon field="quantity"></p-sortIcon>
-                  </th>
-                  <th pSortableColumn="totalPrice">
-                    {{l('Total Price')}}
-                    <p-sortIcon field="totalPrice"></p-sortIcon>
-                  </th>
-                  <th pSortableColumn="scheduleMonth">
-                    {{l('Schedule Month')}}
-                    <p-sortIcon field="scheduleMonth"></p-sortIcon>
-                  </th>
-                  <th pSortableColumn="implementQuantity">
-                    {{l('Im Qty')}}
-                    <p-sortIcon field="implementQuantity"></p-sortIcon>
-                  </th>
-                  <th pSortableColumn="implementPrice">
-                    {{l('Im Price')}}
-                    <p-sortIcon field="implementPrice"></p-sortIcon>
-                  </th>
-                  <th pSortableColumn="implementMonth">
-                    {{l('Im Month')}}
-                    <p-sortIcon field="implementMonth"></p-sortIcon>
-                  </th>
-                  <th pSortableColumn="pesidualQuantity">
-                    {{l('Pesidual Qty')}}
-                    <p-sortIcon field="pesidualQuantity"></p-sortIcon>
-                  </th>
-                  <th pSortableColumn="pesidualPrice">
-                    {{l('Pesidual Price')}}
-                    <p-sortIcon field="pesidualPrice"></p-sortIcon>
-                  </th>
-                  <th>{{l('Action')}}</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-record="$implicit" let-index="rowIndex">
-                <tr>
-                  <td>
-                    <span class="ui-column-title">{{l('Ordinal Number')}}</span>
-                    <span title="{{record.ordinalNumber}}">{{truncateString(index + 1)}}</span>
-                  </td>
-                  <td>
-                    <span class="ui-column-title">{{l('Product Code')}}</span>
-                    <span title="{{record.productCode}}">{{truncateString(record.productCode)}}</span>
-                  </td>
-                  <td>
-                    <span class="ui-column-title">{{l('Product Name')}}</span>
-                    <span title="{{record.productName}}">{{truncateString(record.productName)}}</span>
-                  </td>
-                  <td>
-                    <span class="ui-column-title">{{l('Cal Unit')}}</span>
-                    <span title="{{record.calculationUnit}}">{{truncateString(record.calculationUnit)}}</span>
-                  </td>
-                  <td>
-                    <span class="ui-column-title">{{l('Quantity')}}</span>
+            <!-- perfect-scrollbar -->
+            <perfect-scrollbar [config]="{suppressScrollX: false}" (psScrollX)="onScrollX($event)">
+              <p-table #dataTable (onLazyLoad)="getSubPlans($event)" [scrollable]="true"
+                [value]="primengTableHelper.records" rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
+                [paginator]="false" [lazy]="true" [responsive]="primengTableHelper.isResponsive">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th pSortableColumn="ordinalNumber">
+                      {{l('Number')}}
+                      <p-sortIcon field="ordinalNumber"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="productCode">
+                      {{l('Product Code')}}
+                      <p-sortIcon field="productCode"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="productName">
+                      {{l('Product Name')}}
+                      <p-sortIcon field="productName"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="calculationUnit">
+                      {{l('Cal Unit')}}
+                      <p-sortIcon field="calculationUnit"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="quantity">
+                      {{l('Quantity')}}
+                      <p-sortIcon field="quantity"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="totalPrice">
+                      {{l('Total Price')}}
+                      <p-sortIcon field="totalPrice"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="scheduleMonth">
+                      {{l('Schedule Month')}}
+                      <p-sortIcon field="scheduleMonth"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="implementQuantity">
+                      {{l('Im Qty')}}
+                      <p-sortIcon field="implementQuantity"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="implementPrice">
+                      {{l('Im Price')}}
+                      <p-sortIcon field="implementPrice"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="implementMonth">
+                      {{l('Im Month')}}
+                      <p-sortIcon field="implementMonth"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="pesidualQuantity">
+                      {{l('Pesidual Qty')}}
+                      <p-sortIcon field="pesidualQuantity"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="pesidualPrice">
+                      {{l('Pesidual Price')}}
+                      <p-sortIcon field="pesidualPrice"></p-sortIcon>
+                    </th>
+                    <th>{{l('Action')}}</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-record="$implicit" let-index="rowIndex">
+                  <tr>
+                    <td>
+                      <span class="ui-column-title">{{l('Ordinal Number')}}</span>
+                      <span title="{{record.ordinalNumber}}">{{truncateString(index + 1)}}</span>
+                    </td>
+                    <td>
+                      <span class="ui-column-title">{{l('Product Code')}}</span>
+                      <span title="{{record.productCode}}">{{truncateString(record.productCode)}}</span>
+                    </td>
+                    <td>
+                      <span class="ui-column-title">{{l('Product Name')}}</span>
+                      <span title="{{record.productName}}">{{truncateString(record.productName)}}</span>
+                    </td>
+                    <td>
+                      <span class="ui-column-title">{{l('Cal Unit')}}</span>
+                      <span title="{{record.calculationUnit}}">{{truncateString(record.calculationUnit)}}</span>
+                    </td>
+                    <td>
+                      <span class="ui-column-title">{{l('Quantity')}}</span>
 
-                    <span *ngIf="!record.isEdit" title="{{record.quantity}}">{{truncateString(record.quantity)}}</span>
+                      <span *ngIf="!record.isEdit"
+                        title="{{record.quantity}}">{{truncateString(record.quantity)}}</span>
 
-                    <input *ngIf="record.isEdit" [(ngModel)]="record.quantityEdit" type="number" min="0"
-                      name="quantityEdit" class="form-control">
-                  </td>
-                  <td>
-                    <span class="ui-column-title">{{l('Total Price')}}</span>
-                    <span
-                      title="{{record.totalPrice}}">{{truncateString(record.totalPrice | currency:'VND':'symbol':'4.2-2')}}</span>
-                  </td>
-                  <td>
-                    <span class="ui-column-title">{{l('Schedule Month')}}</span>
-                    <span title="{{record.scheduleMonth}}">{{truncateString(record.scheduleMonth)}}</span>
-                  </td>
-                  <td>
-                    <span class="ui-column-title">{{l('Im Qty')}}</span>
-                    <span title="{{record.implementQuantity}}">{{truncateString(record.implementQuantity)}}</span>
-                  </td>
-                  <td>
-                    <span class="ui-column-title">{{l('Implement Price')}}</span>
-                    <span
-                      title="{{record.implementPrice}}">{{truncateString(record.implementPrice | currency:'VND':'symbol':'4.2-2')}}</span>
-                  </td>
-                  <td>
-                    <span class="ui-column-title">{{l('Im Month')}}</span>
-                    <span title="{{record.implementMonth}}">{{truncateString(record.implementMonth)}}</span>
-                  </td>
-                  <td>
-                    <span class="ui-column-title">{{l('Pesidual Qty')}}</span>
-                    <span title="{{record.pesidualQuantity}}">{{ record.pesidualQuantity }}</span>
-                  </td>
-                  <td>
-                    <span class="ui-column-title">{{l('Pesidual Price')}}</span>
-                    <span
-                      title="{{record.pesidualPrice}}">{{ record.pesidualPrice | currency:'VND':'symbol':'4.2-2'}}</span>
-                  </td>
-                  <td>
-                    <button *ngIf="!record.isEdit"
-                      class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
-                      [disabled]="approvalStatus === approvalStatusEnum.Approved && !isRoleApprovedMan"
-                      (click)="activeEditRow(record)"
-                      title="{{l(approvalStatus === approvalStatusEnum.Approved ? 'Disabled when plan was approved' : 'Edit Quantity')}}">
-                      <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
-                    </button>
-                    <div *ngIf="record.isEdit">
-                      <button type="button" (click)="cancelEditRow(record)" class="btn btn-warning">Cancel</button>
-                      <button type="button" (click)="saveEditRow(record)" class="btn btn-success">Save</button>
-                    </div>
-                  </td>
-                </tr>
-              </ng-template>
-            </p-table>
+                      <input *ngIf="record.isEdit" [(ngModel)]="record.quantityEdit" type="number" min="0"
+                        name="quantityEdit" class="form-control">
+                    </td>
+                    <td>
+                      <span class="ui-column-title">{{l('Total Price')}}</span>
+                      <span
+                        title="{{record.totalPrice}}">{{truncateString(record.totalPrice | currency:'VND':'symbol':'4.2-2')}}</span>
+                    </td>
+                    <td>
+                      <span class="ui-column-title">{{l('Schedule Month')}}</span>
+                      <span title="{{record.scheduleMonth}}">{{truncateString(record.scheduleMonth)}}</span>
+                    </td>
+                    <td>
+                      <span class="ui-column-title">{{l('Im Qty')}}</span>
+                      <span title="{{record.implementQuantity}}">{{truncateString(record.implementQuantity)}}</span>
+                    </td>
+                    <td>
+                      <span class="ui-column-title">{{l('Implement Price')}}</span>
+                      <span
+                        title="{{record.implementPrice}}">{{truncateString(record.implementPrice | currency:'VND':'symbol':'4.2-2')}}</span>
+                    </td>
+                    <td>
+                      <span class="ui-column-title">{{l('Im Month')}}</span>
+                      <span title="{{record.implementMonth}}">{{truncateString(record.implementMonth)}}</span>
+                    </td>
+                    <td>
+                      <span class="ui-column-title">{{l('Pesidual Qty')}}</span>
+                      <span title="{{record.pesidualQuantity}}">{{ record.pesidualQuantity }}</span>
+                    </td>
+                    <td>
+                      <span class="ui-column-title">{{l('Pesidual Price')}}</span>
+                      <span
+                        title="{{record.pesidualPrice}}">{{ record.pesidualPrice | currency:'VND':'symbol':'4.2-2'}}</span>
+                    </td>
+                    <td>
+                      <button *ngIf="!record.isEdit"
+                        class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                        [disabled]="approvalStatus === approvalStatusEnum.Approved && !isRoleApprovedMan"
+                        (click)="activeEditRow(record)"
+                        title="{{l(approvalStatus === approvalStatusEnum.Approved ? 'Disabled when plan was approved' : 'Edit Quantity')}}">
+                        <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
+                      </button>
+                      <div *ngIf="record.isEdit">
+                        <button type="button" (click)="cancelEditRow(record)" class="btn btn-warning">Cancel</button>
+                        <button type="button" (click)="saveEditRow(record)" class="btn btn-success">Save</button>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </perfect-scrollbar>
+
             <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
               {{l('NoData')}}
             </div>

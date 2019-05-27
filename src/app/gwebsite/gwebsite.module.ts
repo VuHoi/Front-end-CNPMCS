@@ -43,6 +43,13 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { ViewBidProfileComponent } from './bids/view-bid-profile/view-bid-profile.component';
 import { CreateOrEditSubPlanModalComponent } from './plan/sub-plan/create-or-edit-subplan-modal/create-or-edit-subplan-modal.component';
 
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+    suppressScrollX: true
+};
 
 @NgModule({
     imports: [
@@ -66,7 +73,8 @@ import { CreateOrEditSubPlanModalComponent } from './plan/sub-plan/create-or-edi
         MultiSelectModule,
         CalendarModule,
         DropdownModule,
-        RadioButtonModule
+        RadioButtonModule,
+        PerfectScrollbarModule
     ],
     declarations: [
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
@@ -93,7 +101,11 @@ import { CreateOrEditSubPlanModalComponent } from './plan/sub-plan/create-or-edi
 
         SupplierServiceProxy,
         ProductsServiceProxy,
-        PurchaseServiceProxy
+        PurchaseServiceProxy,
+        {
+            provide: PERFECT_SCROLLBAR_CONFIG,
+            useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+        }
     ]
 })
 export class GWebsiteModule { }

@@ -11,25 +11,20 @@ import { ApprovalStatusEnum } from '../dto/plan.dto';
 import { CreateOrEditSubPlanModalComponent } from './create-or-edit-subplan-modal/create-or-edit-subplan-modal.component';
 import { switchMap } from 'rxjs/operators';
 
-
-import { ScrollableView } from 'primeng/table';
-import ResizeObserver from 'resize-observer-polyfill';
-
+// import { ScrollableView } from 'primeng/table';
+// import ResizeObserver from 'resize-observer-polyfill';
 // https://www.npmjs.com/package/resize-observer-polyfill
 // https://stackblitz.com/edit/primeng-dynamic-scrollable
-
-
-ScrollableView.prototype.ngAfterViewChecked = function () {
-  if (!this.initialized && this.el.nativeElement.offsetParent) {
-    //this.alignScrollBar();
-    this.initialized = true;
-
-    new ResizeObserver(entries => {
-      //for (let entry of entries)
-      this.alignScrollBar();
-    }).observe(this.scrollBodyViewChild.nativeElement);
-  }
-};
+// ScrollableView.prototype.ngAfterViewChecked = function () {
+//   if (!this.initialized && this.el.nativeElement.offsetParent) {
+//     this.alignScrollBar();
+//     this.initialized = true;
+//     new ResizeObserver(entries => {
+//       //for (let entry of entries)
+//       this.alignScrollBar();
+//     }).observe(this.scrollBodyViewChild.nativeElement);
+//   }
+// };
 
 @Component({
   selector: 'app-sub-plan',
@@ -203,6 +198,16 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
   public isRoleApprovedMan = false;
   public planId: number;
 
+  public myConfigStyleHeader: any = {
+    'font-size': '11px'
+  };
+
+  public myConfigStyle: any = {
+    'font-size': '11px'
+  };
+
+  public header;
+
   constructor(
     injector: Injector,
     private _router: Router,
@@ -245,6 +250,17 @@ export class SubPlanComponent extends AppComponentBase implements AfterViewInit,
     setTimeout(() => {
       this.init();
     });
+  }
+
+  /**
+   * onScrollX
+   * @param event
+   */
+  public onScrollX(event): void {
+    this.myConfigStyleHeader = {
+      ...this.myConfigStyle,
+      left: this.header ? `${this.header.getBoundingClientRect().left}px` : 'auto'
+    };
   }
 
   /**
