@@ -20,6 +20,7 @@ export class ViewBidProfileComponent extends AppComponentBase {
 
   bidding: any = {};
   product: any = {};
+  urlbase = 'http://localhost:5000';
   constructor(injector: Injector, private _productsServiceProxy: ProductsServiceProxy) {
     super(injector);
 

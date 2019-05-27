@@ -4,19 +4,62 @@
     <div class="modal-content">
       <div class="modal-body">
         <div class="row">
-          <div class="col-4">
-
+          <div class="col-3">
+            <div class="text-center">
+              <img src="{{urlbase}}{{product?.image?.url}}" alt="{{product?.image?.name}}"
+                style="width:100px; height:100px" />
+            </div>
+            <div class="text-center">
+              <h6>
+                {{product?.name}}
+              </h6>
+            </div>
           </div>
-          <div class="col-8">
-
+          <div class="col-9">
+            <div class="d-flex justify-content-center align-items-center h-100">
+              <div class="row" style="min-width: 300px">
+                <div class="col-6">
+                  <div>Price</div>
+                  <div>Discount</div>
+                  <div>Available Address</div>
+                  <div>Added Date</div>
+                </div>
+                <div class="col-6">
+                  <div>{{product?.price}} vnd</div>
+                  <div>{{product?.discount}} vnd</div>
+                  <div>{{product?.availableAddress}}</div>
+                  <div>{{product?.addedDate |date: 'dd/MM/yyyy'}}</div>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+        <div class="row">
+          <p-table [value]="product?.biddings">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Supplier Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Fax</th>
+                <th>Status</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-bidding>
+              <tr>
+                <td>{{bidding.name}}</td>
+                <td>{{bidding.email}}</td>
+                <td>{{bidding.phone}}</td>
+                <td>{{bidding.string}}</td>
+                <td>{{bidding.Status}}</td>
+              </tr>
+            </ng-template>
+          </p-table>
         </div>
       </div>
 
       <div class="modal-footer">
         <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
-
       </div>
     </div>
-
   </div>
