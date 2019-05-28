@@ -145,6 +145,15 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
     // những người đó có isRoleActionPC = true. Lúc đó UI sẽ hiển thị cho phép action
     public isRoleActionPC = false;
 
+    public myConfigStyleHeader: any = {
+        'font-size': '11px'
+    };
+
+    public myConfigStyle: any = {
+        'font-size': '11px'
+    };
+
+    public header;
 
 
     constructor(
@@ -173,6 +182,18 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
             this.init();
         });
     }
+
+    /**
+     * onScrollX
+     * @param event
+     */
+    public onScrollX(event): void {
+        this.myConfigStyleHeader = {
+            ...this.myConfigStyle,
+            left: this.header ? `${this.header.getBoundingClientRect().left}px` : 'auto'
+        };
+    }
+
 
     /**
      * Hàm get danh sách SupplierCategory

@@ -143,6 +143,17 @@ export class ProductCategoryComponent extends AppComponentBase implements AfterV
         }
     ];
 
+    public myConfigStyleHeader: any = {
+        'font-size': '11px'
+    };
+
+    public myConfigStyle: any = {
+        'font-size': '11px'
+    };
+
+    public header;
+
+
     constructor(
         injector: Injector,
         private _router: Router,
@@ -168,6 +179,17 @@ export class ProductCategoryComponent extends AppComponentBase implements AfterV
         setTimeout(() => {
             this.init();
         });
+    }
+
+    /**
+     * onScrollX
+     * @param event
+     */
+    public onScrollX(event): void {
+        this.myConfigStyleHeader = {
+            ...this.myConfigStyle,
+            left: this.header ? `${this.header.getBoundingClientRect().left}px` : 'auto'
+        };
     }
 
     /**
