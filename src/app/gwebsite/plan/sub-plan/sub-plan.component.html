@@ -139,9 +139,9 @@
           <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
             <!-- perfect-scrollbar, https://www.npmjs.com/package/ngx-perfect-scrollbar -->
             <perfect-scrollbar [config]="{suppressScrollX: false}" (psScrollX)="onScrollX($event)">
-              <p-table #dataTable (onLazyLoad)="getSubPlans($event)" [scrollable]="true"
-                [value]="primengTableHelper.records" rows="{{primengTableHelper.defaultRecordsCountPerPage}}"
-                [paginator]="false" [lazy]="true" [responsive]="primengTableHelper.isResponsive">
+              <p-table #dataTable (onLazyLoad)="getSubPlans($event)" [value]="primengTableHelper.records"
+                rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
+                [responsive]="primengTableHelper.isResponsive">
                 <ng-template pTemplate="header">
                   <tr>
                     <th pSortableColumn="ordinalNumber" style="width: 90px; text-align: center">
@@ -198,7 +198,7 @@
                 <ng-template pTemplate="body" let-record="$implicit" let-index="rowIndex">
                   <tr class="text-center">
                     <td style="width: 90px">
-                      <span class="ui-column-title">{{l('Ordinal Number')}}</span>
+                      <span class="ui-column-title">{{l('Number')}}</span>
                       <span title="{{record.ordinalNumber}}">{{truncateString(index + 1)}}</span>
                     </td>
                     <td style="width: 150px">

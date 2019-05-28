@@ -150,6 +150,16 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
     ];
     public isRoleApprovedMan = false;
 
+    public myConfigStyleHeader: any = {
+        'font-size': '11px'
+    };
+
+    public myConfigStyle: any = {
+        'font-size': '11px'
+    };
+
+    public header;
+
     constructor(
         injector: Injector,
         private _router: Router,
@@ -177,6 +187,17 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
         setTimeout(() => {
             this.init();
         });
+    }
+
+    /**
+     * onScrollX
+     * @param event
+     */
+    public onScrollX(event): void {
+        this.myConfigStyleHeader = {
+            ...this.myConfigStyle,
+            left: this.header ? `${this.header.getBoundingClientRect().left}px` : 'auto'
+        };
     }
 
     /**
