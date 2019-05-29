@@ -11,7 +11,6 @@
                 </span>
             </div>
             <div class="col-xs-6 text-right">
-                <!-- Tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn -->
                 <button (click)="createProject()" *ngIf="isGranted('Pages.Administration.MenuClient.Create')"
                     class="btn btn-primary"><i class="fa fa-plus"></i> {{l("CreateNewProject")}}</button>
             </div>
@@ -21,23 +20,55 @@
     <div class="m-content">
         <div class="m-portlet m-portlet--mobile">
             <div class="m-portlet__body">
-                <form autocomplete="off">
+                <form autocomplete="off" (ngSubmit)="searchProject()">
                     <div class="m-form m-form--label-align-right" id="TextsFilterForm">
-                        <div class="row align-items-center m--margin-bottom-10">
-                            <div class="col-sm-12">
-                                <div class="input-group">
-                                    <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control"
-                                        placeholder="{{l('SearchWithThreeDot')}}" type="text">
-                                    <span class="input-group-btn">
-                                        <button (click)="applyFilters()" class="btn btn-primary" type="submit"><i
-                                                class="icon-refresh"></i>
-                                            {{l("Refresh")}}</button>
-                                    </span>
+                        <!-- filter -->
+                        <div class="row m--margin-bottom-10">
+                            <div class="col-sm-6">
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Project Code:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <input type="text" name="projectCode" [(ngModel)]="projectIdFilter"
+                                            [placeholder]="'Project Code'" class="form-control">
+                                    </div>
                                 </div>
+
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Create Date:</span>
+                                    </div>
+                                    <!-- https://github.com/kekeh/mydatepicker/blob/master/README.md -->
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <my-date-picker class="flex" name="createDate" [placeholder]="'  Select a date'"
+                                            [options]="createDatePickerOptions" (dateChanged)="onDateChangedBy($event)">
+                                        </my-date-picker>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row align-items-center m-b-5">
+                                    <div class="col-4 col-sm-4">
+                                        <span class="float-right">Project Name:</span>
+                                    </div>
+                                    <div class="col-8 col-sm-8 col-lg-8">
+                                        <input type="text" name="projectName" [(ngModel)]="projectNameFilter"
+                                            [placeholder]="'Project Name'" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- search -->
+                        <div class="row align-items-center m--margin-bottom-10">
+                            <div class="col-sm-12 text-center">
+                                <button class="btn btn-primary" type="submit"><i class="icon-refresh"></i>
+                                    {{l("Search")}}</button>
                             </div>
                         </div>
                     </div>
                 </form>
+
                 <div class="row align-items-center">
                     <!--<Primeng-TurboTable-Start>-->
                     <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">

@@ -8,6 +8,8 @@ import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
 import { CreateOrEditProjectModalComponent } from './create-or-edit-project-modal/create-or-edit-project-modal.component';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
+import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-project',
@@ -29,6 +31,30 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
      * tạo các biến dể filters
      */
     filterText: string;
+
+    public createDatePickerOptions: IMyDpOptions = {
+        selectorWidth: '220px',
+        dateFormat: 'dd/mm/yyyy',
+        showTodayBtn: true,
+        todayBtnTxt: 'Now',
+        showClearDateBtn: true,
+        alignSelectorRight: true,
+        openSelectorOnInputClick: true,
+        inline: false,
+        editableDateField: false,
+        selectionTxtFontSize: '13px',
+        height: '37px',
+        firstDayOfWeek: 'su',
+        sunHighlight: true,
+        disableSince: {
+            year: new Date().getFullYear(),
+            month: new Date().getMonth() + 1,
+            day: new Date().getDate() + 1
+        }
+    };
+    // public model: any = { date: { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate() } };
+    // public model = new Date();
+    public creatDateString = '';
 
     constructor(
         injector: Injector,
@@ -131,5 +157,14 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
     //hàm show view create Project
     createProject() {
         this.createOrEditModal.show();
+    }
+
+    public searchProject(): void {
+        console.log(this.creatDateString);
+    }
+
+    public onDateChangedBy(event: IMyDateModel): void {
+        const date = Object.assign({}, event);
+        this.creatDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
     }
 }
