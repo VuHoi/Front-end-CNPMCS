@@ -33,7 +33,7 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
     filterText: string;
 
     public createDatePickerOptions: IMyDpOptions = {
-        selectorWidth: '220px',
+        selectorWidth: '240px',
         dateFormat: 'dd/mm/yyyy',
         showTodayBtn: true,
         todayBtnTxt: 'Now',
@@ -55,6 +55,9 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
     // public model: any = { date: { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate() } };
     // public model = new Date();
     public creatDateString = '';
+    public projectCodeFilter = '';
+    public projectNameFilter = '';
+
 
     constructor(
         injector: Injector,
@@ -160,7 +163,8 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
     }
 
     public searchProject(): void {
-        console.log(this.creatDateString);
+        // filter, values default = ''
+        console.log(this.creatDateString + '--' + this.projectCodeFilter + '--' + this.projectNameFilter);
     }
 
     public onDateChangedBy(event: IMyDateModel): void {
