@@ -18,3 +18,9 @@ export class GetProjectOutput {
     project: ProjectDto;
     projects: ComboboxItemDto[];
 }
+
+export enum ApprovalStatusEnum {
+    Approved = 1,
+    AwaitingApproval = 2,
+    Close = 3
+}

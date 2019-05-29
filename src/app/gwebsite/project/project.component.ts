@@ -10,6 +10,8 @@ import { CreateOrEditProjectModalComponent } from './create-or-edit-project-moda
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import * as moment from 'moment';
+import { ApprovalStatusEnum } from './dto/project.dto';
+
 
 @Component({
     selector: 'app-project',
@@ -31,6 +33,11 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
      * tạo các biến dể filters
      */
     filterText: string;
+    //permission cho duyệt, thêm, xóa, sửa: Admin và Department tạo project đó.
+    // duyệt: chỉ mỗi Admin đc duyệt
+    // thêm, sửa, đóng: department tạo ra project đó và Admin.
+    public isPermissionApproved = false;
+    public isPermissionAddEditClose = false;
 
     public createDatePickerOptions: IMyDpOptions = {
         selectorWidth: '240px',
@@ -58,6 +65,83 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
     public projectCodeFilter = '';
     public projectNameFilter = '';
 
+    // -những dự án của năm cũ, sẽ tự động close (mỗi lần đến 1/1/newyear, sẽ trigger cho nó close hết projects năm cũ),
+    //      dù có đc approved hay chưa.
+    // -những dự án của năm hiện tại: chỉ dc phép close khi nó chưa đc approved.
+    public projectFakes = [
+        {
+            code: 'SA01',
+            name: 'Purchase early in the year',
+            createDate: '12/02/2017',
+            approvedDate: '',
+            status: 3
+        },
+        {
+            code: 'SA02',
+            name: 'Purchase for building B',
+            createDate: '20/04/2017',
+            approvedDate: '28/04/2017',
+            status: 3
+        },
+        {
+            code: 'ES01',
+            name: 'Purchase early in the year',
+            createDate: '12/02/2018',
+            approvedDate: '',
+            status: 3
+        },
+        {
+            code: 'ES02',
+            name: 'Purchase for building B',
+            createDate: '11/03/2019',
+            approvedDate: '',
+            status: 2
+        },
+        {
+            code: 'AD01',
+            name: 'Purchase for building B',
+            createDate: '11/03/2019',
+            approvedDate: '23/05/2019',
+            status: 1
+        },
+        {
+            code: 'AD02',
+            name: 'Purchase for building B',
+            createDate: '25/05/2019',
+            approvedDate: '',
+            status: 2
+        },
+        {
+            code: 'TE01',
+            name: 'Purchase for building B',
+            createDate: '11/03/2019',
+            approvedDate: '',
+            status: 2
+        },
+        {
+            code: 'TE02',
+            name: 'Purchase for building B',
+            createDate: '11/03/2019',
+            approvedDate: '23/05/2019',
+            status: 1
+        },
+        {
+            code: 'GH01',
+            name: 'Purchase for building B',
+            createDate: '25/05/2019',
+            approvedDate: '',
+            status: 2
+        },
+        {
+            code: 'GH02',
+            name: 'Purchase for building B',
+            createDate: '25/05/2019',
+            approvedDate: '',
+            status: 2
+        }
+    ];
+
+    public approvalStatusEnum = ApprovalStatusEnum;
 
     constructor(
         injector: Injector,
@@ -72,6 +156,8 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
      * Hàm xử lý trước khi View được init
      */
     ngOnInit(): void {
+        this.isPermissionApproved = true;
+        this.isPermissionAddEditClose = true;
     }
 
     /**
