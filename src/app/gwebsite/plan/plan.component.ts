@@ -178,6 +178,9 @@ export class PlanComponent extends AppComponentBase implements AfterViewInit, On
 
         //nếu là roles approved thì
         this.isRoleApprovedMan = true;
+
+        //gọi api get plan theo paging, sử dụng hàm getPlans để gọi
+        // hoặc gọi trong hàm init() bên dưới
     }
 
     /**

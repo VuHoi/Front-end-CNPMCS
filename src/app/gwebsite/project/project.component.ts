@@ -143,6 +143,14 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
 
     public approvalStatusEnum = ApprovalStatusEnum;
 
+    public myConfigStyleHeader: any = {
+        'font-size': '11px'
+    };
+    public myConfigStyle: any = {
+        'font-size': '11px'
+    };
+    public header;
+
     constructor(
         injector: Injector,
         private _router: Router,
@@ -185,17 +193,20 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
          * Sử dụng _apiService để call các api của backend
          */
 
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.get('api/MenuClient/GetMenuClientsByFilter',
-            [{ fieldName: 'Name', value: this.filterText }],
-            this.primengTableHelper.getSorting(this.dataTable),
-            this.primengTableHelper.getMaxResultCount(this.paginator, event),
-            this.primengTableHelper.getSkipCount(this.paginator, event),
-        ).subscribe(result => {
-            this.primengTableHelper.totalRecordsCount = result.totalCount;
-            this.primengTableHelper.records = result.items;
-            this.primengTableHelper.hideLoadingIndicator();
-        });
+        // this._apiService.get('api/MenuClient/GetMenuClientsByFilter',
+        //     [{ fieldName: 'Name', value: this.filterText }],
+        //     this.primengTableHelper.getSorting(this.dataTable),
+        //     this.primengTableHelper.getMaxResultCount(this.paginator, event),
+        //     this.primengTableHelper.getSkipCount(this.paginator, event),
+        // ).subscribe(result => {
+        //     this.primengTableHelper.totalRecordsCount = result.totalCount;
+        //     this.primengTableHelper.records = result.items;
+        //     this.primengTableHelper.hideLoadingIndicator();
+        // });
+
+        this.primengTableHelper.totalRecordsCount = 16;
+        this.primengTableHelper.records = this.projectFakes;
+        this.primengTableHelper.hideLoadingIndicator();
     }
 
     init(): void {
@@ -205,6 +216,16 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
             //reload lại gridview
             this.reloadPage();
         });
+    }
+    /**
+     * onScrollX
+     * @param event
+     */
+    public onScrollX(event): void {
+        this.myConfigStyleHeader = {
+            ...this.myConfigStyle,
+            left: this.header ? `${this.header.getBoundingClientRect().left}px` : 'auto'
+        };
     }
 
     reloadPage(): void {
@@ -256,5 +277,12 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
     public onDateChangedBy(event: IMyDateModel): void {
         const date = Object.assign({}, event);
         this.creatDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
+    }
+
+    public approvalProject(planId: number, $event: Event, index: number): void {
+        $event.stopPropagation();
+        this.projectFakes[index].status = ApprovalStatusEnum.Approved;
+
+        //call api approved cho planId này.
     }
 }
