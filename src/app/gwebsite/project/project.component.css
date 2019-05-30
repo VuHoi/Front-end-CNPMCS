@@ -19,3 +19,11 @@ div.btn-approved {
 /* td:hover {
   cursor: pointer;
 } */
+
+.red-text {
+  color: red;
+}
+
+.green-text {
+  color: green;
+}

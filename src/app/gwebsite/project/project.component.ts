@@ -35,9 +35,9 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
     filterText: string;
     //permission cho duyệt, thêm, xóa, sửa: Admin và Department tạo project đó.
     // duyệt: chỉ mỗi Admin đc duyệt
-    // thêm, sửa, đóng: department tạo ra project đó và Admin.
-    public isPermissionApproved = false;
-    public isPermissionAddEditClose = false;
+    // sửa, đóng: department tạo ra project đó và Admin.
+    // thêm: ai thêm cũng đc, ko phân quyền
+    public isPermissionEditClose = false;
 
     public createDatePickerOptions: IMyDpOptions = {
         selectorWidth: '240px',
@@ -164,8 +164,7 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
      * Hàm xử lý trước khi View được init
      */
     ngOnInit(): void {
-        this.isPermissionApproved = true;
-        this.isPermissionAddEditClose = true;
+        this.isPermissionEditClose = true;
     }
 
     /**
@@ -206,6 +205,11 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
 
         this.primengTableHelper.totalRecordsCount = 16;
         this.primengTableHelper.records = this.projectFakes;
+
+        this.primengTableHelper.records.forEach((item) => {
+            item.isEdit = false;
+        });
+
         this.primengTableHelper.hideLoadingIndicator();
     }
 
@@ -279,10 +283,39 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
         this.creatDateString = date.jsdate ? moment(date.jsdate).format('YYYY-MM-DDTHH:mm:ss') : '';
     }
 
-    public approvalProject(planId: number, $event: Event, index: number): void {
+    public actionEdit(row: any, $event: Event): void {
         $event.stopPropagation();
-        this.projectFakes[index].status = ApprovalStatusEnum.Approved;
+        row.isEdit = true;
+    }
 
-        //call api approved cho planId này.
+    public saveEditItem(id: number, row: any, $event: Event): void {
+        $event.stopPropagation();
+
+        if (this.isPermissionEditClose && row.name && row.name !== '') {
+            //call api edit name thông qua id truyền vào
+
+            // vì bên html đã tự bind [(ngModel)] vào row.name và row.note rồi, nên ở đây ta chỉ cần lấy ra giá trị để update
+            console.log(id + '---' + row.name);
+
+            //save thành công
+            row.isEdit = false;
+        }
+
+    }
+
+    public cancelEdit(row: any, $event: Event): void {
+        $event.stopPropagation();
+        row.isEdit = false;
+    }
+
+    public closeItem(id: number, row: any, $event: Event): void {
+        $event.stopPropagation();
+
+        if (this.isPermissionEditClose && row.status === ApprovalStatusEnum.AwaitingApproval) {
+            // dựa vào id, set status cho project là close
+
+            //sau khi set success
+            row.status = ApprovalStatusEnum.Close;
+        }
     }
 }

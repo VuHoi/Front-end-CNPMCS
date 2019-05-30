@@ -41,7 +41,7 @@
                                     </div>
                                     <!-- https://github.com/kekeh/mydatepicker/blob/master/README.md -->
                                     <div class="col-8 col-sm-8 col-lg-8">
-                                        <my-date-picker class="flex" name="createDate" [placeholder]="'  Select a date'"
+                                        <my-date-picker class="flex" name="createDate" [placeholder]="'  Select A Date'"
                                             [options]="createDatePickerOptions" (dateChanged)="onDateChangedBy($event)">
                                         </my-date-picker>
                                     </div>
@@ -103,7 +103,7 @@
                                             {{l('Status')}}
                                             <p-sortIcon field="status"></p-sortIcon>
                                         </th>
-                                        <th *ngIf="isRoleApprovedMan" style="width: 200px; text-align: center">
+                                        <th *ngIf="isPermissionEditClose" style="width: 150px; text-align: center">
                                             {{l('Action')}}</th>
                                     </tr>
                                 </ng-template>
@@ -120,7 +120,10 @@
                                         </td>
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Project Name')}}</span>
-                                            <span title="{{record.name}}">{{ record.name }}</span>
+                                            <span *ngIf="!record.isEdit"
+                                                title="{{record.name}}">{{ record.name }}</span>
+                                            <input *ngIf="record.isEdit" type="text" name="recordName"
+                                                [(ngModel)]="record.name" class="form-control">
                                         </td>
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Create Date')}}</span>
@@ -135,21 +138,25 @@
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Status')}}</span>
                                             <span
+                                                [ngClass]="{'red-text': record.status === approvalStatusEnum.AwaitingApproval,
+                                                            'green-text': record.status === approvalStatusEnum.Approved}"
                                                 title="{{record.status}}">{{ record.status === approvalStatusEnum.Approved ? 'Approved' : 
-                                                (record.status === approvalStatusEnum.AwaitingApproval ? 'Awaiting Approval' : 'Close') }}</span>
+                                                (record.status === approvalStatusEnum.AwaitingApproval ? 'Awaiting' : 'Close') }}</span>
                                         </td>
-                                        <td *ngIf="isPermissionApproved" style="width: 200px">
-                                            <!-- <button
-                                                class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
-                                                (click)="createOrEditModal.show(record.id)" title="{{l('Approved')}}">
-                                                <i class="fa fa-edit" [attr.aria-label]="l('Approved')"></i>
-                                            </button> -->
-                                            <button class="btn"
-                                                [ngClass]="{'btn-success': record.status === approvalStatusEnum.Approved, 'btn-danger': record.status !== approvalStatusEnum.Approved}"
+                                        <td *ngIf="isPermissionEditClose" style="width: 150px">
+                                            <button *ngIf="!record.isEdit" class="btn btn-primary"
+                                                (click)="actionEdit(record, $event)">Edit
+                                            </button>
+                                            <button *ngIf="record.isEdit" class="btn btn-success"
+                                                (click)="saveEditItem(record.id, record, $event)">Save
+                                            </button>
+                                            <button *ngIf="record.isEdit" class="btn btn-danger"
+                                                (click)="cancelEdit(record, $event)">Cancel
+                                            </button>
+                                            <button *ngIf="!record.isEdit"
                                                 [disabled]="record.status !== approvalStatusEnum.AwaitingApproval"
-                                                (click)="approvalProject(record.id, $event, index)"
-                                                title="{{l(record.status === approvalStatusEnum.Approved ? 'Approved' : 
-                                                (record.status === approvalStatusEnum.AwaitingApproval ? 'Awaiting Approval' : 'Close'))}}">Approved
+                                                class="btn btn-warning" (click)="closeItem(record.id, record, $event)">
+                                                Close
                                             </button>
                                         </td>
                                     </tr>
