@@ -95,9 +95,9 @@
                                             {{l('Create Date')}}
                                             <p-sortIcon field="createDate"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="approvedDate" style="width: 150px; text-align: center">
-                                            {{l('Approved Date')}}
-                                            <p-sortIcon field="approvedDate"></p-sortIcon>
+                                        <th pSortableColumn="activeDate" style="width: 150px; text-align: center">
+                                            {{l('Active Date')}}
+                                            <p-sortIcon field="activeDate"></p-sortIcon>
                                         </th>
                                         <th pSortableColumn="status" style="width: 150px; text-align: center">
                                             {{l('Status')}}
@@ -130,18 +130,17 @@
                                             <span title="{{record.createDate}}">{{ record.createDate }}</span>
                                         </td>
                                         <td style="width: 150px">
-                                            <span class="ui-column-title">{{l('Approved Date')}}</span>
+                                            <span class="ui-column-title">{{l('Active Date')}}</span>
                                             <span
-                                                title="{{record.approvedDate}}">{{ record.approvedDate ? record.approvedDate : 'N/A' }}</span>
+                                                title="{{record.activeDate}}">{{ record.activeDate ? record.activeDate : 'N/A' }}</span>
                                         </td>
 
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Status')}}</span>
-                                            <span
-                                                [ngClass]="{'red-text': record.status === approvalStatusEnum.AwaitingApproval,
-                                                            'green-text': record.status === approvalStatusEnum.Approved}"
-                                                title="{{record.status}}">{{ record.status === approvalStatusEnum.Approved ? 'Approved' : 
-                                                (record.status === approvalStatusEnum.AwaitingApproval ? 'Awaiting' : 'Close') }}</span>
+                                            <span [ngClass]="{'red-text': record.status === approvalStatusEnum.Inactive,
+                                                            'green-text': record.status === approvalStatusEnum.Active}"
+                                                title="{{record.status}}">{{ record.status === approvalStatusEnum.Active ? 'Active' : 
+                                                (record.status === approvalStatusEnum.Inactive ? 'Inactive' : 'Close') }}</span>
                                         </td>
                                         <td *ngIf="isPermissionEditClose" style="width: 150px">
                                             <button *ngIf="!record.isEdit" class="btn btn-primary"
@@ -154,7 +153,7 @@
                                                 (click)="cancelEdit(record, $event)">Cancel
                                             </button>
                                             <button *ngIf="!record.isEdit"
-                                                [disabled]="record.status !== approvalStatusEnum.AwaitingApproval"
+                                                [disabled]="record.status !== approvalStatusEnum.Inactive"
                                                 class="btn btn-warning" (click)="closeItem(record.id, record, $event)">
                                                 Close
                                             </button>

@@ -20,7 +20,7 @@ export class GetProjectOutput {
 }
 
 export enum ApprovalStatusEnum {
-    Approved = 1,
-    AwaitingApproval = 2,
+    Active = 1,
+    Inactive = 2,
     Close = 3
 }

@@ -73,70 +73,70 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
             code: 'SA01',
             name: 'Purchase early in the year',
             createDate: '12/02/2017',
-            approvedDate: '',
+            activeDate: '',
             status: 3
         },
         {
             code: 'SA02',
             name: 'Purchase for building B',
             createDate: '20/04/2017',
-            approvedDate: '28/04/2017',
+            activeDate: '28/04/2017',
             status: 3
         },
         {
             code: 'ES01',
             name: 'Purchase early in the year',
             createDate: '12/02/2018',
-            approvedDate: '',
+            activeDate: '',
             status: 3
         },
         {
             code: 'ES02',
             name: 'Purchase for building B',
             createDate: '11/03/2019',
-            approvedDate: '',
+            activeDate: '',
             status: 2
         },
         {
             code: 'AD01',
             name: 'Purchase for building B',
             createDate: '11/03/2019',
-            approvedDate: '23/05/2019',
+            activeDate: '23/05/2019',
             status: 1
         },
         {
             code: 'AD02',
             name: 'Purchase for building B',
             createDate: '25/05/2019',
-            approvedDate: '',
+            activeDate: '',
             status: 2
         },
         {
             code: 'TE01',
             name: 'Purchase for building B',
             createDate: '11/03/2019',
-            approvedDate: '',
+            activeDate: '',
             status: 2
         },
         {
             code: 'TE02',
             name: 'Purchase for building B',
             createDate: '11/03/2019',
-            approvedDate: '23/05/2019',
+            activeDate: '23/05/2019',
             status: 1
         },
         {
             code: 'GH01',
             name: 'Purchase for building B',
             createDate: '25/05/2019',
-            approvedDate: '',
+            activeDate: '',
             status: 2
         },
         {
             code: 'GH02',
             name: 'Purchase for building B',
             createDate: '25/05/2019',
-            approvedDate: '',
+            activeDate: '',
             status: 2
         }
     ];
@@ -311,7 +311,7 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
     public closeItem(id: number, row: any, $event: Event): void {
         $event.stopPropagation();
 
-        if (this.isPermissionEditClose && row.status === ApprovalStatusEnum.AwaitingApproval) {
+        if (this.isPermissionEditClose && row.status === ApprovalStatusEnum.Inactive) {
             // dựa vào id, set status cho project là close
 
             //sau khi set success
