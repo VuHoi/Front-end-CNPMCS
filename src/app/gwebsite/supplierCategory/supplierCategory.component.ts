@@ -116,7 +116,7 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
     ngAfterViewInit(): void {
         setTimeout(() => {
             // this.init();
-            // this.getSupplierCategorys();
+
         });
     }
 
@@ -136,7 +136,7 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
      * Hàm get danh sách SupplierCategory
      * @param event
      */
-    getSupplierCategorys(event?: LazyLoadEvent, event2?: Event) {
+    getSupplierCategorys(event?: LazyLoadEvent, event2?: Event, isSearch?: boolean) {
         if (!this.paginator || !this.dataTable) {
             return;
         }
@@ -158,6 +158,11 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
         /**
          * Sử dụng _apiService để call các api của backend
          */
+        if (isSearch) {
+            this.paginator.first = 0;
+            event.first = 0;
+        }
+
         this._apiService.get('api/Supplier/GetSupplierTypesWithFilter',
             [
                 { fieldName: 'code', value: this.supplierCatalogCode },
