@@ -27,10 +27,15 @@
                         <input class="form-control" type="text" name="pjCreateDate" [value]="pjCreateDate"
                             [attr.disabled]="true">
                     </div>
+                    <div *ngIf="isCheckActive" class="form-group">
+                        <label>{{l("Active Date")}} </label>
+                        <input class="form-control" type="text" name="pjActiveDate" [value]="pjActiveDate"
+                            [attr.disabled]="true">
+                    </div>
                     <div class="form-group">
                         <label>{{l("Active Project Now")}} </label>
                         <input class="form-control largerCheckbox" type="checkbox" name="status"
-                            [(ngModel)]="isCheckActive" title="Active now">
+                            [(ngModel)]="isCheckActive" title="Active now" (change)="activeNewPrj($event)">
                     </div>
                 </div>
                 <div class="modal-footer">

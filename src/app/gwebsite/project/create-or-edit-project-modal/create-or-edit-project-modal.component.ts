@@ -32,6 +32,7 @@ export class CreateOrEditProjectModalComponent extends AppComponentBase {
     public pjCode = '';
     public pjName = '';
     public pjCreateDate = '';
+    public pjActiveDate = '';
     public isCheckActive = false;
     public statusEnum = ApprovalStatusEnum;
     public newProject: NewPJDto;
@@ -112,5 +113,11 @@ export class CreateOrEditProjectModalComponent extends AppComponentBase {
     close(): void {
         this.active = false;
         this.modal.hide();
+    }
+
+    activeNewPrj(event: Event): void {
+        if (this.isCheckActive) {
+            this.pjActiveDate = this.pjCreateDate;
+        }
     }
 }
