@@ -20,7 +20,7 @@
     <div class="m-content">
         <div class="m-portlet m-portlet--mobile">
             <div class="m-portlet__body">
-                <form autocomplete="off" (ngSubmit)="searchSupplierCatalog()">
+                <form autocomplete="off" (ngSubmit)="getSupplierCategorys()">
                     <div class="m-form m-form--label-align-right" id="TextsFilterForm">
                         <!-- filter -->
                         <div class="row m--margin-bottom-10">
@@ -105,7 +105,7 @@
                                             <p-sortIcon field="status"></p-sortIcon>
                                         </th>
                                         <th pSortableColumn="isCloseDelete" style="width: 150px; text-align: center">
-                                            {{l('Is Close/Remove')}}
+                                            {{l('Has Supplier')}}
                                             <p-sortIcon field="isCloseDelete"></p-sortIcon>
                                         </th>
                                         <th *ngIf="isRoleActionPC" style="width: 230px; text-align: center">
@@ -146,8 +146,8 @@
                                                 title="{{record.status}}">{{ record.status === statusEnum.Close ? 'Close' : 'Open' }}</span>
                                         </td>
                                         <td style="width: 150px">
-                                            <span class="ui-column-title">{{l('Is Close Delete')}}</span>
-                                            <span>{{ record.isInCludeProduct ? 'No' : 'Yes' }}</span>
+                                            <span class="ui-column-title">{{l('Has Supplier')}}</span>
+                                            <span>{{ record.isInCludeSupplier ? 'No' : 'Yes' }}</span>
                                         </td>
                                         <!-- <td *ngIf="isRoleActionPC" class="row m-l-60"> -->
                                         <td *ngIf="isRoleActionPC" style="width: 230px">

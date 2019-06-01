@@ -74,70 +74,6 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
             note: 'Electronic products such as computers',
             status: 1,
             isInCludeSupplier: false
-        },
-        {
-            id: 3,
-            code: 'BM003',
-            name: 'Building Materials',
-            note: 'Electronic products such as computers',
-            status: 2,
-            isInCludeSupplier: false
-        },
-        {
-            id: 4,
-            code: 'MA004',
-            name: 'Mobile',
-            note: 'Electronic products such as computers',
-            status: 1,
-            isInCludeSupplier: false
-        },
-        {
-            id: 5,
-            code: 'WA005',
-            name: 'Wooden',
-            note: 'Electronic products such as computers',
-            status: 2,
-            isInCludeSupplier: false
-        },
-        {
-            id: 6,
-            code: 'FA006',
-            name: 'Food And Drink',
-            note: 'Electronic products such as computers',
-            status: 1,
-            isInCludeSupplier: true
-        },
-        {
-            id: 7,
-            code: 'VE007',
-            name: 'Vehicle',
-            note: 'Electronic products such as computers',
-            status: 1,
-            isInCludeSupplier: true
-        },
-        {
-            id: 8,
-            code: 'CS008',
-            name: 'Cleaning Stuff',
-            note: 'Electronic products such as computers',
-            status: 2,
-            isInCludeSupplier: false
-        },
-        {
-            id: 9,
-            code: 'TO009',
-            name: 'Tool',
-            note: 'Electronic products such as computers',
-            status: 2,
-            isInCludeSupplier: false
-        },
-        {
-            id: 10,
-            code: 'CS010',
-            name: 'Costume',
-            note: 'Electronic products such as computers',
-            status: 1,
-            isInCludeSupplier: true
         }
     ];
 
@@ -179,7 +115,8 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
      */
     ngAfterViewInit(): void {
         setTimeout(() => {
-            this.init();
+            // this.init();
+            // this.getSupplierCategorys();
         });
     }
 
@@ -203,33 +140,51 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
         if (!this.paginator || !this.dataTable) {
             return;
         }
-
         //show loading trong gridview
         this.primengTableHelper.showLoadingIndicator();
 
+        if (!this.supplierCatalogCode || this.supplierCatalogCode === '') {
+            this.supplierCatalogCode = '';
+        }
+        if (!this.supplierCatalogName || this.supplierCatalogName === '') {
+            this.supplierCatalogName = '';
+        }
+        if (this.status) {
+            this.status = +this.status;
+        }
+        if (!this.status || (this.status !== StatusEnum.Open && this.status !== StatusEnum.Close)) {
+            this.status = StatusEnum.All;
+        }
         /**
          * Sử dụng _apiService để call các api của backend
          */
+        this._apiService.get('api/Supplier/GetSupplierTypesWithFilter',
+            [
+                { fieldName: 'code', value: this.supplierCatalogCode },
+                { fieldName: 'name', value: this.supplierCatalogName },
+                { fieldName: 'status', value: this.status }
+            ],
+            this.primengTableHelper.getSorting(this.dataTable),
+            this.primengTableHelper.getMaxResultCount(this.paginator, event),
+            this.primengTableHelper.getSkipCount(this.paginator, event),
+        ).subscribe(result => {
+            this.primengTableHelper.totalRecordsCount = result.totalCount;
+            this.primengTableHelper.records = result.items;
+            this.primengTableHelper.records.forEach((item) => {
+                item.isEdit = false;
+            });
+            this.primengTableHelper.hideLoadingIndicator();
+        });
+        this.reloadPage();
 
-        // this._apiService.get('api/MenuClient/GetMenuClientsByFilter',
-        //     [{ fieldName: 'Name', value: this.filterText }],
-        //     this.primengTableHelper.getSorting(this.dataTable),
-        //     this.primengTableHelper.getMaxResultCount(this.paginator, event),
-        //     this.primengTableHelper.getSkipCount(this.paginator, event),
-        // ).subscribe(result => {
-        //     this.primengTableHelper.totalRecordsCount = result.totalCount;
-        //     this.primengTableHelper.records = result.items;
-        //     this.primengTableHelper.hideLoadingIndicator();
+        // this.primengTableHelper.totalRecordsCount = 14;
+        // this.primengTableHelper.records = this.supplierCatalogFakes;
+
+        // this.primengTableHelper.records.forEach((item) => {
+        //     item.isEdit = false;
         // });
 
-        this.primengTableHelper.totalRecordsCount = 14;
-        this.primengTableHelper.records = this.supplierCatalogFakes;
-
-        this.primengTableHelper.records.forEach((item) => {
-            item.isEdit = false;
-        });
-
-        this.primengTableHelper.hideLoadingIndicator();
+        // this.primengTableHelper.hideLoadingIndicator();
     }
 
     init(): void {
