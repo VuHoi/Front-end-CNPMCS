@@ -37,7 +37,7 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
     // duyệt: chỉ mỗi Admin đc duyệt
     // sửa, đóng: department tạo ra project đó và Admin.
     // thêm: ai thêm cũng đc, ko phân quyền
-    public isPermissionEditClose = false;
+    public isPermissionEditCloseActive = false;
 
     public createDatePickerOptions: IMyDpOptions = {
         selectorWidth: '240px',
@@ -164,7 +164,7 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
      * Hàm xử lý trước khi View được init
      */
     ngOnInit(): void {
-        this.isPermissionEditClose = true;
+        this.isPermissionEditCloseActive = true;
     }
 
     /**
@@ -284,14 +284,12 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
     }
 
     public actionEdit(row: any, $event: Event): void {
-        $event.stopPropagation();
+        // $event.stopPropagation();
         row.isEdit = true;
     }
 
     public saveEditItem(id: number, row: any, $event: Event): void {
-        $event.stopPropagation();
-
-        if (this.isPermissionEditClose && row.name && row.name !== '') {
+        if (this.isPermissionEditCloseActive && row.name && row.name !== '') {
             //call api edit name thông qua id truyền vào
 
             // vì bên html đã tự bind [(ngModel)] vào row.name và row.note rồi, nên ở đây ta chỉ cần lấy ra giá trị để update
@@ -304,18 +302,25 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
     }
 
     public cancelEdit(row: any, $event: Event): void {
-        $event.stopPropagation();
         row.isEdit = false;
     }
 
     public closeItem(id: number, row: any, $event: Event): void {
-        $event.stopPropagation();
-
-        if (this.isPermissionEditClose && row.status === ApprovalStatusEnum.Inactive) {
+        if (this.isPermissionEditCloseActive && row.status === ApprovalStatusEnum.Inactive) {
             // dựa vào id, set status cho project là close
 
             //sau khi set success
             row.status = ApprovalStatusEnum.Close;
+        }
+    }
+
+    //chỉ đc active những cái inactive, còn ko đc inactive ngược lại
+    public activeItem(id: number, row: any, $event: Event): void {
+        if (this.isPermissionEditCloseActive && row.status === ApprovalStatusEnum.Inactive) {
+            // dựa vào id, set status cho project là close
+
+            //sau khi set success
+            row.status = ApprovalStatusEnum.Active;
         }
     }
 }

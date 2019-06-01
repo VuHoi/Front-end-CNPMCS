@@ -103,7 +103,8 @@
                                             {{l('Status')}}
                                             <p-sortIcon field="status"></p-sortIcon>
                                         </th>
-                                        <th *ngIf="isPermissionEditClose" style="width: 150px; text-align: center">
+                                        <th *ngIf="isPermissionEditCloseActive"
+                                            style="width: 230px; text-align: center">
                                             {{l('Action')}}</th>
                                     </tr>
                                 </ng-template>
@@ -142,7 +143,7 @@
                                                 title="{{record.status}}">{{ record.status === approvalStatusEnum.Active ? 'Active' : 
                                                 (record.status === approvalStatusEnum.Inactive ? 'Inactive' : 'Close') }}</span>
                                         </td>
-                                        <td *ngIf="isPermissionEditClose" style="width: 150px">
+                                        <td *ngIf="isPermissionEditCloseActive" style="width: 230px">
                                             <button *ngIf="!record.isEdit" class="btn btn-primary"
                                                 (click)="actionEdit(record, $event)">Edit
                                             </button>
@@ -156,6 +157,11 @@
                                                 [disabled]="record.status !== approvalStatusEnum.Inactive"
                                                 class="btn btn-warning" (click)="closeItem(record.id, record, $event)">
                                                 Close
+                                            </button>
+                                            <button *ngIf="!record.isEdit"
+                                                [disabled]="record.status !== approvalStatusEnum.Inactive"
+                                                class="btn btn-success" (click)="activeItem(record.id, record, $event)">
+                                                Active
                                             </button>
                                         </td>
                                     </tr>
