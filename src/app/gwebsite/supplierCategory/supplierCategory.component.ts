@@ -136,7 +136,7 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
      * Hàm get danh sách SupplierCategory
      * @param event
      */
-    getSupplierCategorys(event?: LazyLoadEvent) {
+    getSupplierCategorys(event?: LazyLoadEvent, event2?: Event) {
         if (!this.paginator || !this.dataTable) {
             return;
         }
@@ -175,16 +175,7 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
             });
             this.primengTableHelper.hideLoadingIndicator();
         });
-        this.reloadPage();
-
-        // this.primengTableHelper.totalRecordsCount = 14;
-        // this.primengTableHelper.records = this.supplierCatalogFakes;
-
-        // this.primengTableHelper.records.forEach((item) => {
-        //     item.isEdit = false;
-        // });
-
-        // this.primengTableHelper.hideLoadingIndicator();
+        event2.preventDefault();
     }
 
     init(): void {
