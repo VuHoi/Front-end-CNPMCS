@@ -4,7 +4,8 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
 import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { ProjectDto } from '../dto/project.dto';
+import { ProjectDto, ApprovalStatusEnum, NewPJDto } from '../dto/project.dto';
+import * as moment from 'moment';
 
 @Component({
     selector: 'createOrEditProjectModal',
@@ -28,6 +29,13 @@ export class CreateOrEditProjectModalComponent extends AppComponentBase {
     project: ProjectDto = new ProjectDto();
     projects: ComboboxItemDto[] = [];
 
+    public pjCode = '';
+    public pjName = '';
+    public pjCreateDate = '';
+    public isCheckActive = false;
+    public statusEnum = ApprovalStatusEnum;
+    public newProject: NewPJDto;
+
     constructor(
         injector: Injector,
         private _apiService: WebApiServiceProxy
@@ -37,9 +45,16 @@ export class CreateOrEditProjectModalComponent extends AppComponentBase {
 
     show(projectId?: number | null | undefined): void {
         this.active = true;
+        this.saving = false;
+
+        this.pjCode = '';
+        this.pjName = '';
+        this.isCheckActive = false;
+
+        let now = new Date();
+        this.pjCreateDate = moment(now).format('DD/MM/YYYY');
 
         this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', projectId).subscribe(result => {
-            // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
             this.project = result.menuClient;
             this.projects = result.menuClients;
             this.modal.show();
@@ -50,12 +65,25 @@ export class CreateOrEditProjectModalComponent extends AppComponentBase {
     }
 
     save(): void {
-        let input = this.project;
-        this.saving = true;
-        if (input.id) {
-            this.updateProject();
-        } else {
-            this.insertProject();
+        if (this.pjCode && this.pjCode !== '' && this.pjName && this.pjName !== '') {
+            this.saving = true;
+
+            let status = this.isCheckActive ? this.statusEnum.Active : this.statusEnum.Inactive;
+
+            this.newProject = new NewPJDto(this.pjCode, this.pjName, status);
+
+            console.log(this.newProject.code + '--' + this.newProject.name
+                + '--' + this.newProject.status);
+
+            // this.insertProject();
+
+            // call api create product category theo code,nam,status
+            // add xuống, id tự tạo
+
+            //trước khi add nhớ check duplicat code.
+
+
+            this.close();
         }
     }
 
