@@ -245,16 +245,17 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
 
     //chỉ những người có permission mới đc phép thực thi action với PC
     public actionPCItem(id: number, row: any): void {
+        this.primengTableHelper.showLoadingIndicator();
         if (this.isRoleActionPC) {
             //call api edit status close/open cho Product category này thông qua id truyền vào
             this._apiService.put(`api/SupplierType/SetStatusSupplierTypeAsync/status/${id}`, '')
                 .subscribe(result => {
-                    if (+result.status === 1 || +result.status === 2) {
+                    if (result && (+result.status === 1 || +result.status === 2)) {
                         row.status = row.status === this.statusEnum.Open ? this.statusEnum.Close : this.statusEnum.Open;
                     }
                 });
         }
-
+        this.primengTableHelper.hideLoadingIndicator();
     }
 
     //chỉ những người có permission mới đc phép thực thi action với PC
