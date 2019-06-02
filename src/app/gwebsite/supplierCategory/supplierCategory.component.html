@@ -147,7 +147,7 @@
                                         </td>
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Has Supplier')}}</span>
-                                            <span>{{ record.isInCludeSupplier ? 'No' : 'Yes' }}</span>
+                                            <span>{{ record.isInCludeSupplier ? 'Yes' : 'No' }}</span>
                                         </td>
                                         <!-- <td *ngIf="isRoleActionPC" class="row m-l-60"> -->
                                         <td *ngIf="isRoleActionPC" style="width: 230px">
@@ -163,8 +163,8 @@
                                                 Close
                                             </button>
                                             <button *ngIf="!record.isEdit" class="btn btn-danger"
-                                                [disabled]="record.isInCludeSupplier" type="button"
-                                                (click)="removePcItem(record.id, record, index)"
+                                                [disabled]="record.status === statusEnum.Open && record.isInCludeSupplier"
+                                                type="button" (click)="removePcItem(record.id, record, index)"
                                                 title="{{record.isInCludeSupplier ? 'Cannot remove supplier catalog exist reference': 'Delete this'}}">
                                                 Remove</button>
 

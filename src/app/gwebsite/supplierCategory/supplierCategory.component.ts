@@ -247,8 +247,12 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
     public actionPCItem(id: number, row: any): void {
         if (this.isRoleActionPC) {
             //call api edit status close/open cho Product category này thông qua id truyền vào
-
-            row.status = row.status === this.statusEnum.Open ? this.statusEnum.Close : this.statusEnum.Open;
+            this._apiService.put(`api/SupplierType/SetStatusSupplierTypeAsync/status/${id}`, '')
+                .subscribe(result => {
+                    if (+result.status === 1 || +result.status === 2) {
+                        row.status = row.status === this.statusEnum.Open ? this.statusEnum.Close : this.statusEnum.Open;
+                    }
+                });
         }
 
     }
