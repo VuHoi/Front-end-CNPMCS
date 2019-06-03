@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -8,7 +8,7 @@ import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
 import { CreateOrEditSupplierCategoryModalComponent } from './create-or-edit-supplierCategory-modal/create-or-edit-supplierCategory-modal.component';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
-import { NewSupDto, StatusEnum } from './dto/supplierCategory.dto';
+import { NewSupDto, StatusEnum, UpSupDto } from './dto/supplierCategory.dto';
 
 
 @Component({
@@ -17,7 +17,7 @@ import { NewSupDto, StatusEnum } from './dto/supplierCategory.dto';
     styleUrls: ['./supplierCategory.component.css'],
     animations: [appModuleAnimation()]
 })
-export class SupplierCategoryComponent extends AppComponentBase implements AfterViewInit, OnInit {
+export class SupplierCategoryComponent extends AppComponentBase implements AfterViewInit, OnInit, OnChanges {
 
     /**
      * @ViewChild là dùng get control và call thuộc tính, functions của control đó
@@ -91,6 +91,9 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
 
     public header;
 
+    public oldName;
+    public oldNote;
+
 
     constructor(
         injector: Injector,
@@ -108,6 +111,12 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
         //get permission open/close PC item for this user:
         // nếu kq trả về true, nghĩa là đc phép action thì gán, để UI xuất hiện action
         this.isRoleActionPC = true;
+    }
+
+    public ngOnChanges(changes: SimpleChanges): void {
+        // if (this.createOrEditModal.newSupplierCategory.code) {
+
+        // }
     }
 
     /**
@@ -252,6 +261,7 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
                 .subscribe(result => {
                     if (result && (+result.status === 1 || +result.status === 2)) {
                         row.status = row.status === this.statusEnum.Open ? this.statusEnum.Close : this.statusEnum.Open;
+                        this.notify.info(this.l('UpdatedSuccessfully'));
                     }
                 });
         }
@@ -260,26 +270,48 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
 
     //chỉ những người có permission mới đc phép thực thi action với PC
     public editItem(id: number, row: any): void {
-        if (this.isRoleActionPC && row.name && row.name !== '') {
-            //call api edit name, note cho Product category này thông qua id truyền vào
-
-            // vì bên html đã tự [(ngModel)] vào row.name và row.note rồi, nên ở đây ta chỉ cần lấy ra giá trị để update
-            console.log(id + '---' + row.name + '---' + row.note);
-
-            //save thành công
+        this.primengTableHelper.showLoadingIndicator();
+        if (row.name !== this.oldName && row.note !== this.oldNote) {
+            if (this.isRoleActionPC && row.name && row.name !== '') {
+                const ob = new UpSupDto(id, row.name, row.note);
+                this._apiService.put('api/SupplierType/EditNameSupplierTypeAsync/edit', ob)
+                    .subscribe(result => {
+                        if (result && result.code === row.code && result.name !== '') {
+                            //save thành công
+                            row.isEdit = false;
+                            this.notify.info(this.l('UpdatedSuccessfully'));
+                            // vì bên html đã tự [(ngModel)] vào row.name và row.note rồi, nên ở đây ta chỉ cần lấy ra giá trị để update
+                        }
+                    });
+            }
+        } else {
             row.isEdit = false;
+            this.notify.info(this.l('Nothing changes to update'));
         }
+        this.primengTableHelper.hideLoadingIndicator();
+    }
 
+    setEditrow(row: any): void {
+        this.oldName = row.name;
+        this.oldNote = row.note;
+        row.isEdit = true;
+    }
+    setCancelRow(row: any): void {
+        row.name = this.oldName;
+        row.note = this.oldNote;
+        row.isEdit = false;
     }
 
     //chỉ những người có permission mới đc phép thực thi action với PC
     public removePcItem(id: number, row: any, index: number): void {
+        this.primengTableHelper.showLoadingIndicator();
         if (this.isRoleActionPC) {
-            //call api delete Product category này thông qua id truyền vào
-            //remove xong load lai table
-
-            // tạm thời UI ta chỉ xóa tạm list fake data đi
-            this.supplierCatalogFakes.splice(index, 1);
+            this._apiService.deleteGroup3(`api/SupplierType/DeleteSupplierTypeAsync/${id}`)
+                .subscribe(() => {
+                    this.primengTableHelper.records.splice(index, 1);
+                    this.notify.info(this.l('DeletedSuccessfully'));
+                });
         }
+        this.primengTableHelper.hideLoadingIndicator();
     }
 }

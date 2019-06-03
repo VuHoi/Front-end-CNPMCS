@@ -62,37 +62,29 @@ export class CreateOrEditSupplierCategoryModalComponent extends AppComponentBase
     }
 
     save(): void {
-
-        if (this.pcCode && this.pcCode !== '') {
-
+        this.primengTableHelper.showLoadingIndicator();
+        if (this.pcCode && this.pcCode !== '' && this.pcName && this.pcName !== '') {
             this.saving = true;
-
             let status = this.isCheckStatus ? StatusEnum.Open : StatusEnum.Close;
 
             this.newSupplierCategory = new NewSupDto(this.pcCode, this.pcName, status, this.pcNote);
 
-            console.log(this.newSupplierCategory.code + '--' + this.newSupplierCategory.name
-                + '--' + this.newSupplierCategory.status + '--' + this.newSupplierCategory.note);
-
-            // this.insertSupplierCategory();
-
-            // call api create product category theo code,nam,status
-            // add xuống, id tự tạo
+            this.insertSupplierCategory();
 
             //trước khi add nhớ check duplicat code.
-
-
-            this.close();
         }
+        this.primengTableHelper.hideLoadingIndicator();
     }
 
     insertSupplierCategory() {
-         this._apiService.post('api/MenuClient/CreateMenuClient', this.newSupplierCategory)
+        this._apiService.post('api/Supplier/CreateSupplierCatalog', this.newSupplierCategory)
             .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
+            .subscribe(result => {
+                if (result) {
+                    this.notify.info(this.l('CreatedSuccessfully'));
+                    this.close();
+                    this.modalSave.emit(null);
+                }
             });
     }
 

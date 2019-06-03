@@ -51,6 +51,9 @@ export class ProductCategoryComponent extends AppComponentBase implements AfterV
         }
     ];
 
+    public oldName;
+    public oldNote;
+
 
     //Supplier, tương tự với product
     //get all supplier catalog
@@ -319,6 +322,17 @@ export class ProductCategoryComponent extends AppComponentBase implements AfterV
             // tạm thời UI ta chỉ xóa tạm list fake data đi
             this.productCatalogFakes.splice(index, 1);
         }
+    }
+
+    setEditrow(row: any): void {
+        this.oldName = row.name;
+        this.oldNote = row.note;
+        row.isEdit = true;
+    }
+    setCancelRow(row: any): void {
+        row.name = this.oldName;
+        row.note = this.oldNote;
+        row.isEdit = false;
     }
 
 }

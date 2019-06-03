@@ -169,13 +169,14 @@
                                                 Remove</button>
 
                                             <button *ngIf="!record.isEdit" class="btn btn-primary"
-                                                (click)="record.isEdit = true">Edit
+                                                (click)="setEditrow(record)">Edit
                                             </button>
                                             <button *ngIf="record.isEdit" class="btn btn-success"
+                                                [disabled]="!record.name || record.name === ''"
                                                 (click)="editItem(record.id, record)">Save
                                             </button>
                                             <button *ngIf="record.isEdit" class="btn btn-danger"
-                                                (click)="record.isEdit = false">Cancel
+                                                (click)="setCancelRow(record)">Cancel
                                             </button>
                                         </td>
                                     </tr>
