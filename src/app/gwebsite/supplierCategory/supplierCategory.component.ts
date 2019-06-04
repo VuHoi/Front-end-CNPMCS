@@ -113,12 +113,12 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
         this.isRoleActionPC = true;
     }
 
-    // public ngOnChanges(changes: SimpleChanges): void {
+    public ngOnChanges(changes: SimpleChanges): void {
     //     if (this.createOrEditModal.newSupplierCategory.code && this.createOrEditModal.isCreated) {
     //         this.createOrEditModal.isCreated = false;
     //         this.getSupplierCategorys();
     //     }
-    // }
+    }
 
     /**
      * Hàm xử lý sau khi View được init
