@@ -216,15 +216,13 @@ export class ProductCategoryComponent extends AppComponentBase implements AfterV
     }
 
     //Refresh grid khi thực hiện create or edit thành công
+    //thực hiện khi modal save, qua bên html search
+    // event (modalSave)="refreshValueFromModal()" sẽ được gọi khi bên comp modal gọi lệnh emit this.modalSave.emit(null);
     refreshValueFromModal(): void {
-        if (this.createOrEditModal.newProductCategory.code) {
-            for (let i = 0; i < this.primengTableHelper.records.length; i++) {
-                if (this.primengTableHelper.records[i].id === this.createOrEditModal.newProductCategory.code) {
-                    this.primengTableHelper.records[i] = this.createOrEditModal.newProductCategory;
-                    return;
-                }
-            }
-        } else { this.reloadPage(); }
+        if (this.createOrEditModal.newProductCategory.code && this.createOrEditModal.isCreated) {
+            this.createOrEditModal.isCreated = false;
+            this.getProductCategorys();
+        }
     }
 
     //hàm show view create ProductCategory

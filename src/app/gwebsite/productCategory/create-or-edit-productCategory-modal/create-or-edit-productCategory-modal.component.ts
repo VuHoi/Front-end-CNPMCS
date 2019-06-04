@@ -24,6 +24,7 @@ export class CreateOrEditProductCategoryModalComponent extends AppComponentBase 
 
     active = false;
     saving = false;
+    public isCreated = false;
 
     public newProductCategory: NewPCDto;
     public pcCode = '';
@@ -63,36 +64,30 @@ export class CreateOrEditProductCategoryModalComponent extends AppComponentBase 
     }
 
     save(): void {
-
-        if (this.pcCode && this.pcCode !== '') {
-
+        this.primengTableHelper.showLoadingIndicator();
+        if (this.pcCode && this.pcCode !== '' && this.pcName && this.pcName !== '') {
             this.saving = true;
-
             let status = this.isCheckStatus ? StatusEnum.Open : StatusEnum.Close;
 
             this.newProductCategory = new NewPCDto(this.pcCode, this.pcName, status, this.pcNote);
 
-            console.log(this.newProductCategory.code + '--' + this.newProductCategory.name
-                + '--' + this.newProductCategory.status + '--' + this.pcNote);
-            // this.insertProductCategory();
-
-            // call api create product category theo code,nam,status
-            // add xuống, id tự tạo
+            this.insertProductCategory();
 
             //trước khi add nhớ check duplicat code.
-
-
-            this.close();
         }
+        this.primengTableHelper.hideLoadingIndicator();
     }
 
     insertProductCategory() {
-        this._apiService.post('api/MenuClient/CreateMenuClient', this.newProductCategory)
+        this._apiService.post('api/ProductType/CreateProductCatalogAsync', this.newProductCategory)
             .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
+            .subscribe(result => {
+                if (result) {
+                    this.notify.info(this.l('CreatedSuccessfully'));
+                    this.isCreated = true;
+                    this.close();
+                    this.modalSave.emit(null);
+                }
             });
     }
 
