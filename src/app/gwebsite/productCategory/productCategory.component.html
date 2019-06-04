@@ -153,7 +153,8 @@
                                                 class="btn btn-success" (click)="actionPCItem(record.id, record)"
                                                 title="Open this product catalog">Open
                                             </button>
-
+                                            <!-- đúng phải là isInCludeProduct nhưng api gửi lên nhầm tên
+                                            là isInCludeSupplier -->
                                             <button *ngIf="record.status === statusEnum.Open && !record.isEdit"
                                                 [disabled]="record.isInCludeSupplier" class="btn btn-warning"
                                                 (click)="actionPCItem(record.id, record)"

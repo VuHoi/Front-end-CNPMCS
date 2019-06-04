@@ -337,13 +337,15 @@ export class ProductCategoryComponent extends AppComponentBase implements AfterV
 
     //chỉ những người có permission mới đc phép thực thi action với PC
     public removePcItem(id: number, row: any, index: number): void {
+        this.primengTableHelper.showLoadingIndicator();
         if (this.isRoleActionPC) {
-            //call api delete Product category này thông qua id truyền vào
-            //remove xong load lai table
-
-            // tạm thời UI ta chỉ xóa tạm list fake data đi
-            this.productCatalogFakes.splice(index, 1);
+            this._apiService.deleteGroup3(`api/ProductType/DeleteProductCatalogAsync/${id}`)
+                .subscribe(() => {
+                    this.primengTableHelper.records.splice(index, 1);
+                    this.notify.info(this.l('DeletedSuccessfully'));
+                });
         }
+        this.primengTableHelper.hideLoadingIndicator();
     }
 
     setEditrow(row: any): void {
