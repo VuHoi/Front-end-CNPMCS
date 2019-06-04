@@ -199,35 +199,51 @@ export class ProductCategoryComponent extends AppComponentBase implements AfterV
      * Hàm get danh sách ProductCategory
      * @param event
      */
-    getProductCategorys(event?: LazyLoadEvent) {
+    getProductCategorys(event?: LazyLoadEvent, event2?: Event, isSearch?: boolean) {
         if (!this.paginator || !this.dataTable) {
             return;
         }
-
         //show loading trong gridview
         this.primengTableHelper.showLoadingIndicator();
 
+        if (!this.productCatalogCode || this.productCatalogCode === '') {
+            this.productCatalogCode = '';
+        }
+        if (!this.productCatalogName || this.productCatalogName === '') {
+            this.productCatalogName = '';
+        }
+        if (this.status) {
+            this.status = +this.status;
+        }
+        if (!this.status || (this.status !== StatusEnum.Open && this.status !== StatusEnum.Close)) {
+            this.status = StatusEnum.All;
+        }
         /**
          * Sử dụng _apiService để call các api của backend
          */
+        if (isSearch) {
+            this.paginator.first = 0;
+            event.first = 0;
+        }
 
-        // this._apiService.get('api/MenuClient/GetMenuClientsByFilter',
-        //     [{ fieldName: 'Name', value: this.filterText }],
-        //     this.primengTableHelper.getSorting(this.dataTable),
-        //     this.primengTableHelper.getMaxResultCount(this.paginator, event),
-        //     this.primengTableHelper.getSkipCount(this.paginator, event),
-        // ).subscribe(result => {
-        //     this.primengTableHelper.totalRecordsCount = result.totalCount;
-        //     this.primengTableHelper.records = result.items;
-        //     this.primengTableHelper.hideLoadingIndicator();
-        // });
-
-        this.primengTableHelper.totalRecordsCount = 15;
-        this.primengTableHelper.records = this.productCatalogFakes;
-        this.primengTableHelper.records.forEach((row, i) => {
-            row.isEdit = false;
+        this._apiService.get('api/Supplier/GetSupplierTypesWithFilter',
+            [
+                { fieldName: 'code', value: this.productCatalogCode },
+                { fieldName: 'name', value: this.productCatalogName },
+                { fieldName: 'status', value: this.status }
+            ],
+            this.primengTableHelper.getSorting(this.dataTable),
+            this.primengTableHelper.getMaxResultCount(this.paginator, event),
+            this.primengTableHelper.getSkipCount(this.paginator, event),
+        ).subscribe(result => {
+            this.primengTableHelper.totalRecordsCount = result.totalCount;
+            this.primengTableHelper.records = result.items;
+            this.primengTableHelper.records.forEach((item) => {
+                item.isEdit = false;
+            });
+            this.primengTableHelper.hideLoadingIndicator();
         });
-        this.primengTableHelper.hideLoadingIndicator();
+        event2.preventDefault();
     }
 
     init(): void {
