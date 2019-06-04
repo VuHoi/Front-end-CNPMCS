@@ -8,7 +8,7 @@ import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
 import { CreateOrEditProductCategoryModalComponent } from './create-or-edit-productCategory-modal/create-or-edit-productCategory-modal.component';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
-import { StatusEnum } from './dto/productCategory.dto';
+import { StatusEnum, UpSupDto } from './dto/productCategory.dto';
 
 @Component({
     selector: 'app-productCategory',
@@ -68,70 +68,6 @@ export class ProductCategoryComponent extends AppComponentBase implements AfterV
             id: 1,
             code: 'SA001',
             name: 'Stationery',
-            note: 'Electronic products such as computers',
-            status: 1,
-            isInCludeProduct: true
-        },
-        {
-            id: 2,
-            code: 'CE002',
-            name: 'Electronice Device',
-            note: 'Electronic products such as computers',
-            status: 1,
-            isInCludeProduct: false
-        },
-        {
-            id: 3,
-            code: 'BM003',
-            name: 'Building Materials',
-            note: 'Electronic products such as computers',
-            status: 2,
-            isInCludeProduct: false
-        },
-        {
-            id: 4,
-            code: 'MA004',
-            name: 'Mobile',
-            note: 'Electronic products such as computers',
-            status: 1,
-            isInCludeProduct: true
-        },
-        {
-            id: 5,
-            code: 'WA005',
-            name: 'Wooden',
-            note: 'Electronic products such as computers',
-            status: 2,
-            isInCludeProduct: false
-        },
-        {
-            id: 6,
-            code: 'FA006',
-            name: 'Food And Drink',
-            note: 'Electronic products such as computers',
-            status: 1,
-            isInCludeProduct: false
-        },
-        {
-            id: 7,
-            code: 'VE007',
-            name: 'Vehicle',
-            note: 'Electronic products such as computers',
-            status: 1,
-            isInCludeProduct: true
-        },
-        {
-            id: 8,
-            code: 'CS008',
-            name: 'Cleaning Stuff',
-            note: 'Electronic products such as computers',
-            status: 2,
-            isInCludeProduct: false
-        },
-        {
-            id: 9,
-            code: 'TO009',
-            name: 'Tool',
             note: 'Electronic products such as computers',
             status: 1,
             isInCludeProduct: true
@@ -323,16 +259,25 @@ export class ProductCategoryComponent extends AppComponentBase implements AfterV
 
     //chỉ những người có permission mới đc phép thực thi action với PC
     public editItem(id: number, row: any): void {
-        if (this.isRoleActionPC && row.name && row.name !== '') {
-            //call api edit name, note cho Product category này thông qua id truyền vào
-
-            // vì bên html đã tự [(ngModel)] vào row.name và row.note rồi, nên ở đây ta chỉ cần lấy ra giá trị để update
-            console.log(id + '---' + row.name + '---' + row.note);
-
-            //save thành công
+        this.primengTableHelper.showLoadingIndicator();
+        if (row.name !== this.oldName && row.note !== this.oldNote) {
+            if (this.isRoleActionPC && row.name && row.name !== '') {
+                const ob = new UpSupDto(id, row.code, row.name, row.status, row.note);
+                this._apiService.put('api/ProductType/UpdateProductCatalogAsync/edit', ob)
+                    .subscribe(result => {
+                        if (result && result.code === row.code && result.name !== '') {
+                            //save thành công
+                            row.isEdit = false;
+                            this.notify.info(this.l('UpdatedSuccessfully'));
+                            // vì bên html đã tự [(ngModel)] vào row.name và row.note rồi, nên ở đây ta chỉ cần lấy ra giá trị để update
+                        }
+                    });
+            }
+        } else {
             row.isEdit = false;
+            this.notify.info(this.l('Nothing changes to update'));
         }
-
+        this.primengTableHelper.hideLoadingIndicator();
     }
 
     //chỉ những người có permission mới đc phép thực thi action với PC

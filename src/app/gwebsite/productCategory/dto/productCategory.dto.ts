@@ -38,3 +38,19 @@ export class NewPCDto {
         this.note = note;
     }
 }
+
+export class UpSupDto {
+    id: number;
+    code: string;
+    name: string;
+    status: number;
+    note: string;
+
+    constructor(id: number, code: string, name: string, status: number, note: string) {
+        this.id = id;
+        this.code = code;
+        this.name = name;
+        this.status = status;
+        this.note = note;
+    }
+}
