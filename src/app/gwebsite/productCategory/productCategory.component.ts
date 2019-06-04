@@ -226,7 +226,7 @@ export class ProductCategoryComponent extends AppComponentBase implements AfterV
             event.first = 0;
         }
 
-        this._apiService.get('api/Supplier/GetSupplierTypesWithFilter',
+        this._apiService.get('api/ProductType/GetProductTypes',
             [
                 { fieldName: 'code', value: this.productCatalogCode },
                 { fieldName: 'name', value: this.productCatalogName },
@@ -307,12 +307,18 @@ export class ProductCategoryComponent extends AppComponentBase implements AfterV
 
     //chỉ những người có permission mới đc phép thực thi action với PC
     public actionPCItem(id: number, row: any): void {
+        this.primengTableHelper.showLoadingIndicator();
         if (this.isRoleActionPC) {
             //call api edit status close/open cho Product category này thông qua id truyền vào
-
-            row.status = row.status === this.statusEnum.Open ? this.statusEnum.Close : this.statusEnum.Open;
+            this._apiService.put(`api/ProductType/ToggleStatusProductCatalogAsync/status/${id}`, '')
+                .subscribe(result => {
+                    if (result && (+result.status === 1 || +result.status === 2)) {
+                        row.status = row.status === this.statusEnum.Open ? this.statusEnum.Close : this.statusEnum.Open;
+                        this.notify.info(this.l('UpdatedSuccessfully'));
+                    }
+                });
         }
-
+        this.primengTableHelper.hideLoadingIndicator();
     }
 
     //chỉ những người có permission mới đc phép thực thi action với PC

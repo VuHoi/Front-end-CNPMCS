@@ -155,15 +155,15 @@
                                             </button>
 
                                             <button *ngIf="record.status === statusEnum.Open && !record.isEdit"
-                                                [disabled]="record.isInCludeProduct" class="btn btn-warning"
+                                                [disabled]="record.isInCludeSupplier" class="btn btn-warning"
                                                 (click)="actionPCItem(record.id, record)"
-                                                title="{{record.isInCludeProduct ? 'Cannot close product catalog exist reference': 'Close this'}}">
+                                                title="{{record.isInCludeSupplier ? 'Cannot close product catalog exist reference': 'Close this'}}">
                                                 Close
                                             </button>
                                             <button *ngIf="!record.isEdit" class="btn btn-danger"
-                                                [disabled]="record.isInCludeProduct" type="button"
+                                                [disabled]="record.isInCludeSupplier" type="button"
                                                 (click)="removePcItem(record.id, record, index)"
-                                                title="{{record.isInCludeProduct ? 'Cannot remove product catalog exist reference': 'Delete this'}}">
+                                                title="{{record.isInCludeSupplier ? 'Cannot remove product catalog exist reference': 'Delete this'}}">
                                                 Remove</button>
 
                                             <button *ngIf="!record.isEdit" class="btn btn-primary"
