@@ -26,6 +26,7 @@ export class CreateOrEditSupplierCategoryModalComponent extends AppComponentBase
     saving = false;
 
     public newSupplierCategory: NewSupDto;
+    public isCreated = false;
     public pcCode = '';
     public pcName = '';
     public pcNote = '';
@@ -82,6 +83,7 @@ export class CreateOrEditSupplierCategoryModalComponent extends AppComponentBase
             .subscribe(result => {
                 if (result) {
                     this.notify.info(this.l('CreatedSuccessfully'));
+                    this.isCreated = true;
                     this.close();
                     this.modalSave.emit(null);
                 }

@@ -113,11 +113,12 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
         this.isRoleActionPC = true;
     }
 
-    public ngOnChanges(changes: SimpleChanges): void {
-        // if (this.createOrEditModal.newSupplierCategory.code) {
-
-        // }
-    }
+    // public ngOnChanges(changes: SimpleChanges): void {
+    //     if (this.createOrEditModal.newSupplierCategory.code && this.createOrEditModal.isCreated) {
+    //         this.createOrEditModal.isCreated = false;
+    //         this.getSupplierCategorys();
+    //     }
+    // }
 
     /**
      * Hàm xử lý sau khi View được init
@@ -227,15 +228,13 @@ export class SupplierCategoryComponent extends AppComponentBase implements After
     }
 
     //Refresh grid khi thực hiện create or edit thành công
+    //thực hiện khi modal save, qua bên html search
+    // event (modalSave)="refreshValueFromModal()" sẽ được gọi khi bên comp modal gọi lệnh emit this.modalSave.emit(null);
     refreshValueFromModal(): void {
-        if (this.createOrEditModal.newSupplierCategory.code) {
-            for (let i = 0; i < this.primengTableHelper.records.length; i++) {
-                if (this.primengTableHelper.records[i].id === this.createOrEditModal.newSupplierCategory.code) {
-                    this.primengTableHelper.records[i] = this.createOrEditModal.newSupplierCategory;
-                    return;
-                }
-            }
-        } else { this.reloadPage(); }
+        if (this.createOrEditModal.newSupplierCategory.code && this.createOrEditModal.isCreated) {
+            this.createOrEditModal.isCreated = false;
+            this.getSupplierCategorys();
+        }
     }
 
     //hàm show view create SupplierCategory
