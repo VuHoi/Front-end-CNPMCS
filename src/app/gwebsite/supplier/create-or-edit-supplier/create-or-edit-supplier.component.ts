@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output, Injector } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
-import { ProductsServiceProxy, SupplierSavedDto, Bidding, BiddingSaved, SupplierServiceProxy } from '@shared/service-proxies/service-proxies';
+import { ProductsServiceProxy, SupplierSavedDto, SupplierServiceProxy } from '@shared/service-proxies/service-proxies';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { SelectItem } from 'primeng/primeng';
 
@@ -21,7 +21,6 @@ export class CreateOrEditSupplierComponent extends AppComponentBase {
     isEdit = false;
     active = false;
     saving = false;
-    supplier: SupplierSavedDto = new SupplierSavedDto({ address: '', biddings: [], contact: '', email: '', fax: '', id: 0, name: '', phone: '00000000990' });
     biddings: any[] = [];
     productId = '';
     selectItems: SelectItem[];
@@ -51,49 +50,27 @@ export class CreateOrEditSupplierComponent extends AppComponentBase {
 
     show(supplier?: any | null | undefined): void {
         this.active = true;
-        this.supplier = supplier ? supplier : this.supplier;
-        this.isEdit = supplier ? true : false;
         this.modal.show();
     }
 
     save(): void {
 
-        let input = this.supplier;
         this.saving = true;
-        if (input.id) {
-            this.updatePurchase();
-        } else {
-            this.insertPurchase();
-        }
+        // if (input.id) {
+        //     this.updatePurchase();
+        // } else {
+        //     this.insertPurchase();
+        // }
     }
     getDataProduct() {
-        this._productsServiceProxy.getProducts('', '', 1000, 0).subscribe(products => {
-            this.selectItems = [];
-            products.items.map(i => this.selectItems.push({ value: { id: i.id }, label: i.name }));
-        });
     }
     insertPurchase() {
-        let input = Object.create(this.supplier);
-        input.biddings = [];
-        this.biddings.map(item => {
-            const startDate = item.ranges ? item.ranges[0] : new Date();
-            const endDate = item.ranges ? item.ranges[1] ? item.ranges[1] : new Date() : new Date();
-            input.biddings.push(new BiddingSaved({
-                startDate, endDate,
-                status: item.status, productId: item.id, supplierId: input.id, biddingType: item.biddingType, price: item.price
-            }));
-        });
-
-        this._supplierServiceProxy.createSupplier(input).subscribe(item => {
-            this.close();
-            this.modalSave.emit(null);
-        }, err => console.log(err));
     }
 
 
 
     updatePurchase() {
-        let input = Object.create(this.supplier);
+        // let input = Object.create(this.supplier);
         // input.biddings = [];
         // this.biddings.map(item => {
         //     const startDate = item.ranges ? item.ranges[0] : new Date();
@@ -103,10 +80,10 @@ export class CreateOrEditSupplierComponent extends AppComponentBase {
         //         status: 0, productId: item.id, supplierId: input.id
         //     }));
         // })
-        this._supplierServiceProxy.updateSupplier(input).subscribe(item => {
-            this.close();
-            this.modalSave.emit(null);
-        }, err => console.log(err));
+        // this._supplierServiceProxy.updateSupplier(input).subscribe(item => {
+        //     this.close();
+        //     this.modalSave.emit(null);
+        // }, err => console.log(err));
     }
     onChangeOptionProduct() {
         console.log('sss', this.biddingTypes);

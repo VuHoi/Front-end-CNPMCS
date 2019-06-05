@@ -7,7 +7,7 @@ import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
 import { CreateOrEditProductModalComponent } from './create-or-edit-product-modal/create-or-edit-product-modal.component';
-import { ProductsServiceProxy, API_BASE_URL, ListResultDtoOfProductDto } from '@shared/service-proxies/service-proxies';
+import { ProductsServiceProxy, API_BASE_URL } from '@shared/service-proxies/service-proxies';
 
 @Component({
     selector: 'app-product',
@@ -71,24 +71,24 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
         /**
          * Sử dụng _apiService để call các api của backend
          */
-        this._productService.getProducts(this.filterText, this.primengTableHelper.getSorting(this.dataTable),
-            this.primengTableHelper.getMaxResultCount(this.paginator, event),
-            this.primengTableHelper.getSkipCount(this.paginator, event))
-            .subscribe((result: any) => {
-                this.primengTableHelper.totalRecordsCount = result.totalCount;
-                this.primengTableHelper.records = result.items;
-                this.primengTableHelper.hideLoadingIndicator();
-                this.primengTableHelper.records.map(p => {
-                    p.supplierName = 'Add Bidding';
-                    for (let i = 0; i < p.biddings.length; i++) {
-                        if (p.biddings[i].status === 1) {
-                            p.supplierName = p.biddings[i].supplier.name;
-                            break;
-                        }
-                    }
-                });
-                console.log(this.primengTableHelper.records);
-            });
+        // this._productService.getProducts(this.filterText, this.primengTableHelper.getSorting(this.dataTable),
+        //     this.primengTableHelper.getMaxResultCount(this.paginator, event),
+        //     this.primengTableHelper.getSkipCount(this.paginator, event))
+        //     .subscribe((result: any) => {
+        //         this.primengTableHelper.totalRecordsCount = result.totalCount;
+        //         this.primengTableHelper.records = result.items;
+        //         this.primengTableHelper.hideLoadingIndicator();
+        //         this.primengTableHelper.records.map(p => {
+        //             p.supplierName = 'Add Bidding';
+        //             for (let i = 0; i < p.biddings.length; i++) {
+        //                 if (p.biddings[i].status === 1) {
+        //                     p.supplierName = p.biddings[i].supplier.name;
+        //                     break;
+        //                 }
+        //             }
+        //         });
+        //         console.log(this.primengTableHelper.records);
+        //     });
     }
 
     init(): void {

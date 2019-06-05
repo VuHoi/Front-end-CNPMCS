@@ -15,7 +15,7 @@ import * as moment from 'moment';
 export class CreateOrEditProjectModalComponent extends AppComponentBase {
 
     @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('projectCombobox') projectCombobox: ElementRef;
+    // @ViewChild('projectCombobox') projectCombobox: ElementRef;
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
 
     /**
@@ -59,9 +59,9 @@ export class CreateOrEditProjectModalComponent extends AppComponentBase {
             this.project = result.menuClient;
             this.projects = result.menuClients;
             this.modal.show();
-            setTimeout(() => {
-                $(this.projectCombobox.nativeElement).selectpicker('refresh');
-            }, 0);
+            // setTimeout(() => {
+            //     $(this.projectCombobox.nativeElement).selectpicker('refresh');
+            // }, 0);
         });
     }
 
