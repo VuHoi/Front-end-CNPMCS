@@ -32,12 +32,8 @@ import { CreateOrEditPurchaseOrderModalComponent } from './purchaseOrder/create-
 import { SubmissionComponent } from './submission/submission.component';
 import { CreateOrEditSubmissionModalComponent } from './submission/create-or-edit-submission-modal/create-or-edit-submission-modal.component';
 import { SubPlanComponent } from './plan/sub-plan/sub-plan.component';
-
-
-import { CreateOrEditSupplierComponent } from './supplier/create-or-edit-supplier/create-or-edit-supplier.component';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CalendarModule } from 'primeng/calendar';
-import { BiddingComponent } from './product/bidding/bidding.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ViewBidProfileComponent } from './bids/view-bid-profile/view-bid-profile.component';
@@ -47,6 +43,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { MyDatePickerModule } from 'mydatepicker';
+import { CreateOrEditSupplierModalComponent } from './supplier/create-or-edit-supplier-modal/create-or-edit-supplier-modal.component';
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -81,10 +78,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ],
     declarations: [
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
-        SupplierComponent, CreateOrEditSupplierComponent,
         SupplierCategoryComponent, CreateOrEditSupplierCategoryModalComponent,
         ProductCategoryComponent, CreateOrEditProductCategoryModalComponent,
-        ProductComponent, CreateOrEditProductModalComponent,
         PlanComponent, CreateOrEditPlanModalComponent, SubPlanComponent,
         ProjectComponent, CreateOrEditProjectModalComponent,
         BidProfileComponent, CreateOrEditBidProfileModalComponent,
@@ -92,11 +87,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         PurchaseOrderComponent, CreateOrEditPurchaseOrderModalComponent,
         SubmissionComponent, CreateOrEditSubmissionModalComponent,
         MenuClientComponent, CreateOrEditMenuClientModalComponent,
-        ProductComponent, CreateOrEditProductModalComponent,
         PlanComponent, CreateOrEditPlanModalComponent, CreateOrEditSubPlanModalComponent,
-        SupplierComponent,
-        CreateOrEditSupplierComponent,
-        BiddingComponent,
+        ProductComponent, CreateOrEditProductModalComponent,
+        SupplierComponent, CreateOrEditSupplierModalComponent,
         ViewBidProfileComponent
     ],
 
