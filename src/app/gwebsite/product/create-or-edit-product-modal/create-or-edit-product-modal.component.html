@@ -5,45 +5,32 @@
             <form *ngIf="active" #editForm="ngForm" novalidate (ngSubmit)="save()">
                 <div class="modal-header">
                     <h4 class="modal-title">
-
-                        <span>{{l("Create Bidding")}}</span>
+                        <span *ngIf="product.id">{{l("EditProduct")}}: {{product.name}}</span>
+                        <span *ngIf="!product.id">{{l("CreateNewProduct")}}</span>
                     </h4>
                     <button type="button" class="close" (click)="close()" [attr.aria-label]="l('Close')">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <p-dropdown [options]="selectItems" class="col-6" [ngModelOptions]="{standalone: true}"
-                            (onChange)="dropdownChange()" [(ngModel)]="bidding.productId">
-                        </p-dropdown>
-                        <p-dropdown class=" col-6" [options]="suppliers" [ngModelOptions]="{standalone: true}"
-                            (onChange)="dropdownSupplierChange()" [(ngModel)]="bidding.supplierId">
-                        </p-dropdown>
+                    <div class="form-group">
+                        <select #productCombobox name="productName" class="form-control" [(ngModel)]="product.parentId"
+                            [attr.data-live-search]="true" jq-plugin="selectpicker" required>
+                            <option value="">{{emptyText}}</option>
+                            <option *ngFor="let item of products" [value]="item.value">{{item.displayText}}</option>
+                        </select>
                     </div>
-
-                    <div class="row mt-3">
-                        <p-dropdown [options]="biddingTypes" class="col-6" [(ngModel)]="bidding.biddingType"
-                            [ngModelOptions]="{standalone: true}">
-                        </p-dropdown>
-                        <p-dropdown [options]="status" class="col-6" [(ngModel)]="bidding.status"
-                            [ngModelOptions]="{standalone: true}">
-                        </p-dropdown>
+                    <div class="form-group">
+                        <label>{{l("ProductName")}} *</label>
+                        <input #nameInput="ngModel" class="form-control" type="text" name="DisplayName"
+                            [(ngModel)]="product.name" required maxlength="64">
+                        <validation-messages [formCtrl]="nameInput"></validation-messages>
                     </div>
-
-                    <div class="mt-3 row ">
-                        <div class="col-6">
-                            <div class="mb-2">Start to End date</div>
-                            <p-calendar [(ngModel)]="rangeDates" [ngModelOptions]="{standalone: true}"
-                                selectionMode="range" [readonlyInput]="true">
-                            </p-calendar>
-                        </div>
-                        <div class="col-6">
-                            <label for="price">Price</label>
-                            <input #nameInput="ngModel" class="form-control  " style="width:250px" type="text"
-                                name="price" placeholder="Price" [(ngModel)]="price" required maxlength="64">
-                        </div>
-
+                    <div class="form-group">
+                        <label>{{l("ProductAlias")}} *</label>
+                        <input #aliasInput="ngModel" class="form-control" type="text" name="Alias"
+                            [(ngModel)]="product.alias" required maxlength="64">
+                        <validation-messages [formCtrl]="aliasInput"></validation-messages>
                     </div>
                 </div>
                 <div class="modal-footer">

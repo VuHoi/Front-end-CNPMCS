@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild, Optional, Inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
 import { AppComponentBase } from '@shared/common/app-component-base';
@@ -7,7 +7,7 @@ import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
 import { CreateOrEditProductModalComponent } from './create-or-edit-product-modal/create-or-edit-product-modal.component';
-import { ProductsServiceProxy, API_BASE_URL } from '@shared/service-proxies/service-proxies';
+import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 
 @Component({
     selector: 'app-product',
@@ -29,17 +29,14 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
      * tạo các biến dể filters
      */
     filterText: string;
-    baseUrl1 = 'http://localhost:5000';
+
     constructor(
         injector: Injector,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
-        private _productService: ProductsServiceProxy,
-        @Optional() @Inject(API_BASE_URL) baseUrl?: string
+        private _apiService: WebApiServiceProxy
     ) {
         super(injector);
-        // console.log('baseUrl', baseUrl)
-        // this.baseUrl1 = baseUrl
     }
 
     /**
@@ -65,30 +62,25 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
         if (!this.paginator || !this.dataTable) {
             return;
         }
+
         //show loading trong gridview
         this.primengTableHelper.showLoadingIndicator();
 
         /**
          * Sử dụng _apiService để call các api của backend
          */
-        // this._productService.getProducts(this.filterText, this.primengTableHelper.getSorting(this.dataTable),
-        //     this.primengTableHelper.getMaxResultCount(this.paginator, event),
-        //     this.primengTableHelper.getSkipCount(this.paginator, event))
-        //     .subscribe((result: any) => {
-        //         this.primengTableHelper.totalRecordsCount = result.totalCount;
-        //         this.primengTableHelper.records = result.items;
-        //         this.primengTableHelper.hideLoadingIndicator();
-        //         this.primengTableHelper.records.map(p => {
-        //             p.supplierName = 'Add Bidding';
-        //             for (let i = 0; i < p.biddings.length; i++) {
-        //                 if (p.biddings[i].status === 1) {
-        //                     p.supplierName = p.biddings[i].supplier.name;
-        //                     break;
-        //                 }
-        //             }
-        //         });
-        //         console.log(this.primengTableHelper.records);
-        //     });
+
+        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+        this._apiService.get('api/MenuClient/GetMenuClientsByFilter',
+            [{ fieldName: 'Name', value: this.filterText }],
+            this.primengTableHelper.getSorting(this.dataTable),
+            this.primengTableHelper.getMaxResultCount(this.paginator, event),
+            this.primengTableHelper.getSkipCount(this.paginator, event),
+        ).subscribe(result => {
+            this.primengTableHelper.totalRecordsCount = result.totalCount;
+            this.primengTableHelper.records = result.items;
+            this.primengTableHelper.hideLoadingIndicator();
+        });
     }
 
     init(): void {
@@ -126,11 +118,18 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
 
     //Refresh grid khi thực hiện create or edit thành công
     refreshValueFromModal(): void {
-        this.getProducts();
+        if (this.createOrEditModal.product.id) {
+            for (let i = 0; i < this.primengTableHelper.records.length; i++) {
+                if (this.primengTableHelper.records[i].id === this.createOrEditModal.product.id) {
+                    this.primengTableHelper.records[i] = this.createOrEditModal.product;
+                    return;
+                }
+            }
+        } else { this.reloadPage(); }
     }
 
     //hàm show view create Product
-    createProduct(id?: number) {
-        this.createOrEditModal.show(id);
+    createProduct() {
+        this.createOrEditModal.show();
     }
 }
