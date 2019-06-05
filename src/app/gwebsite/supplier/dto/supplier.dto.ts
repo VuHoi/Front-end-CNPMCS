@@ -18,3 +18,9 @@ export class GetSupplierOutput {
     supplier: SupplierDto;
     suppliers: ComboboxItemDto[];
 }
+
+export enum ApprovalStatusEnum {
+    Active = 1,
+    Inactive = 2,
+    Close = 3
+}

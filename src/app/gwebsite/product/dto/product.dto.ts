@@ -18,3 +18,9 @@ export class GetProductOutput {
     product: ProductDto;
     products: ComboboxItemDto[];
 }
+
+export enum ApprovalStatusEnum {
+    Active = 1,
+    Inactive = 2,
+    Close = 3
+}
