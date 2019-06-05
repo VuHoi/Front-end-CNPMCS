@@ -4,17 +4,17 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
 import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { ProductDto } from '../dto/product.dto';
+import { SupplierDto } from '../dto/supplier.dto';
 
 @Component({
-    selector: 'createOrEditProductModal',
-    templateUrl: './create-or-edit-product-modal.component.html',
-    styleUrls: ['./create-or-edit-product-modal.component.css']
+    selector: 'createOrEditSupplierModal',
+    templateUrl: './create-or-edit-supplier-modal.component.html',
+    styleUrls: ['./create-or-edit-supplier-modal.component.css']
 })
-export class CreateOrEditProductModalComponent extends AppComponentBase {
+export class CreateOrEditSupplierModalComponent extends AppComponentBase {
 
     @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('productCombobox') productCombobox: ElementRef;
+    @ViewChild('supplierCombobox') supplierCombobox: ElementRef;
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
 
     /**
@@ -25,8 +25,8 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
     active = false;
     saving = false;
 
-    product: ProductDto = new ProductDto();
-    products: ComboboxItemDto[] = [];
+    supplier: SupplierDto = new SupplierDto();
+    suppliers: ComboboxItemDto[] = [];
 
     constructor(
         injector: Injector,
@@ -35,33 +35,33 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
         super(injector);
     }
 
-    show(productId?: number | null | undefined): void {
+    show(supplierId?: number | null | undefined): void {
         this.active = true;
 
-        this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', productId).subscribe(result => {
+        this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', supplierId).subscribe(result => {
             // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-            this.product = result.menuClient;
-            this.products = result.menuClients;
+            this.supplier = result.menuClient;
+            this.suppliers = result.menuClients;
             this.modal.show();
             setTimeout(() => {
-                $(this.productCombobox.nativeElement).selectpicker('refresh');
+                $(this.supplierCombobox.nativeElement).selectpicker('refresh');
             }, 0);
         });
     }
 
     save(): void {
-        let input = this.product;
+        let input = this.supplier;
         this.saving = true;
         if (input.id) {
-            this.updateProduct();
+            this.updateSupplier();
         } else {
-            this.insertProduct();
+            this.insertSupplier();
         }
     }
 
-    insertProduct() {
+    insertSupplier() {
         // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.post('api/MenuClient/CreateMenuClient', this.product)
+        this._apiService.post('api/MenuClient/CreateMenuClient', this.supplier)
             .pipe(finalize(() => this.saving = false))
             .subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));
@@ -70,9 +70,9 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
             });
     }
 
-    updateProduct() {
+    updateSupplier() {
         // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.put('api/MenuClient/UpdateMenuClient', this.product)
+        this._apiService.put('api/MenuClient/UpdateMenuClient', this.supplier)
             .pipe(finalize(() => this.saving = false))
             .subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));

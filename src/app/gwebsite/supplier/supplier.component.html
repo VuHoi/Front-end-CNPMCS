@@ -7,12 +7,13 @@
                     <span>{{l("Supplier")}}</span>
                 </h3>
                 <span class="m-section__sub">
-                    {{l("Supplier Infomation")}}
+                    {{l("SupplierInfo")}}
                 </span>
             </div>
             <div class="col-xs-6 text-right">
-                <button (click)="createProduct()" *ngIf="isGranted('Pages.Administration.MenuClient.Create')"
-                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("Create new supplier")}}</button>
+                <!-- Tiennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn -->
+                <button (click)="createSupplier()" *ngIf="isGranted('Pages.Administration.MenuClient.Create')"
+                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("CreateNewSupplier")}}</button>
             </div>
         </div>
     </div>
@@ -40,95 +41,91 @@
                 <div class="row align-items-center">
                     <!--<Primeng-TurboTable-Start>-->
                     <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
-                        <p-table #dataTable (onLazyLoad)="getSupliers($event)" [value]="primengTableHelper.records"
+                        <p-table #dataTable (onLazyLoad)="getSuppliers($event)" [value]="primengTableHelper.records"
                             rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false" [lazy]="true"
                             [responsive]="primengTableHelper.isResponsive">
                             <ng-template pTemplate="header">
                                 <tr>
-                                    <th pSortableColumn="name" style="width:100px">
+                                    <th pSortableColumn="name">
                                         {{l('Name')}}
                                         <p-sortIcon field="name"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="address" style="width:100px">
-                                        {{l('Address')}}
-                                        <p-sortIcon field="address"></p-sortIcon>
+                                    <th pSortableColumn="supplier">
+                                        {{l('Supplier')}}
+                                        <p-sortIcon field="supplier"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="fax" style="width:100px">
-                                        {{l('Fax')}}
-                                        <p-sortIcon field="fax"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="phone" style="width:100px">
-                                        {{l('Phone')}}
-                                        <p-sortIcon field="phone"></p-sortIcon>
-                                    </th>
-                                    <th pSortableColumn="contact" style="width:100px">
+                                    <th pSortableColumn="contact">
                                         {{l('Contact')}}
                                         <p-sortIcon field="contact"></p-sortIcon>
                                     </th>
-                                    <th pSortableColumn="product" style="width:500px">
-                                        {{l('Product')}}
-                                        <p-sortIcon field="product"></p-sortIcon>
+                                    <th pSortableColumn="price">
+                                        {{l('Price')}}
+                                        <p-sortIcon field="price"></p-sortIcon>
                                     </th>
-                                    <th style="width:100px">{{l('Edit')}}</th>
+                                    <th pSortableColumn="description">
+                                        {{l('Description')}}
+                                        <p-sortIcon field="description"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="addedDate">
+                                        {{l('AddedDate')}}
+                                        <p-sortIcon field="addedDate"></p-sortIcon>
+                                    </th>
+                                    <th pSortableColumn="image">
+                                        {{l('Image')}}
+                                        <p-sortIcon field="image"></p-sortIcon>
+                                    </th>
+                                    <th>{{l('Edit')}}</th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-record="$implicit">
-                                <tr *ngIf="record.biddings" [pSelectableRow]="rowData">
-                                    <td style="width:100px">
+                                <tr>
+                                    <td>
                                         <span class="ui-column-title">{{l('Name')}}</span>
                                         <span title="{{record.name}}">{{truncateString(record.name)}}</span>
                                     </td>
-                                    <td style="width:100px">
-                                        <span class="ui-column-title">{{l('Address')}}</span>
-                                        <span title="{{record.address}}">{{truncateString(record.address)}}</span>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Supplier')}}</span>
+                                        <span
+                                            title="{{record.supplier}}">{{truncateString(record.supplierDto.name)}}</span>
                                     </td>
-                                    <td style="width:100px">
-                                        <span class="ui-column-title">{{l('Email')}}</span>
-                                        <span title="{{record.email}}">{{truncateString(record.email)}}</span>
-                                    </td>
-                                    <td style="width:100px">
-                                        <span class="ui-column-title">{{l('Phone')}}</span>
-                                        <span title="{{record.email}}">{{truncateString(record.phone)}}</span>
-                                    </td>
-                                    <td style="width:100px">
+                                    <td>
                                         <span class="ui-column-title">{{l('Contact')}}</span>
-                                        <span title="{{record.contact}}">{{truncateString(record.contact)}}</span>
+                                        <span
+                                            title="{{record.contact}}">{{truncateString(record.supplierDto.contact)}}</span>
                                     </td>
-                                    <td style="width:500px">
-                                        <span class="ui-column-title">{{l('Products')}}</span>
-                                        <p-table [value]="record.biddings">
-                                            <ng-template pTemplate="header">
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Start Date</th>
-                                    <th>End Date</th>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Price')}}</span>
+                                        <span title="{{record.price}}">{{truncateString(record.price)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Description')}}</span>
+                                        <span
+                                            title="{{record.description}}">{{truncateString(record.description)}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('AddedDate')}}</span>
+                                        <span title="{{record.addedDate}}">{{ record.addedDate }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="ui-column-title">{{l('Image')}}</span>
+                                        <span title="{{record.image}}">{{ record.imageDto.url }}</span>
+                                    </td>
+                                    <td>
+                                        <button
+                                            class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
+                                            (click)="createOrEditModal.show(record.id)" title="{{l('Edit')}}">
+                                            <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
+                                        </button>
+                                    </td>
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" let-supplier>
-                                <tr>
-                                <tr [ngClass]="{'selected' :supplier.status===1}">
-                                    <td>{{supplier.product.name}}</td>
-                                    <td>{{supplier.startDate |date: 'dd/MM/yyyy'}}</td>
-                                    <td>{{supplier.endDate |date: 'dd/MM/yyyy'}}</td>
-                                </tr>
-                            </ng-template>
-                        </p-table>
-                        </td>
-                        <td style="width:100px">
-                            <button class="btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill"
-                                (click)="createOrEditModal.show(record)" title="{{l('Edit')}}">
-                                <i class="fa fa-edit" [attr.aria-label]="l('Edit')"></i>
-                            </button>
-                        </td>
-                        </tr>
-                        </ng-template>
                         </p-table>
                         <div class="primeng-no-data" *ngIf="primengTableHelper.totalRecordsCount == 0">
                             {{l('NoData')}}
                         </div>
                         <div class="primeng-paging-container">
                             <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
-                                (onPageChange)="getSupliers($event)"
+                                (onPageChange)="getSuppliers($event)"
                                 [totalRecords]="primengTableHelper.totalRecordsCount"
                                 [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
                             </p-paginator>
@@ -142,5 +139,5 @@
             </div>
         </div>
     </div>
-    <app-create-or-edit-supplier #createOrEditModal (modalSave)="refreshValueFromModal()"></app-create-or-edit-supplier>
+    <createOrEditSupplierModal #createOrEditModal (modalSave)="refreshValueFromModal()"></createOrEditSupplierModal>
 </div>
