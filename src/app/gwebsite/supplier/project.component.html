@@ -4,15 +4,15 @@
         <div class="d-flex align-items-center">
             <div class="mr-auto col-xs-6">
                 <h3 class="m-subheader__title m-subheader__title--separator">
-                    <span>{{l("Supplier")}}</span>
+                    <span>{{l("Project")}}</span>
                 </h3>
                 <span class="m-section__sub">
-                    {{l("SupplierInfo")}}
+                    {{l("ProjectInfo")}}
                 </span>
             </div>
             <div class="col-xs-6 text-right">
-                <button (click)="createSupplier()" *ngIf="isGranted('Pages.Administration.MenuClient.Create')"
-                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("CreateNewSupplier")}}</button>
+                <button (click)="createProject()" *ngIf="isGranted('Pages.Administration.MenuClient.Create')"
+                    class="btn btn-primary"><i class="fa fa-plus"></i> {{l("CreateNewProject")}}</button>
             </div>
         </div>
     </div>
@@ -20,18 +20,18 @@
     <div class="m-content">
         <div class="m-portlet m-portlet--mobile">
             <div class="m-portlet__body">
-                <form autocomplete="off" (ngSubmit)="getSuppliers(paginator)">
+                <form autocomplete="off" (ngSubmit)="searchProject()">
                     <div class="m-form m-form--label-align-right" id="TextsFilterForm">
                         <!-- filter -->
                         <div class="row m--margin-bottom-10">
                             <div class="col-sm-6">
                                 <div class="row align-items-center m-b-5">
                                     <div class="col-4 col-sm-4">
-                                        <span class="float-right">Supplier Code:</span>
+                                        <span class="float-right">Project Code:</span>
                                     </div>
                                     <div class="col-8 col-sm-8 col-lg-8">
-                                        <input type="text" name="supplierCode" [(ngModel)]="supplierCodeFilter"
-                                            [placeholder]="'Supplier Code'" class="form-control">
+                                        <input type="text" name="projectCode" [(ngModel)]="projectCodeFilter"
+                                            [placeholder]="'Project Code'" class="form-control">
                                     </div>
                                 </div>
 
@@ -50,11 +50,11 @@
                             <div class="col-sm-6">
                                 <div class="row align-items-center m-b-5">
                                     <div class="col-4 col-sm-4">
-                                        <span class="float-right">Supplier Name:</span>
+                                        <span class="float-right">Project Name:</span>
                                     </div>
                                     <div class="col-8 col-sm-8 col-lg-8">
-                                        <input type="text" name="supplierName" [(ngModel)]="supplierNameFilter"
-                                            [placeholder]="'Supplier Name'" class="form-control">
+                                        <input type="text" name="projectName" [(ngModel)]="projectNameFilter"
+                                            [placeholder]="'Project Name'" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -74,7 +74,7 @@
                     <div class="primeng-datatable-container" [busyIf]="primengTableHelper.isLoading">
                         <!-- perfect-scrollbar, https://www.npmjs.com/package/ngx-perfect-scrollbar -->
                         <perfect-scrollbar [config]="{suppressScrollX: false}" (psScrollX)="onScrollX($event)">
-                            <p-table #dataTable (onLazyLoad)="getSuppliers($event)" [value]="primengTableHelper.records"
+                            <p-table #dataTable (onLazyLoad)="getProjects($event)" [value]="primengTableHelper.records"
                                 rows="{{primengTableHelper.defaultRecordsCountPerPage}}" [paginator]="false"
                                 [lazy]="true" [responsive]="primengTableHelper.isResponsive">
                                 <ng-template pTemplate="header">
@@ -83,13 +83,13 @@
                                             {{l('Number')}}
                                             <p-sortIcon field="ordinalNumber"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="supplierCode" style="width: 150px; text-align: center">
-                                            {{l('Supplier Code')}}
-                                            <p-sortIcon field="supplierCode"></p-sortIcon>
+                                        <th pSortableColumn="projectCode" style="width: 150px; text-align: center">
+                                            {{l('Project Code')}}
+                                            <p-sortIcon field="projectCode"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="supplierName" style="width: 150px; text-align: center">
-                                            {{l('Supplier Name')}}
-                                            <p-sortIcon field="supplierName"></p-sortIcon>
+                                        <th pSortableColumn="projectName" style="width: 150px; text-align: center">
+                                            {{l('Project Name')}}
+                                            <p-sortIcon field="projectName"></p-sortIcon>
                                         </th>
                                         <th pSortableColumn="createDate" style="width: 150px; text-align: center">
                                             {{l('Create Date')}}
@@ -109,18 +109,18 @@
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record="$implicit" let-index="rowIndex">
-                                    <tr class="table-row text-center">
+                                    <tr class="table-row text-center" (click)="gotoPlanDetail(record.planId, $event)">
                                         <!-- <tr class="table-row" routerLink="app/gwebsite/plan/detail/{{record.planId}}"> -->
                                         <td style="width: 90px">
                                             <span class="ui-column-title">{{l('Number')}}</span>
                                             <span title="{{record.ordinalNumber}}">{{truncateString(index + 1)}}</span>
                                         </td>
                                         <td style="width: 150px">
-                                            <span class="ui-column-title">{{l('Supplier Code')}}</span>
+                                            <span class="ui-column-title">{{l('Project Code')}}</span>
                                             <span title="{{record.code}}">{{truncateString(record.code)}}</span>
                                         </td>
                                         <td style="width: 150px">
-                                            <span class="ui-column-title">{{l('Supplier Name')}}</span>
+                                            <span class="ui-column-title">{{l('Project Name')}}</span>
                                             <span *ngIf="!record.isEdit"
                                                 title="{{record.name}}">{{ record.name }}</span>
                                             <input *ngIf="record.isEdit" type="text" name="recordName"
@@ -173,7 +173,7 @@
                         </div>
                         <div class="primeng-paging-container">
                             <p-paginator rows="{{primengTableHelper.defaultRecordsCountPerPage}}" #paginator
-                                (onPageChange)="getSuppliers($event)"
+                                (onPageChange)="getProjects($event)"
                                 [totalRecords]="primengTableHelper.totalRecordsCount"
                                 [rowsPerPageOptions]="primengTableHelper.predefinedRecordsCountPerPage">
                             </p-paginator>
@@ -187,5 +187,5 @@
             </div>
         </div>
     </div>
-    <createOrEditSupplierModal #createOrEditModal (modalSave)="refreshValueFromModal()"></createOrEditSupplierModal>
+    <createOrEditProjectModal #createOrEditModal (modalSave)="refreshValueFromModal()"></createOrEditProjectModal>
 </div>

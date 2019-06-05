@@ -4,18 +4,18 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
 import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { ProductDto, ApprovalStatusEnum, NewPJDto } from '../dto/product.dto';
+import { ProjectDto, ApprovalStatusEnum, NewPJDto } from '../dto/project.dto';
 import * as moment from 'moment';
 
 @Component({
-    selector: 'createOrEditProductModal',
-    templateUrl: './create-or-edit-product-modal.component.html',
-    styleUrls: ['./create-or-edit-product-modal.component.css']
+    selector: 'createOrEditProjectModal',
+    templateUrl: './create-or-edit-project-modal.component.html',
+    styleUrls: ['./create-or-edit-project-modal.component.css']
 })
-export class CreateOrEditProductModalComponent extends AppComponentBase {
+export class CreateOrEditProjectModalComponent extends AppComponentBase {
 
     @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('productCombobox') productCombobox: ElementRef;
+    @ViewChild('projectCombobox') projectCombobox: ElementRef;
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
 
     /**
@@ -26,8 +26,8 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
     active = false;
     saving = false;
 
-    product: ProductDto = new ProductDto();
-    products: ComboboxItemDto[] = [];
+    project: ProjectDto = new ProjectDto();
+    projects: ComboboxItemDto[] = [];
 
     public pjCode = '';
     public pjName = '';
@@ -35,7 +35,7 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
     public pjActiveDate = '';
     public isCheckActive = false;
     public statusEnum = ApprovalStatusEnum;
-    public newProduct: NewPJDto;
+    public newProject: NewPJDto;
 
     constructor(
         injector: Injector,
@@ -44,7 +44,7 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
         super(injector);
     }
 
-    show(productId?: number | null | undefined): void {
+    show(projectId?: number | null | undefined): void {
         this.active = true;
         this.saving = false;
 
@@ -55,12 +55,12 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
         let now = new Date();
         this.pjCreateDate = moment(now).format('DD/MM/YYYY');
 
-        this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', productId).subscribe(result => {
-            this.product = result.menuClient;
-            this.products = result.menuClients;
+        this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', projectId).subscribe(result => {
+            this.project = result.menuClient;
+            this.projects = result.menuClients;
             this.modal.show();
             setTimeout(() => {
-                $(this.productCombobox.nativeElement).selectpicker('refresh');
+                $(this.projectCombobox.nativeElement).selectpicker('refresh');
             }, 0);
         });
     }
@@ -71,12 +71,12 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
 
             let status = this.isCheckActive ? this.statusEnum.Active : this.statusEnum.Inactive;
 
-            this.newProduct = new NewPJDto(this.pjCode, this.pjName, status);
+            this.newProject = new NewPJDto(this.pjCode, this.pjName, status);
 
-            console.log(this.newProduct.code + '--' + this.newProduct.name
-                + '--' + this.newProduct.status);
+            console.log(this.newProject.code + '--' + this.newProject.name
+                + '--' + this.newProject.status);
 
-            // this.insertProduct();
+            // this.insertProject();
 
             // call api create product category theo code,nam,status
             // add xuống, id tự tạo
@@ -88,9 +88,9 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
         }
     }
 
-    insertProduct() {
+    insertProject() {
         // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.post('api/MenuClient/CreateMenuClient', this.product)
+        this._apiService.post('api/MenuClient/CreateMenuClient', this.project)
             .pipe(finalize(() => this.saving = false))
             .subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));
@@ -99,9 +99,9 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
             });
     }
 
-    updateProduct() {
+    updateProject() {
         // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.put('api/MenuClient/UpdateMenuClient', this.product)
+        this._apiService.put('api/MenuClient/UpdateMenuClient', this.project)
             .pipe(finalize(() => this.saving = false))
             .subscribe(() => {
                 this.notify.info(this.l('SavedSuccessfully'));

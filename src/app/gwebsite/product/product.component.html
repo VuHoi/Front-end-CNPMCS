@@ -20,7 +20,7 @@
     <div class="m-content">
         <div class="m-portlet m-portlet--mobile">
             <div class="m-portlet__body">
-                <form autocomplete="off" (ngSubmit)="getProducts(paginator)">
+                <form autocomplete="off" (ngSubmit)="searchProduct()">
                     <div class="m-form m-form--label-align-right" id="TextsFilterForm">
                         <!-- filter -->
                         <div class="row m--margin-bottom-10">
@@ -109,7 +109,7 @@
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record="$implicit" let-index="rowIndex">
-                                    <tr class="table-row text-center">
+                                    <tr class="table-row text-center" (click)="gotoPlanDetail(record.planId, $event)">
                                         <!-- <tr class="table-row" routerLink="app/gwebsite/plan/detail/{{record.planId}}"> -->
                                         <td style="width: 90px">
                                             <span class="ui-column-title">{{l('Number')}}</span>

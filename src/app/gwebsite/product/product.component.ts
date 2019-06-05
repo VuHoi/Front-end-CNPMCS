@@ -11,7 +11,6 @@ import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.serv
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import * as moment from 'moment';
 import { ApprovalStatusEnum } from './dto/product.dto';
-// import { ProductServiceProxy } from '@shared/service-proxies/service-proxies';
 
 
 @Component({
@@ -62,14 +61,85 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
     };
     // public model: any = { date: { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate() } };
     // public model = new Date();
-    public creatDateString = undefined;
-    public productCodeFilter = undefined;
-    public productNameFilter = undefined;
+    public creatDateString = '';
+    public productCodeFilter = '';
+    public productNameFilter = '';
 
     // -những dự án của năm cũ, sẽ tự động close (mỗi lần đến 1/1/newyear, sẽ trigger cho nó close hết products năm cũ),
     //      dù có đc approved hay chưa.
     // -những dự án của năm hiện tại: chỉ dc phép close khi nó chưa đc approved.
-
+    public productFakes = [
+        {
+            code: 'SA01',
+            name: 'Purchase early in the year',
+            createDate: '12/02/2017',
+            activeDate: '',
+            status: 3
+        },
+        {
+            code: 'SA02',
+            name: 'Purchase for building B',
+            createDate: '20/04/2017',
+            activeDate: '28/04/2017',
+            status: 3
+        },
+        {
+            code: 'ES01',
+            name: 'Purchase early in the year',
+            createDate: '12/02/2018',
+            activeDate: '',
+            status: 3
+        },
+        {
+            code: 'ES02',
+            name: 'Purchase for building B',
+            createDate: '11/03/2019',
+            activeDate: '',
+            status: 2
+        },
+        {
+            code: 'AD01',
+            name: 'Purchase for building B',
+            createDate: '11/03/2019',
+            activeDate: '23/05/2019',
+            status: 1
+        },
+        {
+            code: 'AD02',
+            name: 'Purchase for building B',
+            createDate: '25/05/2019',
+            activeDate: '',
+            status: 2
+        },
+        {
+            code: 'TE01',
+            name: 'Purchase for building B',
+            createDate: '11/03/2019',
+            activeDate: '',
+            status: 2
+        },
+        {
+            code: 'TE02',
+            name: 'Purchase for building B',
+            createDate: '11/03/2019',
+            activeDate: '23/05/2019',
+            status: 1
+        },
+        {
+            code: 'GH01',
+            name: 'Purchase for building B',
+            createDate: '25/05/2019',
+            activeDate: '',
+            status: 2
+        },
+        {
+            code: 'GH02',
+            name: 'Purchase for building B',
+            createDate: '25/05/2019',
+            activeDate: '',
+            status: 2
+        }
+    ];
 
     public approvalStatusEnum = ApprovalStatusEnum;
 
@@ -85,7 +155,7 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
         injector: Injector,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
-        // private _apiService: ProductServiceProxy
+        private _apiService: WebApiServiceProxy
     ) {
         super(injector);
     }
@@ -121,21 +191,26 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
         /**
          * Sử dụng _apiService để call các api của backend
          */
-        // console.log(this.productCodeFilter, this.productNameFilter, this.creatDateString ? moment(this.creatDateString) : undefined);
-        // this._apiService.getProducts(
-        //     this.productCodeFilter, this.productNameFilter, this.creatDateString ? moment(this.creatDateString) : undefined,
+
+        // this._apiService.get('api/MenuClient/GetMenuClientsByFilter',
+        //     [{ fieldName: 'Name', value: this.filterText }],
         //     this.primengTableHelper.getSorting(this.dataTable),
         //     this.primengTableHelper.getMaxResultCount(this.paginator, event),
-        //     this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(result => {
-        //         this.primengTableHelper.totalRecordsCount = 10;
-        //         this.primengTableHelper.records = result.items;
-        //         this.primengTableHelper.hideLoadingIndicator();
-        //     }, err => console.log(err));
+        //     this.primengTableHelper.getSkipCount(this.paginator, event),
+        // ).subscribe(result => {
+        //     this.primengTableHelper.totalRecordsCount = result.totalCount;
+        //     this.primengTableHelper.records = result.items;
+        //     this.primengTableHelper.hideLoadingIndicator();
+        // });
 
+        this.primengTableHelper.totalRecordsCount = 16;
+        this.primengTableHelper.records = this.productFakes;
 
+        this.primengTableHelper.records.forEach((item) => {
+            item.isEdit = false;
+        });
 
-
-
+        this.primengTableHelper.hideLoadingIndicator();
     }
 
     init(): void {
@@ -198,17 +273,9 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
         this.createOrEditModal.show();
     }
 
-    public searchProduct(event?: LazyLoadEvent): void {
+    public searchProduct(): void {
         // filter, values default = ''
-        // this._apiService.getProducts(
-        //     this.productCodeFilter, this.productNameFilter, moment(this.creatDateString),
-        //     this.primengTableHelper.getSorting(this.dataTable),
-        //     this.primengTableHelper.getMaxResultCount(this.paginator, event),
-        //     this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(result => {
-        //         this.primengTableHelper.totalRecordsCount = 10;
-        //         this.primengTableHelper.records = result.items;
-        //         this.primengTableHelper.hideLoadingIndicator();
-        //     }, err => console.log(err));
+        console.log(this.creatDateString + '--' + this.productCodeFilter + '--' + this.productNameFilter);
     }
 
     public onDateChangedBy(event: IMyDateModel): void {
@@ -225,11 +292,10 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
         if (this.isPermissionEditCloseActive && row.name && row.name !== '') {
             //call api edit name thông qua id truyền vào
 
-            // this._apiService.changeNameAsync(row.name, id).subscribe();
-            // // vì bên html đã tự bind [(ngModel)] vào row.name và row.note rồi, nên ở đây ta chỉ cần lấy ra giá trị để update
-            // console.log(id + '---' + row.name);
+            // vì bên html đã tự bind [(ngModel)] vào row.name và row.note rồi, nên ở đây ta chỉ cần lấy ra giá trị để update
+            console.log(id + '---' + row.name);
 
-            // //save thành công
+            //save thành công
             row.isEdit = false;
         }
 
@@ -242,7 +308,7 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
     public closeItem(id: number, row: any, $event: Event): void {
         if (this.isPermissionEditCloseActive && row.status === ApprovalStatusEnum.Inactive) {
             // dựa vào id, set status cho product là close
-            // this._apiService.closeProductAsync(id).subscribe();
+
             //sau khi set success
             row.status = ApprovalStatusEnum.Close;
         }
@@ -252,7 +318,7 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
     public activeItem(id: number, row: any, $event: Event): void {
         if (this.isPermissionEditCloseActive && row.status === ApprovalStatusEnum.Inactive) {
             // dựa vào id, set status cho product là close
-            // this._apiService.activeProductAsync(id).subscribe();
+
             //sau khi set success
             row.status = ApprovalStatusEnum.Active;
         }
