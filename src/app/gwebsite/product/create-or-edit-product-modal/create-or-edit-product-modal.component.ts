@@ -3,8 +3,10 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
-import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { ProductDto } from '../dto/product.dto';
+import { ComboboxItemDto, ProductSavedDto } from '@shared/service-proxies/service-proxies';
+// import { ProductServiceProxy } from '@shared/service-proxies/service-proxies';
+import { ProductDto, ApprovalStatusEnum, NewPJDto } from '../dto/product.dto';
+import * as moment from 'moment';
 
 @Component({
     selector: 'createOrEditProductModal',
@@ -14,7 +16,7 @@ import { ProductDto } from '../dto/product.dto';
 export class CreateOrEditProductModalComponent extends AppComponentBase {
 
     @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('productCombobox') productCombobox: ElementRef;
+    // @ViewChild('productCombobox') productCombobox: ElementRef;
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
 
     /**
@@ -24,65 +26,75 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
 
     active = false;
     saving = false;
-
+    checked: boolean;
     product: ProductDto = new ProductDto();
     products: ComboboxItemDto[] = [];
 
+    public pjCode = '';
+    public pjName = '';
+    public pjCreateDate = '';
+    public pjActiveDate = '';
+    public isCheckActive = false;
+    public statusEnum = ApprovalStatusEnum;
+    public newProduct: NewPJDto;
+
     constructor(
         injector: Injector,
-        private _apiService: WebApiServiceProxy
+        // private _apiService: ProductServiceProxy
     ) {
         super(injector);
     }
 
     show(productId?: number | null | undefined): void {
         this.active = true;
+        this.saving = false;
 
-        this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', productId).subscribe(result => {
-            // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-            this.product = result.menuClient;
-            this.products = result.menuClients;
-            this.modal.show();
-            setTimeout(() => {
-                $(this.productCombobox.nativeElement).selectpicker('refresh');
-            }, 0);
-        });
+        this.pjCode = '';
+        this.pjName = '';
+        this.isCheckActive = false;
+
+        let now = new Date();
+        this.pjCreateDate = moment(now).format('DD/MM/YYYY');
+
+        this.modal.show();
     }
 
     save(): void {
-        let input = this.product;
-        this.saving = true;
-        if (input.id) {
-            this.updateProduct();
-        } else {
-            this.insertProduct();
+        if (this.pjCode && this.pjCode !== '' && this.pjName && this.pjName !== '') {
+            this.saving = true;
+
+            let status = this.isCheckActive ? this.statusEnum.Active : this.statusEnum.Inactive;
+
+            this.newProduct = new NewPJDto(this.pjCode, this.pjName, status);
+
+            console.log(this.newProduct.code + '--' + this.newProduct.name
+                + '--' + this.newProduct.status);
+
+            // this.insertProduct();
+
+            // call api create product category theo code,nam,status
+            // add xuống, id tự tạo
+
+            //trước khi add nhớ check duplicat code.
+            // this._apiService.createProductAsync(new ProductSavedDto({ code: this.pjCode, name: this.pjName, status: this.checked ? 1 : 2 })).subscribe(item => console.log(item));
+
+            this.close();
         }
     }
 
-    insertProduct() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.post('api/MenuClient/CreateMenuClient', this.product)
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
-            });
-    }
-
-    updateProduct() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.put('api/MenuClient/UpdateMenuClient', this.product)
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
-            });
-    }
 
     close(): void {
         this.active = false;
         this.modal.hide();
+    }
+
+    handleChange() {
+        this.isCheckActive = true;
+        this.pjActiveDate = this.pjCreateDate;
+    }
+    activeNewPrj(event: Event): void {
+        if (this.isCheckActive) {
+            this.pjActiveDate = this.pjCreateDate;
+        }
     }
 }

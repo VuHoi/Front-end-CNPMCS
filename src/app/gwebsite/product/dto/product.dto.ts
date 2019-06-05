@@ -24,3 +24,15 @@ export enum ApprovalStatusEnum {
     Inactive = 2,
     Close = 3
 }
+
+export class NewPJDto {
+    code: string;
+    name: string;
+    status: number;
+
+    constructor(code: string, name: string, status: number) {
+        this.code = code;
+        this.name = name;
+        this.status = status;
+    }
+}
