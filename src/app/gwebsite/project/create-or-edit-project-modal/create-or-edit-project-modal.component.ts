@@ -3,7 +3,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
-import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
+import { ComboboxItemDto, ProjectServiceProxy, ProjectSavedDto } from '@shared/service-proxies/service-proxies';
 import { ProjectDto, ApprovalStatusEnum, NewPJDto } from '../dto/project.dto';
 import * as moment from 'moment';
 
@@ -25,7 +25,7 @@ export class CreateOrEditProjectModalComponent extends AppComponentBase {
 
     active = false;
     saving = false;
-
+    checked: boolean;
     project: ProjectDto = new ProjectDto();
     projects: ComboboxItemDto[] = [];
 
@@ -39,7 +39,7 @@ export class CreateOrEditProjectModalComponent extends AppComponentBase {
 
     constructor(
         injector: Injector,
-        private _apiService: WebApiServiceProxy
+        private _apiService: ProjectServiceProxy
     ) {
         super(injector);
     }
@@ -55,14 +55,7 @@ export class CreateOrEditProjectModalComponent extends AppComponentBase {
         let now = new Date();
         this.pjCreateDate = moment(now).format('DD/MM/YYYY');
 
-        this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', projectId).subscribe(result => {
-            this.project = result.menuClient;
-            this.projects = result.menuClients;
-            this.modal.show();
-            // setTimeout(() => {
-            //     $(this.projectCombobox.nativeElement).selectpicker('refresh');
-            // }, 0);
-        });
+        this.modal.show();
     }
 
     save(): void {
@@ -82,39 +75,22 @@ export class CreateOrEditProjectModalComponent extends AppComponentBase {
             // add xuống, id tự tạo
 
             //trước khi add nhớ check duplicat code.
-
+            this._apiService.createProjectAsync(new ProjectSavedDto({ code: this.pjCode, name: this.pjName, status: this.checked ? 1 : 2 })).subscribe(item => console.log(item));
 
             this.close();
         }
     }
 
-    insertProject() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.post('api/MenuClient/CreateMenuClient', this.project)
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
-            });
-    }
-
-    updateProject() {
-        // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
-        this._apiService.put('api/MenuClient/UpdateMenuClient', this.project)
-            .pipe(finalize(() => this.saving = false))
-            .subscribe(() => {
-                this.notify.info(this.l('SavedSuccessfully'));
-                this.close();
-                this.modalSave.emit(null);
-            });
-    }
 
     close(): void {
         this.active = false;
         this.modal.hide();
     }
 
+    handleChange() {
+        this.isCheckActive = true;
+        this.pjActiveDate = this.pjCreateDate;
+    }
     activeNewPrj(event: Event): void {
         if (this.isCheckActive) {
             this.pjActiveDate = this.pjCreateDate;
