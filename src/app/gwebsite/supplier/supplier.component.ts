@@ -6,26 +6,26 @@ import * as _ from 'lodash';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
 import { Paginator } from 'primeng/components/paginator/paginator';
 import { Table } from 'primeng/components/table/table';
-import { CreateOrEditProjectModalComponent } from './create-or-edit-project-modal/create-or-edit-project-modal.component';
+import { CreateOrEditSupplierModalComponent } from './create-or-edit-supplier-modal/create-or-edit-supplier-modal.component';
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import * as moment from 'moment';
-import { ApprovalStatusEnum } from './dto/project.dto';
+import { ApprovalStatusEnum } from './dto/supplier.dto';
 
 
 @Component({
-    selector: 'app-project',
-    templateUrl: './project.component.html',
-    styleUrls: ['./project.component.css'],
+    selector: 'app-supplier',
+    templateUrl: './supplier.component.html',
+    styleUrls: ['./supplier.component.css'],
     animations: [appModuleAnimation()]
 })
-export class ProjectComponent extends AppComponentBase implements AfterViewInit, OnInit {
+export class SupplierComponent extends AppComponentBase implements AfterViewInit, OnInit {
 
     /**
      * @ViewChild là dùng get control và call thuộc tính, functions của control đó
      */
     @ViewChild('textsTable') textsTable: ElementRef;
-    @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditProjectModalComponent;
+    @ViewChild('createOrEditModal') createOrEditModal: CreateOrEditSupplierModalComponent;
     @ViewChild('dataTable') dataTable: Table;
     @ViewChild('paginator') paginator: Paginator;
 
@@ -33,9 +33,9 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
      * tạo các biến dể filters
      */
     filterText: string;
-    //permission cho duyệt, thêm, xóa, sửa: Admin và Department tạo project đó.
+    //permission cho duyệt, thêm, xóa, sửa: Admin và Department tạo supplier đó.
     // duyệt: chỉ mỗi Admin đc duyệt
-    // sửa, đóng: department tạo ra project đó và Admin.
+    // sửa, đóng: department tạo ra supplier đó và Admin.
     // thêm: ai thêm cũng đc, ko phân quyền
     public isPermissionEditCloseActive = false;
 
@@ -62,13 +62,13 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
     // public model: any = { date: { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate() } };
     // public model = new Date();
     public creatDateString = '';
-    public projectCodeFilter = '';
-    public projectNameFilter = '';
+    public supplierCodeFilter = '';
+    public supplierNameFilter = '';
 
-    // -những dự án của năm cũ, sẽ tự động close (mỗi lần đến 1/1/newyear, sẽ trigger cho nó close hết projects năm cũ),
+    // -những dự án của năm cũ, sẽ tự động close (mỗi lần đến 1/1/newyear, sẽ trigger cho nó close hết suppliers năm cũ),
     //      dù có đc approved hay chưa.
     // -những dự án của năm hiện tại: chỉ dc phép close khi nó chưa đc approved.
-    public projectFakes = [
+    public supplierFakes = [
         {
             code: 'SA01',
             name: 'Purchase early in the year',
@@ -177,10 +177,10 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
     }
 
     /**
-     * Hàm get danh sách Project
+     * Hàm get danh sách Supplier
      * @param event
      */
-    getProjects(event?: LazyLoadEvent) {
+    getSuppliers(event?: LazyLoadEvent) {
         if (!this.paginator || !this.dataTable) {
             return;
         }
@@ -204,7 +204,7 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
         // });
 
         this.primengTableHelper.totalRecordsCount = 16;
-        this.primengTableHelper.records = this.projectFakes;
+        this.primengTableHelper.records = this.supplierFakes;
 
         this.primengTableHelper.records.forEach((item) => {
             item.isEdit = false;
@@ -238,7 +238,7 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
 
     applyFilters(): void {
         //truyền params lên url thông qua router
-        this._router.navigate(['app/gwebsite/project', {
+        this._router.navigate(['app/gwebsite/supplier', {
             filterText: this.filterText
         }]);
 
@@ -258,24 +258,24 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
 
     //Refresh grid khi thực hiện create or edit thành công
     refreshValueFromModal(): void {
-        if (this.createOrEditModal.project.id) {
+        if (this.createOrEditModal.supplier.id) {
             for (let i = 0; i < this.primengTableHelper.records.length; i++) {
-                if (this.primengTableHelper.records[i].id === this.createOrEditModal.project.id) {
-                    this.primengTableHelper.records[i] = this.createOrEditModal.project;
+                if (this.primengTableHelper.records[i].id === this.createOrEditModal.supplier.id) {
+                    this.primengTableHelper.records[i] = this.createOrEditModal.supplier;
                     return;
                 }
             }
         } else { this.reloadPage(); }
     }
 
-    //hàm show view create Project
-    createProject() {
+    //hàm show view create Supplier
+    createSupplier() {
         this.createOrEditModal.show();
     }
 
-    public searchProject(): void {
+    public searchSupplier(): void {
         // filter, values default = ''
-        console.log(this.creatDateString + '--' + this.projectCodeFilter + '--' + this.projectNameFilter);
+        console.log(this.creatDateString + '--' + this.supplierCodeFilter + '--' + this.supplierNameFilter);
     }
 
     public onDateChangedBy(event: IMyDateModel): void {
@@ -307,7 +307,7 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
 
     public closeItem(id: number, row: any, $event: Event): void {
         if (this.isPermissionEditCloseActive && row.status === ApprovalStatusEnum.Inactive) {
-            // dựa vào id, set status cho project là close
+            // dựa vào id, set status cho supplier là close
 
             //sau khi set success
             row.status = ApprovalStatusEnum.Close;
@@ -317,7 +317,7 @@ export class ProjectComponent extends AppComponentBase implements AfterViewInit,
     //chỉ đc active những cái inactive, còn ko đc inactive ngược lại
     public activeItem(id: number, row: any, $event: Event): void {
         if (this.isPermissionEditCloseActive && row.status === ApprovalStatusEnum.Inactive) {
-            // dựa vào id, set status cho project là close
+            // dựa vào id, set status cho supplier là close
 
             //sau khi set success
             row.status = ApprovalStatusEnum.Active;

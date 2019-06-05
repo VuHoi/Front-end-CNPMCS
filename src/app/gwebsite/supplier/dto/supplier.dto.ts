@@ -1,6 +1,6 @@
 import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
 
-export class ProjectDto {
+export class SupplierDto {
     id: number;
     name: string;
     alias: string;
@@ -14,9 +14,9 @@ export class ProjectDto {
     metaDescription: string;
 }
 
-export class GetProjectOutput {
-    project: ProjectDto;
-    projects: ComboboxItemDto[];
+export class GetSupplierOutput {
+    supplier: SupplierDto;
+    suppliers: ComboboxItemDto[];
 }
 
 export enum ApprovalStatusEnum {
