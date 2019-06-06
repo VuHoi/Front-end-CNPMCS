@@ -4,7 +4,7 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
 import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { SupplierDto, ApprovalStatusEnum, NewPJDto } from '../dto/supplier.dto';
+import { SupplierDto, ApprovalStatusEnum, NewPJDto, SupplierTypeInfo } from '../dto/supplier.dto';
 import * as moment from 'moment';
 
 @Component({
@@ -31,8 +31,36 @@ export class CreateOrEditSupplierModalComponent extends AppComponentBase {
 
     public pjCode = '';
     public pjName = '';
+    public supplierTypeId: number;
     public pjCreateDate = '';
     public pjActiveDate = '';
+    public pjAddress = '';
+    public pjEmail = '';
+    public pjFax = '';
+    public pjPhone = '';
+    public pjContact = '';
+    public pjDescription = '';
+
+    public supplierTypes = [
+        {
+            id: 1,
+            code: 'F001',
+            name: 'Computer Screen'
+        },
+        {
+            id: 2,
+            code: 'F002',
+            name: 'Computer CPU'
+        },
+        {
+            id: 3,
+            code: 'G001',
+            name: 'Fridge'
+        }
+    ];
+
+    public supplierTypeInfoList = [];
+
     public isCheckActive = false;
     public statusEnum = ApprovalStatusEnum;
     public newSupplier: NewPJDto;
@@ -51,9 +79,22 @@ export class CreateOrEditSupplierModalComponent extends AppComponentBase {
         this.pjCode = '';
         this.pjName = '';
         this.isCheckActive = false;
+        this.pjAddress = '';
+        this.pjFax = '';
+        this.pjPhone = '';
+        this.pjContact = '';
+        this.pjDescription = '';
 
         let now = new Date();
         this.pjCreateDate = moment(now).format('DD/MM/YYYY');
+
+        this.supplierTypeId = this.supplierTypes[0].id;
+        this.supplierTypeInfoList = [];
+
+        this.supplierTypes.forEach((item, i) => {
+            this.supplierTypeInfoList.push(
+                new SupplierTypeInfo(item.id, `${item.code} - ${item.name}`));
+        });
 
         this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', supplierId).subscribe(result => {
             this.supplier = result.menuClient;
@@ -71,10 +112,14 @@ export class CreateOrEditSupplierModalComponent extends AppComponentBase {
 
             let status = this.isCheckActive ? this.statusEnum.Active : this.statusEnum.Inactive;
 
-            this.newSupplier = new NewPJDto(this.pjCode, this.pjName, status);
+            //createDate: BE lấy giờ hệ thống
+            this.newSupplier = new NewPJDto(this.pjCode, this.pjName, this.supplierTypeId, this.pjAddress,
+                this.pjEmail, this.pjFax, this.pjPhone, this.pjContact, this.pjDescription, status);
 
-            console.log(this.newSupplier.code + '--' + this.newSupplier.name
-                + '--' + this.newSupplier.status);
+
+            console.log(this.pjCode + '--' + this.pjName + '--' + this.supplierTypeId + '--' + this.pjAddress
+                + '--' + this.pjEmail + '--' + this.pjFax + '--' + this.pjPhone + '--' + this.pjContact + '--' +
+                this.pjDescription + '--' + status);
 
             // this.insertSupplier();
 
