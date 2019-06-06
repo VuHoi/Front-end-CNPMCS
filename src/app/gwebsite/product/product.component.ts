@@ -10,7 +10,7 @@ import { CreateOrEditProductModalComponent } from './create-or-edit-product-moda
 import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.service';
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import * as moment from 'moment';
-import { ApprovalStatusEnum } from './dto/product.dto';
+import { ApprovalStatusEnum, StatusEnum } from './dto/product.dto';
 
 
 @Component({
@@ -38,6 +38,23 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
     // sửa, đóng: department tạo ra product đó và Admin.
     // thêm: ai thêm cũng đc, ko phân quyền
     public isPermissionEditCloseActive = false;
+
+    public status = StatusEnum.All;
+    public statusEnum = StatusEnum;
+    public StatusList = [
+        {
+            id: StatusEnum.All,
+            name: ''
+        },
+        {
+            id: StatusEnum.Open,
+            name: 'Open'
+        },
+        {
+            id: StatusEnum.Close,
+            name: 'Close'
+        }
+    ];
 
     public createDatePickerOptions: IMyDpOptions = {
         selectorWidth: '240px',
@@ -70,76 +87,173 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
     // -những dự án của năm hiện tại: chỉ dc phép close khi nó chưa đc approved.
     public productFakes = [
         {
-            code: 'SA01',
+            id: 1,
+            code: 'S001',
             name: 'Purchase early in the year',
-            createDate: '12/02/2017',
-            activeDate: '',
-            status: 3
+            productTypeId: 1,
+            address: 'Quan 3 - TP HCM',
+            email: 'sup@email.com',
+            fax: '01020304',
+            phone: '0768595768',
+            contact: 'Minh Tien',
+            description: 'This is product item',
+            createDate: '05/11/2018',
+            status: 2,
+            isIncludeProduct: true
         },
         {
-            code: 'SA02',
-            name: 'Purchase for building B',
-            createDate: '20/04/2017',
-            activeDate: '28/04/2017',
-            status: 3
-        },
-        {
-            code: 'ES01',
+            id: 2,
+            code: 'S002',
             name: 'Purchase early in the year',
-            createDate: '12/02/2018',
-            activeDate: '',
-            status: 3
+            productTypeId: 3,
+            address: 'Quan 3 - TP HCM',
+            email: 'sup@email.com',
+            fax: '01020304',
+            phone: '0768595768',
+            contact: 'Minh Tien',
+            description: 'This is product item',
+            createDate: '05/11/2018',
+            status: 1,
+            isIncludeProduct: false
         },
         {
-            code: 'ES02',
-            name: 'Purchase for building B',
-            createDate: '11/03/2019',
-            activeDate: '',
-            status: 2
+            id: 3,
+            code: 'S003',
+            name: 'Purchase early in the year',
+            productTypeId: 6,
+            address: 'Quan 3 - TP HCM',
+            email: 'sup@email.com',
+            fax: '01020304',
+            phone: '0768595768',
+            contact: 'Minh Tien',
+            description: 'This is product item',
+            createDate: '05/11/2018',
+            status: 1,
+            isIncludeProduct: false
         },
         {
-            code: 'AD01',
-            name: 'Purchase for building B',
-            createDate: '11/03/2019',
-            activeDate: '23/05/2019',
-            status: 1
+            id: 4,
+            code: 'S004',
+            name: 'Purchase early in the year',
+            productTypeId: 1,
+            address: 'Quan 3 - TP HCM',
+            email: 'sup@email.com',
+            fax: '01020304',
+            phone: '0768595768',
+            contact: 'Minh Tien',
+            description: 'This is product item',
+            createDate: '05/11/2018',
+            status: 2,
+            isIncludeProduct: true
         },
         {
-            code: 'AD02',
-            name: 'Purchase for building B',
-            createDate: '25/05/2019',
-            activeDate: '',
-            status: 2
+            id: 5,
+            code: 'S005',
+            name: 'Purchase early in the year',
+            productTypeId: 9,
+            address: 'Quan 3 - TP HCM',
+            email: 'sup@email.com',
+            fax: '01020304',
+            phone: '0768595768',
+            contact: 'Minh Tien',
+            description: 'This is product item',
+            createDate: '05/11/2018',
+            status: 2,
+            isIncludeProduct: false
         },
         {
-            code: 'TE01',
-            name: 'Purchase for building B',
-            createDate: '11/03/2019',
-            activeDate: '',
-            status: 2
+            id: 6,
+            code: 'S006',
+            name: 'Purchase early in the year',
+            productTypeId: 7,
+            address: 'Quan 3 - TP HCM',
+            email: 'sup@email.com',
+            fax: '01020304',
+            phone: '0768595768',
+            contact: 'Minh Tien',
+            description: 'This is product item',
+            createDate: '05/11/2018',
+            status: 1,
+            isIncludeProduct: false
         },
         {
-            code: 'TE02',
-            name: 'Purchase for building B',
-            createDate: '11/03/2019',
-            activeDate: '23/05/2019',
-            status: 1
+            id: 7,
+            code: 'S007',
+            name: 'Purchase early in the year',
+            productTypeId: 1,
+            address: 'Quan 3 - TP HCM',
+            email: 'sup@email.com',
+            fax: '01020304',
+            phone: '0768595768',
+            contact: 'Minh Tien',
+            description: 'This is product item',
+            createDate: '05/11/2018',
+            status: 2,
+            isIncludeProduct: false
         },
         {
-            code: 'GH01',
-            name: 'Purchase for building B',
-            createDate: '25/05/2019',
-            activeDate: '',
-            status: 2
+            id: 8,
+            code: 'S008',
+            name: 'Purchase early in the year',
+            productTypeId: 1,
+            address: 'Quan 3 - TP HCM',
+            email: 'sup@email.com',
+            fax: '01020304',
+            phone: '0768595768',
+            contact: 'Minh Tien',
+            description: 'This is product item',
+            createDate: '05/11/2018',
+            status: 2,
+            isIncludeProduct: true
         },
         {
-            code: 'GH02',
-            name: 'Purchase for building B',
-            createDate: '25/05/2019',
-            activeDate: '',
-            status: 2
+            id: 9,
+            code: 'S009',
+            name: 'Purchase early in the year',
+            productTypeId: 1,
+            address: 'Quan 3 - TP HCM',
+            email: 'sup@email.com',
+            fax: '01020304',
+            phone: '0768595768',
+            contact: 'Minh Tien',
+            description: 'This is product item',
+            createDate: '05/11/2018',
+            status: 1,
+            isIncludeProduct: false
+        },
+        {
+            id: 10,
+            code: 'S010',
+            name: 'Purchase early in the year',
+            productTypeId: 1,
+            address: 'Quan 3 - TP HCM',
+            email: 'sup@email.com',
+            fax: '01020304',
+            phone: '0768595768',
+            contact: 'Minh Tien',
+            description: 'This is product item',
+            createDate: '05/11/2018',
+            status: 2,
+            isIncludeProduct: false
+        },
+        {
+            id: 11,
+            code: 'S011',
+            name: 'Purchase early in the year',
+            productTypeId: 1,
+            address: 'Quan 3 - TP HCM',
+            email: 'sup@email.com',
+            fax: '01020304',
+            phone: '0768595768',
+            contact: 'Minh Tien',
+            description: 'This is product item',
+            createDate: '05/11/2018',
+            status: 2,
+            isIncludeProduct: false
         }
     ];
+
+    public oldObject = {};
 
     public approvalStatusEnum = ApprovalStatusEnum;
 
@@ -274,8 +388,9 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
     }
 
     public searchProduct(): void {
+        //3 params filter FE truyền vào api
         // filter, values default = ''
-        console.log(this.creatDateString + '--' + this.productCodeFilter + '--' + this.productNameFilter);
+        console.log(this.status + '--' + this.productCodeFilter + '--' + this.productNameFilter);
     }
 
     public onDateChangedBy(event: IMyDateModel): void {
@@ -285,6 +400,13 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
 
     public actionEdit(row: any, $event: Event): void {
         // $event.stopPropagation();
+        this.oldObject['name'] = row.name;
+        this.oldObject['address'] = row.address;
+        this.oldObject['email'] = row.email;
+        this.oldObject['fax'] = row.fax;
+        this.oldObject['phone'] = row.phone;
+        this.oldObject['contact'] = row.contact;
+        this.oldObject['description'] = row.description;
         row.isEdit = true;
     }
 
@@ -292,8 +414,11 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
         if (this.isPermissionEditCloseActive && row.name && row.name !== '') {
             //call api edit name thông qua id truyền vào
 
+            //Các fields cần đưa vào model để update.
+
             // vì bên html đã tự bind [(ngModel)] vào row.name và row.note rồi, nên ở đây ta chỉ cần lấy ra giá trị để update
-            console.log(id + '---' + row.name);
+            console.log(id + '---' + row.name + '---' + row.address + '---' + row.email + '---' + row.fax + '---' +
+                row.phone + '---' + row.contact + '---' + row.description);
 
             //save thành công
             row.isEdit = false;
@@ -302,25 +427,31 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
     }
 
     public cancelEdit(row: any, $event: Event): void {
+        row.name = this.oldObject['name'];
+        row.address = this.oldObject['address'];
+        row.email = this.oldObject['email'];
+        row.fax = this.oldObject['fax'];
+        row.phone = this.oldObject['phone'];
+        row.contact = this.oldObject['contact'];
+        row.description = this.oldObject['description'];
+
         row.isEdit = false;
     }
 
-    public closeItem(id: number, row: any, $event: Event): void {
-        if (this.isPermissionEditCloseActive && row.status === ApprovalStatusEnum.Inactive) {
-            // dựa vào id, set status cho product là close
+    public actionPCItem(id: number, row: any): void {
+        if (this.isPermissionEditCloseActive) {
+            // dựa vào id, set status cho product là close nếu nó đang open và ngược lại.
 
             //sau khi set success
-            row.status = ApprovalStatusEnum.Close;
+            row.status = row.status === StatusEnum.Close ? StatusEnum.Open : StatusEnum.Close;
         }
     }
 
-    //chỉ đc active những cái inactive, còn ko đc inactive ngược lại
-    public activeItem(id: number, row: any, $event: Event): void {
-        if (this.isPermissionEditCloseActive && row.status === ApprovalStatusEnum.Inactive) {
-            // dựa vào id, set status cho product là close
-
-            //sau khi set success
-            row.status = ApprovalStatusEnum.Active;
+    //chỉ những người có permission mới đc phép thực thi action với PC
+    public removePcItem(id: number, row: any, index: number): void {
+        if (this.isPermissionEditCloseActive) {
+            this.primengTableHelper.records.splice(index, 1);
         }
+        this.primengTableHelper.hideLoadingIndicator();
     }
 }

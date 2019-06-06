@@ -25,14 +25,46 @@ export enum ApprovalStatusEnum {
     Close = 3
 }
 
+export enum StatusEnum {
+    Open = 1,
+    Close = 2,
+    All = 3
+}
+
 export class NewPJDto {
     code: string;
     name: string;
+    productTypeId: number;
+    address: string;
+    email: string;
+    fax: string;
+    phone: string;
+    contact: string;
+    description: string;
     status: number;
 
-    constructor(code: string, name: string, status: number) {
+
+    constructor(code: string, name: string, productTypeId: number, address: string,
+        email: string, fax: string, phone: string, contact: string, description: string,
+        status: number) {
         this.code = code;
         this.name = name;
+        this.productTypeId = productTypeId;
+        this.address = address;
+        this.email = email;
+        this.fax = fax;
+        this.phone = phone;
+        this.contact = contact;
+        this.description = description;
         this.status = status;
+    }
+}
+
+export class ProductTypeInfo {
+    id: number;
+    info: string;
+    constructor(id: number, info: string) {
+        this.id = id;
+        this.info = info;
     }
 }
