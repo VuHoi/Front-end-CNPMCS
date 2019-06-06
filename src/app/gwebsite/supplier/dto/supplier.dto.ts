@@ -25,6 +25,12 @@ export enum ApprovalStatusEnum {
     Close = 3
 }
 
+export enum StatusEnum {
+    Open = 1,
+    Close = 2,
+    All = 3
+}
+
 export class NewPJDto {
     code: string;
     name: string;
