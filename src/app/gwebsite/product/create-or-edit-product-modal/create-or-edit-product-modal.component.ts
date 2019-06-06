@@ -31,15 +31,13 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
 
     public pjCode = '';
     public pjName = '';
-    public productTypeId: number;
     public pjCreateDate = '';
     public pjActiveDate = '';
-    public pjAddress = '';
-    public pjEmail = '';
-    public pjFax = '';
-    public pjPhone = '';
-    public pjContact = '';
+    public pjUnitPrice = '';
+    public pjCalUnit = '';
     public pjDescription = '';
+
+    public productTypeId: number;
 
     public productTypes = [
         {
@@ -59,7 +57,27 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
         }
     ];
 
+    public supplierId: number;
+    public suppliers = [
+        {
+            id: 1,
+            code: 'S001',
+            name: 'DMX'
+        },
+        {
+            id: 2,
+            code: 'S002',
+            name: 'FPT'
+        },
+        {
+            id: 3,
+            code: 'S001',
+            name: 'Fridge'
+        }
+    ];
+
     public productTypeInfoList = [];
+    public supplierInfoList = [];
 
     public isCheckActive = false;
     public statusEnum = ApprovalStatusEnum;
@@ -79,10 +97,8 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
         this.pjCode = '';
         this.pjName = '';
         this.isCheckActive = false;
-        this.pjAddress = '';
-        this.pjFax = '';
-        this.pjPhone = '';
-        this.pjContact = '';
+        this.pjUnitPrice = '';
+        this.pjCalUnit = '';
         this.pjDescription = '';
 
         let now = new Date();
@@ -93,6 +109,14 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
 
         this.productTypes.forEach((item, i) => {
             this.productTypeInfoList.push(
+                new ProductTypeInfo(item.id, `${item.code} - ${item.name}`));
+        });
+
+        this.supplierId = this.suppliers[0].id;
+        this.supplierInfoList = [];
+
+        this.suppliers.forEach((item, i) => {
+            this.supplierInfoList.push(
                 new ProductTypeInfo(item.id, `${item.code} - ${item.name}`));
         });
 
@@ -113,13 +137,12 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
             let status = this.isCheckActive ? this.statusEnum.Active : this.statusEnum.Inactive;
 
             //createDate: BE lấy giờ hệ thống
-            this.newProduct = new NewPJDto(this.pjCode, this.pjName, this.productTypeId, this.pjAddress,
-                this.pjEmail, this.pjFax, this.pjPhone, this.pjContact, this.pjDescription, status);
+            this.newProduct = new NewPJDto(this.pjCode, this.pjName, this.productTypeId, this.supplierId, this.pjUnitPrice,
+                this.pjCalUnit, this.pjDescription, status);
 
 
-            console.log(this.pjCode + '--' + this.pjName + '--' + this.productTypeId + '--' + this.pjAddress
-                + '--' + this.pjEmail + '--' + this.pjFax + '--' + this.pjPhone + '--' + this.pjContact + '--' +
-                this.pjDescription + '--' + status);
+            console.log(this.pjCode + '--' + this.pjName + '--' + this.productTypeId + '--' + this.supplierId + '--' + this.pjUnitPrice
+                + '--' + this.pjCalUnit + '--' + this.pjDescription + '--' + status);
 
             // this.insertProduct();
 

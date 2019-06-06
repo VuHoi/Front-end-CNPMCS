@@ -94,23 +94,23 @@
                                             {{l('Product Type')}}
                                             <p-sortIcon field="productTypeId"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="address" style="width: 150px; text-align: center">
-                                            {{l('Address')}}
+                                        <th pSortableColumn="supplierId" style="width: 150px; text-align: center">
+                                            {{l('Supplier Id')}}
+                                            <p-sortIcon field="supplierId"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="email" style="width: 150px; text-align: center">
-                                            {{l('Email')}}
+                                        <th pSortableColumn="unitPrice" style="width: 150px; text-align: center">
+                                            {{l('Unit Price')}}
+                                            <p-sortIcon field="unitPrice"></p-sortIcon>
                                         </th>
-                                        <th pSortableColumn="fax" style="width: 150px; text-align: center">
-                                            {{l('Fax')}}
-                                        </th>
-                                        <th pSortableColumn="phone" style="width: 150px; text-align: center">
-                                            {{l('Phone')}}
-                                        </th>
-                                        <th pSortableColumn="contact" style="width: 150px; text-align: center">
-                                            {{l('Contact')}}
+                                        <th pSortableColumn="calUnit" style="width: 150px; text-align: center">
+                                            {{l('Cal Unit')}}
+                                            <p-sortIcon field="calUnit"></p-sortIcon>
                                         </th>
                                         <th pSortableColumn="description" style="width: 150px; text-align: center">
                                             {{l('Description')}}
+                                        </th>
+                                        <th pSortableColumn="supplierAddress" style="width: 150px; text-align: center">
+                                            {{l('Address')}}
                                         </th>
                                         <th pSortableColumn="createDate" style="width: 150px; text-align: center">
                                             {{l('Create Date')}}
@@ -147,41 +147,26 @@
                                             <span
                                                 title="{{record.productTypeId}}">{{truncateString(record.productTypeId)}}</span>
                                         </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Supplier Id')}}</span>
+                                            <span
+                                                title="{{record.supplierId}}">{{truncateString(record.supplierId)}}</span>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Unit Price')}}</span>
+                                            <span *ngIf="!record.isEdit"
+                                                title="{{record.unitPrice}}">{{ record.unitPrice }}</span>
+                                            <input *ngIf="record.isEdit" type="text" name="recordUnitPrice"
+                                                [(ngModel)]="record.unitPrice" class="form-control">
+                                        </td>
+                                        <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Cal Unit')}}</span>
+                                            <span *ngIf="!record.isEdit"
+                                                title="{{record.calUnit}}">{{ record.calUnit }}</span>
+                                            <input *ngIf="record.isEdit" type="text" name="recordUnitPrice"
+                                                [(ngModel)]="record.calUnit" class="form-control">
+                                        </td>
 
-                                        <td style="width: 150px">
-                                            <span class="ui-column-title">{{l('Address')}}</span>
-                                            <span *ngIf="!record.isEdit"
-                                                title="{{record.address}}">{{ record.address }}</span>
-                                            <input *ngIf="record.isEdit" type="text" name="recordAddress"
-                                                [(ngModel)]="record.address" class="form-control">
-                                        </td>
-                                        <td style="width: 150px">
-                                            <span class="ui-column-title">{{l('Email')}}</span>
-                                            <span *ngIf="!record.isEdit"
-                                                title="{{record.email}}">{{ record.email }}</span>
-                                            <input *ngIf="record.isEdit" type="text" name="recordemail"
-                                                [(ngModel)]="record.email" class="form-control">
-                                        </td>
-                                        <td style="width: 150px">
-                                            <span class="ui-column-title">{{l('Fax')}}</span>
-                                            <span *ngIf="!record.isEdit" title="{{record.fax}}">{{ record.fax }}</span>
-                                            <input *ngIf="record.isEdit" type="text" name="recordFax"
-                                                [(ngModel)]="record.fax" class="form-control">
-                                        </td>
-                                        <td style="width: 150px">
-                                            <span class="ui-column-title">{{l('Phone')}}</span>
-                                            <span *ngIf="!record.isEdit"
-                                                title="{{record.phone}}">{{ record.phone }}</span>
-                                            <input *ngIf="record.isEdit" type="text" name="recordPhone"
-                                                [(ngModel)]="record.phone" class="form-control">
-                                        </td>
-                                        <td style="width: 150px">
-                                            <span class="ui-column-title">{{l('Contact')}}</span>
-                                            <span *ngIf="!record.isEdit"
-                                                title="{{record.contact}}">{{ record.contact }}</span>
-                                            <input *ngIf="record.isEdit" type="text" name="recordContact"
-                                                [(ngModel)]="record.contact" class="form-control">
-                                        </td>
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Description')}}</span>
                                             <span *ngIf="!record.isEdit"
@@ -190,9 +175,14 @@
                                                 [(ngModel)]="record.description" class="form-control">
                                         </td>
                                         <td style="width: 150px">
+                                            <span class="ui-column-title">{{l('Address')}}</span>
+                                            <span *ngIf="!record.isEdit"
+                                                title="{{record.supplierAddress}}">{{ record.supplierAddress }}</span>
+                                        </td>
+                                        <span style="width: 150px">
                                             <span class="ui-column-title">{{l('Create Date')}}</span>
                                             <span title="{{record.createDate}}">{{ record.createDate }}</span>
-                                        </td>
+                                        </span>
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Status')}}</span>
                                             <span

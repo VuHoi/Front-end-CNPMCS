@@ -35,26 +35,20 @@ export class NewPJDto {
     code: string;
     name: string;
     productTypeId: number;
-    address: string;
-    email: string;
-    fax: string;
-    phone: string;
-    contact: string;
+    supplierId: number;
+    unitPrice: string;
+    calUnit: string;
     description: string;
     status: number;
 
-
-    constructor(code: string, name: string, productTypeId: number, address: string,
-        email: string, fax: string, phone: string, contact: string, description: string,
-        status: number) {
+    constructor(code: string, name: string, productTypeId: number, supplierId: number,
+        unitPrice: string, calUnit: string, description: string, status: number) {
         this.code = code;
         this.name = name;
         this.productTypeId = productTypeId;
-        this.address = address;
-        this.email = email;
-        this.fax = fax;
-        this.phone = phone;
-        this.contact = contact;
+        this.supplierId = supplierId;
+        this.unitPrice = unitPrice;
+        this.calUnit = calUnit;
         this.description = description;
         this.status = status;
     }

@@ -91,165 +91,154 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
             code: 'S001',
             name: 'Purchase early in the year',
             productTypeId: 1,
-            address: 'Quan 3 - TP HCM',
-            email: 'sup@email.com',
-            fax: '01020304',
-            phone: '0768595768',
-            contact: 'Minh Tien',
+            supplierId: 2,
+            unitPrice: '20000',
+            calUnit: 'VND',
             description: 'This is product item',
+            supplierAddress: 'Quan 3 - TP HCM',
             createDate: '05/11/2018',
             status: 2,
-            isIncludeProduct: true
+            isUsed: true
         },
         {
             id: 2,
             code: 'S002',
             name: 'Purchase early in the year',
             productTypeId: 3,
-            address: 'Quan 3 - TP HCM',
-            email: 'sup@email.com',
-            fax: '01020304',
-            phone: '0768595768',
-            contact: 'Minh Tien',
+            supplierId: 1,
+            unitPrice: '20000',
+            calUnit: 'VND',
             description: 'This is product item',
+            supplierAddress: 'Quan 3 - TP HCM',
             createDate: '05/11/2018',
-            status: 1,
-            isIncludeProduct: false
+            status: 2,
+            isUsed: false
         },
         {
             id: 3,
             code: 'S003',
             name: 'Purchase early in the year',
-            productTypeId: 6,
-            address: 'Quan 3 - TP HCM',
-            email: 'sup@email.com',
-            fax: '01020304',
-            phone: '0768595768',
-            contact: 'Minh Tien',
+            productTypeId: 4,
+            supplierId: 6,
+            unitPrice: '20000',
+            calUnit: 'VND',
             description: 'This is product item',
+            supplierAddress: 'Quan 3 - TP HCM',
             createDate: '05/11/2018',
-            status: 1,
-            isIncludeProduct: false
+            status: 2,
+            isUsed: false
         },
         {
             id: 4,
             code: 'S004',
             name: 'Purchase early in the year',
-            productTypeId: 1,
-            address: 'Quan 3 - TP HCM',
-            email: 'sup@email.com',
-            fax: '01020304',
-            phone: '0768595768',
-            contact: 'Minh Tien',
+            productTypeId: 9,
+            supplierId: 7,
+            unitPrice: '20000',
+            calUnit: 'VND',
             description: 'This is product item',
+            supplierAddress: 'Quan 3 - TP HCM',
             createDate: '05/11/2018',
             status: 2,
-            isIncludeProduct: true
+            isUsed: true
         },
         {
             id: 5,
             code: 'S005',
             name: 'Purchase early in the year',
-            productTypeId: 9,
-            address: 'Quan 3 - TP HCM',
-            email: 'sup@email.com',
-            fax: '01020304',
-            phone: '0768595768',
-            contact: 'Minh Tien',
+            productTypeId: 1,
+            supplierId: 5,
+            unitPrice: '20000',
+            calUnit: 'VND',
             description: 'This is product item',
+            supplierAddress: 'Quan 3 - TP HCM',
             createDate: '05/11/2018',
             status: 2,
-            isIncludeProduct: false
+            isUsed: false
         },
         {
             id: 6,
             code: 'S006',
             name: 'Purchase early in the year',
-            productTypeId: 7,
-            address: 'Quan 3 - TP HCM',
-            email: 'sup@email.com',
-            fax: '01020304',
-            phone: '0768595768',
-            contact: 'Minh Tien',
+            productTypeId: 1,
+            supplierId: 2,
+            unitPrice: '20000',
+            calUnit: 'VND',
             description: 'This is product item',
+            supplierAddress: 'Quan 3 - TP HCM',
             createDate: '05/11/2018',
-            status: 1,
-            isIncludeProduct: false
+            status: 2,
+            isUsed: false
         },
         {
             id: 7,
             code: 'S007',
             name: 'Purchase early in the year',
             productTypeId: 1,
-            address: 'Quan 3 - TP HCM',
-            email: 'sup@email.com',
-            fax: '01020304',
-            phone: '0768595768',
-            contact: 'Minh Tien',
+            supplierId: 2,
+            unitPrice: '20000',
+            calUnit: 'VND',
             description: 'This is product item',
+            supplierAddress: 'Quan 3 - TP HCM',
             createDate: '05/11/2018',
             status: 2,
-            isIncludeProduct: false
+            isUsed: true
         },
         {
             id: 8,
             code: 'S008',
             name: 'Purchase early in the year',
             productTypeId: 1,
-            address: 'Quan 3 - TP HCM',
-            email: 'sup@email.com',
-            fax: '01020304',
-            phone: '0768595768',
-            contact: 'Minh Tien',
+            supplierId: 2,
+            unitPrice: '20000',
+            calUnit: 'VND',
             description: 'This is product item',
+            supplierAddress: 'Quan 3 - TP HCM',
             createDate: '05/11/2018',
             status: 2,
-            isIncludeProduct: true
+            isUsed: false
         },
         {
             id: 9,
             code: 'S009',
             name: 'Purchase early in the year',
             productTypeId: 1,
-            address: 'Quan 3 - TP HCM',
-            email: 'sup@email.com',
-            fax: '01020304',
-            phone: '0768595768',
-            contact: 'Minh Tien',
+            supplierId: 2,
+            unitPrice: '20000',
+            calUnit: 'VND',
             description: 'This is product item',
+            supplierAddress: 'Quan 3 - TP HCM',
             createDate: '05/11/2018',
-            status: 1,
-            isIncludeProduct: false
+            status: 2,
+            isUsed: true
         },
         {
             id: 10,
             code: 'S010',
             name: 'Purchase early in the year',
             productTypeId: 1,
-            address: 'Quan 3 - TP HCM',
-            email: 'sup@email.com',
-            fax: '01020304',
-            phone: '0768595768',
-            contact: 'Minh Tien',
+            supplierId: 2,
+            unitPrice: '20000',
+            calUnit: 'VND',
             description: 'This is product item',
+            supplierAddress: 'Quan 3 - TP HCM',
             createDate: '05/11/2018',
             status: 2,
-            isIncludeProduct: false
+            isUsed: true
         },
         {
             id: 11,
             code: 'S011',
             name: 'Purchase early in the year',
             productTypeId: 1,
-            address: 'Quan 3 - TP HCM',
-            email: 'sup@email.com',
-            fax: '01020304',
-            phone: '0768595768',
-            contact: 'Minh Tien',
+            supplierId: 2,
+            unitPrice: '20000',
+            calUnit: 'VND',
             description: 'This is product item',
+            supplierAddress: 'Quan 3 - TP HCM',
             createDate: '05/11/2018',
             status: 2,
-            isIncludeProduct: false
+            isUsed: true
         }
     ];
 
@@ -401,11 +390,8 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
     public actionEdit(row: any, $event: Event): void {
         // $event.stopPropagation();
         this.oldObject['name'] = row.name;
-        this.oldObject['address'] = row.address;
-        this.oldObject['email'] = row.email;
-        this.oldObject['fax'] = row.fax;
-        this.oldObject['phone'] = row.phone;
-        this.oldObject['contact'] = row.contact;
+        this.oldObject['unitPrice'] = row.unitPrice;
+        this.oldObject['calUnit'] = row.calUnit;
         this.oldObject['description'] = row.description;
         row.isEdit = true;
     }
@@ -417,8 +403,7 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
             //Các fields cần đưa vào model để update.
 
             // vì bên html đã tự bind [(ngModel)] vào row.name và row.note rồi, nên ở đây ta chỉ cần lấy ra giá trị để update
-            console.log(id + '---' + row.name + '---' + row.address + '---' + row.email + '---' + row.fax + '---' +
-                row.phone + '---' + row.contact + '---' + row.description);
+            console.log(id + '---' + row.name + '---' + row.unitPrice + '---' + row.calUnit + '---' + row.description);
 
             //save thành công
             row.isEdit = false;
@@ -428,11 +413,8 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
 
     public cancelEdit(row: any, $event: Event): void {
         row.name = this.oldObject['name'];
-        row.address = this.oldObject['address'];
-        row.email = this.oldObject['email'];
-        row.fax = this.oldObject['fax'];
-        row.phone = this.oldObject['phone'];
-        row.contact = this.oldObject['contact'];
+        row.unitPrice = this.oldObject['unitPrice'];
+        row.calUnit = this.oldObject['calUnit'];
         row.description = this.oldObject['description'];
 
         row.isEdit = false;
