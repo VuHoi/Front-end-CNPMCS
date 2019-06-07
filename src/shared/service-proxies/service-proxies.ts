@@ -8509,7 +8509,7 @@ export class SubPlanServiceProxy {
         if (name !== undefined)
             url_ += "Name=" + encodeURIComponent("" + name) + "&"; 
         if (productId !== undefined)
-            url_ += "productId=" + encodeURIComponent("" + productId) + "&"; 
+            url_ += "ProductId=" + encodeURIComponent("" + productId) + "&"; 
         if (sorting !== undefined)
             url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&"; 
         if (maxResultCount !== undefined)
@@ -8654,6 +8654,61 @@ export class SubPlanServiceProxy {
     }
 
     protected processCreateProductCatalogAsync(response: HttpResponseBase): Observable<SubPlanDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? SubPlanDto.fromJS(resultData200) : new SubPlanDto();
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<SubPlanDto>(<any>null);
+    }
+
+    /**
+     * @id (optional) 
+     * @return Success
+     */
+    getSubPlanByIdAsync(id: number | null | undefined): Observable<SubPlanDto> {
+        let url_ = this.baseUrl + "/api/SubPlan/GetSubPlanByIdAsync?";
+        if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSubPlanByIdAsync(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSubPlanByIdAsync(<any>response_);
+                } catch (e) {
+                    return <Observable<SubPlanDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<SubPlanDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetSubPlanByIdAsync(response: HttpResponseBase): Observable<SubPlanDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -19858,6 +19913,7 @@ export class PlanDto implements IPlanDto {
     departmentCode!: string | undefined;
     status!: number | undefined;
     countChange!: number | undefined;
+    subPlans!: SubPlan[] | undefined;
     id!: number | undefined;
 
     constructor(data?: IPlanDto) {
@@ -19878,6 +19934,11 @@ export class PlanDto implements IPlanDto {
             this.departmentCode = data["departmentCode"];
             this.status = data["status"];
             this.countChange = data["countChange"];
+            if (data["subPlans"] && data["subPlans"].constructor === Array) {
+                this.subPlans = [];
+                for (let item of data["subPlans"])
+                    this.subPlans.push(SubPlan.fromJS(item));
+            }
             this.id = data["id"];
         }
     }
@@ -19898,6 +19959,11 @@ export class PlanDto implements IPlanDto {
         data["departmentCode"] = this.departmentCode;
         data["status"] = this.status;
         data["countChange"] = this.countChange;
+        if (this.subPlans && this.subPlans.constructor === Array) {
+            data["subPlans"] = [];
+            for (let item of this.subPlans)
+                data["subPlans"].push(item.toJSON());
+        }
         data["id"] = this.id;
         return data; 
     }
@@ -19911,6 +19977,483 @@ export interface IPlanDto {
     departmentCode: string | undefined;
     status: number | undefined;
     countChange: number | undefined;
+    subPlans: SubPlan[] | undefined;
+    id: number | undefined;
+}
+
+export class SubPlan implements ISubPlan {
+    productId!: number | undefined;
+    product!: Product | undefined;
+    totalprice!: number | undefined;
+    scheduleMonth!: string | undefined;
+    implementQantity!: number | undefined;
+    quantity!: number | undefined;
+    implementPrice!: number | undefined;
+    pesidualQuantity!: number | undefined;
+    pesidualPrice!: number | undefined;
+    planId!: number | undefined;
+    plan!: Plan | undefined;
+    id!: number | undefined;
+
+    constructor(data?: ISubPlan) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.productId = data["productId"];
+            this.product = data["product"] ? Product.fromJS(data["product"]) : <any>undefined;
+            this.totalprice = data["totalprice"];
+            this.scheduleMonth = data["scheduleMonth"];
+            this.implementQantity = data["implementQantity"];
+            this.quantity = data["quantity"];
+            this.implementPrice = data["implementPrice"];
+            this.pesidualQuantity = data["pesidualQuantity"];
+            this.pesidualPrice = data["pesidualPrice"];
+            this.planId = data["planId"];
+            this.plan = data["plan"] ? Plan.fromJS(data["plan"]) : <any>undefined;
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): SubPlan {
+        data = typeof data === 'object' ? data : {};
+        let result = new SubPlan();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["productId"] = this.productId;
+        data["product"] = this.product ? this.product.toJSON() : <any>undefined;
+        data["totalprice"] = this.totalprice;
+        data["scheduleMonth"] = this.scheduleMonth;
+        data["implementQantity"] = this.implementQantity;
+        data["quantity"] = this.quantity;
+        data["implementPrice"] = this.implementPrice;
+        data["pesidualQuantity"] = this.pesidualQuantity;
+        data["pesidualPrice"] = this.pesidualPrice;
+        data["planId"] = this.planId;
+        data["plan"] = this.plan ? this.plan.toJSON() : <any>undefined;
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ISubPlan {
+    productId: number | undefined;
+    product: Product | undefined;
+    totalprice: number | undefined;
+    scheduleMonth: string | undefined;
+    implementQantity: number | undefined;
+    quantity: number | undefined;
+    implementPrice: number | undefined;
+    pesidualQuantity: number | undefined;
+    pesidualPrice: number | undefined;
+    planId: number | undefined;
+    plan: Plan | undefined;
+    id: number | undefined;
+}
+
+export class Product implements IProduct {
+    name!: string | undefined;
+    code!: string | undefined;
+    address!: string | undefined;
+    unitPrice!: number | undefined;
+    calUnit!: string | undefined;
+    createDate!: moment.Moment | undefined;
+    status!: number | undefined;
+    description!: string | undefined;
+    supplier!: Supplier | undefined;
+    supplierId!: number | undefined;
+    productType!: ProductType | undefined;
+    productTypeId!: number | undefined;
+    subPlans!: SubPlan[] | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IProduct) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.code = data["code"];
+            this.address = data["address"];
+            this.unitPrice = data["unitPrice"];
+            this.calUnit = data["calUnit"];
+            this.createDate = data["createDate"] ? moment(data["createDate"].toString()) : <any>undefined;
+            this.status = data["status"];
+            this.description = data["description"];
+            this.supplier = data["supplier"] ? Supplier.fromJS(data["supplier"]) : <any>undefined;
+            this.supplierId = data["supplierId"];
+            this.productType = data["productType"] ? ProductType.fromJS(data["productType"]) : <any>undefined;
+            this.productTypeId = data["productTypeId"];
+            if (data["subPlans"] && data["subPlans"].constructor === Array) {
+                this.subPlans = [];
+                for (let item of data["subPlans"])
+                    this.subPlans.push(SubPlan.fromJS(item));
+            }
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): Product {
+        data = typeof data === 'object' ? data : {};
+        let result = new Product();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["code"] = this.code;
+        data["address"] = this.address;
+        data["unitPrice"] = this.unitPrice;
+        data["calUnit"] = this.calUnit;
+        data["createDate"] = this.createDate ? this.createDate.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["description"] = this.description;
+        data["supplier"] = this.supplier ? this.supplier.toJSON() : <any>undefined;
+        data["supplierId"] = this.supplierId;
+        data["productType"] = this.productType ? this.productType.toJSON() : <any>undefined;
+        data["productTypeId"] = this.productTypeId;
+        if (this.subPlans && this.subPlans.constructor === Array) {
+            data["subPlans"] = [];
+            for (let item of this.subPlans)
+                data["subPlans"].push(item.toJSON());
+        }
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IProduct {
+    name: string | undefined;
+    code: string | undefined;
+    address: string | undefined;
+    unitPrice: number | undefined;
+    calUnit: string | undefined;
+    createDate: moment.Moment | undefined;
+    status: number | undefined;
+    description: string | undefined;
+    supplier: Supplier | undefined;
+    supplierId: number | undefined;
+    productType: ProductType | undefined;
+    productTypeId: number | undefined;
+    subPlans: SubPlan[] | undefined;
+    id: number | undefined;
+}
+
+export class Plan implements IPlan {
+    implementDate!: moment.Moment | undefined;
+    effectiveDate!: moment.Moment | undefined;
+    totalPrice!: number | undefined;
+    unitCode!: string | undefined;
+    departmentCode!: string | undefined;
+    status!: number | undefined;
+    countChange!: number | undefined;
+    subPlans!: SubPlan[] | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IPlan) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.implementDate = data["implementDate"] ? moment(data["implementDate"].toString()) : <any>undefined;
+            this.effectiveDate = data["effectiveDate"] ? moment(data["effectiveDate"].toString()) : <any>undefined;
+            this.totalPrice = data["totalPrice"];
+            this.unitCode = data["unitCode"];
+            this.departmentCode = data["departmentCode"];
+            this.status = data["status"];
+            this.countChange = data["countChange"];
+            if (data["subPlans"] && data["subPlans"].constructor === Array) {
+                this.subPlans = [];
+                for (let item of data["subPlans"])
+                    this.subPlans.push(SubPlan.fromJS(item));
+            }
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): Plan {
+        data = typeof data === 'object' ? data : {};
+        let result = new Plan();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["implementDate"] = this.implementDate ? this.implementDate.toISOString() : <any>undefined;
+        data["effectiveDate"] = this.effectiveDate ? this.effectiveDate.toISOString() : <any>undefined;
+        data["totalPrice"] = this.totalPrice;
+        data["unitCode"] = this.unitCode;
+        data["departmentCode"] = this.departmentCode;
+        data["status"] = this.status;
+        data["countChange"] = this.countChange;
+        if (this.subPlans && this.subPlans.constructor === Array) {
+            data["subPlans"] = [];
+            for (let item of this.subPlans)
+                data["subPlans"].push(item.toJSON());
+        }
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IPlan {
+    implementDate: moment.Moment | undefined;
+    effectiveDate: moment.Moment | undefined;
+    totalPrice: number | undefined;
+    unitCode: string | undefined;
+    departmentCode: string | undefined;
+    status: number | undefined;
+    countChange: number | undefined;
+    subPlans: SubPlan[] | undefined;
+    id: number | undefined;
+}
+
+export class Supplier implements ISupplier {
+    name!: string | undefined;
+    address!: string | undefined;
+    email!: string | undefined;
+    fax!: string | undefined;
+    phone!: string | undefined;
+    contact!: string | undefined;
+    code!: string | undefined;
+    description!: string | undefined;
+    createDate!: moment.Moment | undefined;
+    status!: number | undefined;
+    supplierType!: SupplierType | undefined;
+    supplierTypeId!: number | undefined;
+    products!: Product[] | undefined;
+    id!: number | undefined;
+
+    constructor(data?: ISupplier) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.address = data["address"];
+            this.email = data["email"];
+            this.fax = data["fax"];
+            this.phone = data["phone"];
+            this.contact = data["contact"];
+            this.code = data["code"];
+            this.description = data["description"];
+            this.createDate = data["createDate"] ? moment(data["createDate"].toString()) : <any>undefined;
+            this.status = data["status"];
+            this.supplierType = data["supplierType"] ? SupplierType.fromJS(data["supplierType"]) : <any>undefined;
+            this.supplierTypeId = data["supplierTypeId"];
+            if (data["products"] && data["products"].constructor === Array) {
+                this.products = [];
+                for (let item of data["products"])
+                    this.products.push(Product.fromJS(item));
+            }
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): Supplier {
+        data = typeof data === 'object' ? data : {};
+        let result = new Supplier();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["address"] = this.address;
+        data["email"] = this.email;
+        data["fax"] = this.fax;
+        data["phone"] = this.phone;
+        data["contact"] = this.contact;
+        data["code"] = this.code;
+        data["description"] = this.description;
+        data["createDate"] = this.createDate ? this.createDate.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["supplierType"] = this.supplierType ? this.supplierType.toJSON() : <any>undefined;
+        data["supplierTypeId"] = this.supplierTypeId;
+        if (this.products && this.products.constructor === Array) {
+            data["products"] = [];
+            for (let item of this.products)
+                data["products"].push(item.toJSON());
+        }
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ISupplier {
+    name: string | undefined;
+    address: string | undefined;
+    email: string | undefined;
+    fax: string | undefined;
+    phone: string | undefined;
+    contact: string | undefined;
+    code: string | undefined;
+    description: string | undefined;
+    createDate: moment.Moment | undefined;
+    status: number | undefined;
+    supplierType: SupplierType | undefined;
+    supplierTypeId: number | undefined;
+    products: Product[] | undefined;
+    id: number | undefined;
+}
+
+export class ProductType implements IProductType {
+    code!: string | undefined;
+    name!: string | undefined;
+    note!: string | undefined;
+    status!: number | undefined;
+    products!: Product[] | undefined;
+    id!: number | undefined;
+
+    constructor(data?: IProductType) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.code = data["code"];
+            this.name = data["name"];
+            this.note = data["note"];
+            this.status = data["status"];
+            if (data["products"] && data["products"].constructor === Array) {
+                this.products = [];
+                for (let item of data["products"])
+                    this.products.push(Product.fromJS(item));
+            }
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): ProductType {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProductType();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["name"] = this.name;
+        data["note"] = this.note;
+        data["status"] = this.status;
+        if (this.products && this.products.constructor === Array) {
+            data["products"] = [];
+            for (let item of this.products)
+                data["products"].push(item.toJSON());
+        }
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface IProductType {
+    code: string | undefined;
+    name: string | undefined;
+    note: string | undefined;
+    status: number | undefined;
+    products: Product[] | undefined;
+    id: number | undefined;
+}
+
+export class SupplierType implements ISupplierType {
+    code!: string | undefined;
+    name!: string | undefined;
+    note!: string | undefined;
+    status!: number | undefined;
+    suppliers!: Supplier[] | undefined;
+    id!: number | undefined;
+
+    constructor(data?: ISupplierType) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.code = data["code"];
+            this.name = data["name"];
+            this.note = data["note"];
+            this.status = data["status"];
+            if (data["suppliers"] && data["suppliers"].constructor === Array) {
+                this.suppliers = [];
+                for (let item of data["suppliers"])
+                    this.suppliers.push(Supplier.fromJS(item));
+            }
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): SupplierType {
+        data = typeof data === 'object' ? data : {};
+        let result = new SupplierType();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["name"] = this.name;
+        data["note"] = this.note;
+        data["status"] = this.status;
+        if (this.suppliers && this.suppliers.constructor === Array) {
+            data["suppliers"] = [];
+            for (let item of this.suppliers)
+                data["suppliers"].push(item.toJSON());
+        }
+        data["id"] = this.id;
+        return data; 
+    }
+}
+
+export interface ISupplierType {
+    code: string | undefined;
+    name: string | undefined;
+    note: string | undefined;
+    status: number | undefined;
+    suppliers: Supplier[] | undefined;
     id: number | undefined;
 }
 
@@ -20684,7 +21227,7 @@ export class ProductDto implements IProductDto {
     createDate!: moment.Moment | undefined;
     status!: number | undefined;
     description!: string | undefined;
-    biddings!: TitleBiddingProduct[] | undefined;
+    id!: number | undefined;
 
     constructor(data?: IProductDto) {
         if (data) {
@@ -20706,11 +21249,7 @@ export class ProductDto implements IProductDto {
             this.createDate = data["createDate"] ? moment(data["createDate"].toString()) : <any>undefined;
             this.status = data["status"];
             this.description = data["description"];
-            if (data["biddings"] && data["biddings"].constructor === Array) {
-                this.biddings = [];
-                for (let item of data["biddings"])
-                    this.biddings.push(TitleBiddingProduct.fromJS(item));
-            }
+            this.id = data["id"];
         }
     }
 
@@ -20732,11 +21271,7 @@ export class ProductDto implements IProductDto {
         data["createDate"] = this.createDate ? this.createDate.toISOString() : <any>undefined;
         data["status"] = this.status;
         data["description"] = this.description;
-        if (this.biddings && this.biddings.constructor === Array) {
-            data["biddings"] = [];
-            for (let item of this.biddings)
-                data["biddings"].push(item.toJSON());
-        }
+        data["id"] = this.id;
         return data; 
     }
 }
@@ -20751,123 +21286,7 @@ export interface IProductDto {
     createDate: moment.Moment | undefined;
     status: number | undefined;
     description: string | undefined;
-    biddings: TitleBiddingProduct[] | undefined;
-}
-
-export class TitleBiddingProduct implements ITitleBiddingProduct {
-    supplierId!: number | undefined;
-    productId!: number | undefined;
-    supplier!: TitleSupplier | undefined;
-    startDate!: moment.Moment | undefined;
-    endDate!: moment.Moment | undefined;
-    status!: number | undefined;
-    biddingType!: number | undefined;
-
-    constructor(data?: ITitleBiddingProduct) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.supplierId = data["supplierId"];
-            this.productId = data["productId"];
-            this.supplier = data["supplier"] ? TitleSupplier.fromJS(data["supplier"]) : <any>undefined;
-            this.startDate = data["startDate"] ? moment(data["startDate"].toString()) : <any>undefined;
-            this.endDate = data["endDate"] ? moment(data["endDate"].toString()) : <any>undefined;
-            this.status = data["status"];
-            this.biddingType = data["biddingType"];
-        }
-    }
-
-    static fromJS(data: any): TitleBiddingProduct {
-        data = typeof data === 'object' ? data : {};
-        let result = new TitleBiddingProduct();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["supplierId"] = this.supplierId;
-        data["productId"] = this.productId;
-        data["supplier"] = this.supplier ? this.supplier.toJSON() : <any>undefined;
-        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
-        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
-        data["status"] = this.status;
-        data["biddingType"] = this.biddingType;
-        return data; 
-    }
-}
-
-export interface ITitleBiddingProduct {
-    supplierId: number | undefined;
-    productId: number | undefined;
-    supplier: TitleSupplier | undefined;
-    startDate: moment.Moment | undefined;
-    endDate: moment.Moment | undefined;
-    status: number | undefined;
-    biddingType: number | undefined;
-}
-
-export class TitleSupplier implements ITitleSupplier {
-    name!: string | undefined;
-    address!: string | undefined;
-    email!: string | undefined;
-    fax!: string | undefined;
-    phone!: string | undefined;
-    contact!: string | undefined;
-
-    constructor(data?: ITitleSupplier) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.name = data["name"];
-            this.address = data["address"];
-            this.email = data["email"];
-            this.fax = data["fax"];
-            this.phone = data["phone"];
-            this.contact = data["contact"];
-        }
-    }
-
-    static fromJS(data: any): TitleSupplier {
-        data = typeof data === 'object' ? data : {};
-        let result = new TitleSupplier();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["address"] = this.address;
-        data["email"] = this.email;
-        data["fax"] = this.fax;
-        data["phone"] = this.phone;
-        data["contact"] = this.contact;
-        return data; 
-    }
-}
-
-export interface ITitleSupplier {
-    name: string | undefined;
-    address: string | undefined;
-    email: string | undefined;
-    fax: string | undefined;
-    phone: string | undefined;
-    contact: string | undefined;
+    id: number | undefined;
 }
 
 export class ProductSavedDto implements IProductSavedDto {
@@ -22331,13 +22750,16 @@ export interface IListResultDtoOfSubPlanDto {
 }
 
 export class SubPlanDto implements ISubPlanDto {
-    product!: ProductSubDto | undefined;
+    product!: ProductDto | undefined;
     totalprice!: number | undefined;
     scheduleMonth!: string | undefined;
     implementQantity!: number | undefined;
     implementPrice!: number | undefined;
     pesidualQuantity!: number | undefined;
     pesidualPrice!: number | undefined;
+    quantity!: number | undefined;
+    planId!: number | undefined;
+    id!: number | undefined;
 
     constructor(data?: ISubPlanDto) {
         if (data) {
@@ -22350,13 +22772,16 @@ export class SubPlanDto implements ISubPlanDto {
 
     init(data?: any) {
         if (data) {
-            this.product = data["product"] ? ProductSubDto.fromJS(data["product"]) : <any>undefined;
+            this.product = data["product"] ? ProductDto.fromJS(data["product"]) : <any>undefined;
             this.totalprice = data["totalprice"];
             this.scheduleMonth = data["scheduleMonth"];
             this.implementQantity = data["implementQantity"];
             this.implementPrice = data["implementPrice"];
             this.pesidualQuantity = data["pesidualQuantity"];
             this.pesidualPrice = data["pesidualPrice"];
+            this.quantity = data["quantity"];
+            this.planId = data["planId"];
+            this.id = data["id"];
         }
     }
 
@@ -22376,66 +22801,24 @@ export class SubPlanDto implements ISubPlanDto {
         data["implementPrice"] = this.implementPrice;
         data["pesidualQuantity"] = this.pesidualQuantity;
         data["pesidualPrice"] = this.pesidualPrice;
+        data["quantity"] = this.quantity;
+        data["planId"] = this.planId;
+        data["id"] = this.id;
         return data; 
     }
 }
 
 export interface ISubPlanDto {
-    product: ProductSubDto | undefined;
+    product: ProductDto | undefined;
     totalprice: number | undefined;
     scheduleMonth: string | undefined;
     implementQantity: number | undefined;
     implementPrice: number | undefined;
     pesidualQuantity: number | undefined;
     pesidualPrice: number | undefined;
-}
-
-export class ProductSubDto implements IProductSubDto {
-    id!: string | undefined;
-    name!: string | undefined;
-    price!: number | undefined;
-    discount!: number | undefined;
-
-    constructor(data?: IProductSubDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.id = data["id"];
-            this.name = data["name"];
-            this.price = data["price"];
-            this.discount = data["discount"];
-        }
-    }
-
-    static fromJS(data: any): ProductSubDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProductSubDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["price"] = this.price;
-        data["discount"] = this.discount;
-        return data; 
-    }
-}
-
-export interface IProductSubDto {
-    id: string | undefined;
-    name: string | undefined;
-    price: number | undefined;
-    discount: number | undefined;
+    quantity: number | undefined;
+    planId: number | undefined;
+    id: number | undefined;
 }
 
 export class SupplierDto implements ISupplierDto {

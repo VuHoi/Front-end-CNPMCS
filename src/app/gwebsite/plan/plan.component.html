@@ -149,7 +149,7 @@
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body" let-record="$implicit" let-index="rowIndex">
-                                    <tr class="table-row text-center" (click)="gotoPlanDetail(record.planId, $event)">
+                                    <tr class="table-row text-center" (click)="gotoPlanDetail(record.id, $event)">
                                         <!-- <tr class="table-row" routerLink="app/gwebsite/plan/detail/{{record.planId}}"> -->
                                         <td style="width: 90px">
                                             <span class="ui-column-title">{{l('Number')}}</span>
@@ -157,7 +157,7 @@
                                         </td>
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Plan Id')}}</span>
-                                            <span title="{{record.planId}}">{{truncateString(record.planId)}}</span>
+                                            <span title="{{record.planId}}">{{truncateString(record.id)}}</span>
                                         </td>
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Effective Date')}}</span>
@@ -183,7 +183,7 @@
                                         </td>
                                         <td style="width: 150px">
                                             <span class="ui-column-title">{{l('Count Changed')}}</span>
-                                            <span title="{{record.countChanged}}">{{ record.countChanged }}</span>
+                                            <span title="{{record.countChanged}}">{{ record.countChange }}</span>
                                         </td>
                                         <td *ngIf="isRoleApprovedMan" style="width: 115px">
                                             <!-- <button
