@@ -36,25 +36,25 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase implemen
     //results include: productCode, productName, CalUnit
     public productsNotAssignThisPlan = [
         {
-            productCode: 'F001',
+            productCode: 1,
             productName: 'Computer Screen',
             calUnit: 'Int',
             unitPrice: 20000
         },
         {
-            productCode: 'F002',
+            productCode: 2,
             productName: 'Computer CPU',
             calUnit: 'Char',
             unitPrice: 50000
         },
         {
-            productCode: 'G001',
+            productCode: 3,
             productName: 'Fridge',
             calUnit: 'Float',
             unitPrice: 30000
         },
         {
-            productCode: 'G002',
+            productCode: 4,
             productName: 'Water Purifier',
             calUnit: 'Bool',
             unitPrice: 40000
@@ -62,7 +62,7 @@ export class CreateOrEditSubPlanModalComponent extends AppComponentBase implemen
     ];
 
     public productInfoList: ProductSubPlanDto[] = [];
-    public productCode = '';
+    public productCode = 0;
     public quantity = 0;
     public planId = 0;
     public newProduct: SubPlanDto;
