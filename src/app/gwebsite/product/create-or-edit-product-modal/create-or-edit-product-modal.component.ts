@@ -4,7 +4,8 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
 import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { ProductDto } from '../dto/product.dto';
+import { ProductDto, ApprovalStatusEnum, NewPJDto, ProductTypeInfo } from '../dto/product.dto';
+import * as moment from 'moment';
 
 @Component({
     selector: 'createOrEditProductModal',
@@ -28,6 +29,60 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
     product: ProductDto = new ProductDto();
     products: ComboboxItemDto[] = [];
 
+    public pjCode = '';
+    public pjName = '';
+    public pjCreateDate = '';
+    public pjActiveDate = '';
+    public pjUnitPrice = '';
+    public pjCalUnit = '';
+    public pjDescription = '';
+
+    public productTypeId: number;
+
+    public productTypes = [
+        {
+            id: 1,
+            code: 'F001',
+            name: 'Computer Screen'
+        },
+        {
+            id: 2,
+            code: 'F002',
+            name: 'Computer CPU'
+        },
+        {
+            id: 3,
+            code: 'G001',
+            name: 'Fridge'
+        }
+    ];
+
+    public supplierId: number;
+    public suppliers = [
+        {
+            id: 1,
+            code: 'S001',
+            name: 'DMX'
+        },
+        {
+            id: 2,
+            code: 'S002',
+            name: 'FPT'
+        },
+        {
+            id: 3,
+            code: 'S001',
+            name: 'Fridge'
+        }
+    ];
+
+    public productTypeInfoList = [];
+    public supplierInfoList = [];
+
+    public isCheckActive = false;
+    public statusEnum = ApprovalStatusEnum;
+    public newProduct: NewPJDto;
+
     constructor(
         injector: Injector,
         private _apiService: WebApiServiceProxy
@@ -37,9 +92,35 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
 
     show(productId?: number | null | undefined): void {
         this.active = true;
+        this.saving = false;
+
+        this.pjCode = '';
+        this.pjName = '';
+        this.isCheckActive = false;
+        this.pjUnitPrice = '';
+        this.pjCalUnit = '';
+        this.pjDescription = '';
+
+        let now = new Date();
+        this.pjCreateDate = moment(now).format('DD/MM/YYYY');
+
+        this.productTypeId = this.productTypes[0].id;
+        this.productTypeInfoList = [];
+
+        this.productTypes.forEach((item, i) => {
+            this.productTypeInfoList.push(
+                new ProductTypeInfo(item.id, `${item.code} - ${item.name}`));
+        });
+
+        this.supplierId = this.suppliers[0].id;
+        this.supplierInfoList = [];
+
+        this.suppliers.forEach((item, i) => {
+            this.supplierInfoList.push(
+                new ProductTypeInfo(item.id, `${item.code} - ${item.name}`));
+        });
 
         this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', productId).subscribe(result => {
-            // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
             this.product = result.menuClient;
             this.products = result.menuClients;
             this.modal.show();
@@ -50,12 +131,28 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
     }
 
     save(): void {
-        let input = this.product;
-        this.saving = true;
-        if (input.id) {
-            this.updateProduct();
-        } else {
-            this.insertProduct();
+        if (this.pjCode && this.pjCode !== '' && this.pjName && this.pjName !== '') {
+            this.saving = true;
+
+            let status = this.isCheckActive ? this.statusEnum.Active : this.statusEnum.Inactive;
+
+            //createDate: BE lấy giờ hệ thống
+            this.newProduct = new NewPJDto(this.pjCode, this.pjName, this.productTypeId, this.supplierId, this.pjUnitPrice,
+                this.pjCalUnit, this.pjDescription, status);
+
+
+            console.log(this.pjCode + '--' + this.pjName + '--' + this.productTypeId + '--' + this.supplierId + '--' + this.pjUnitPrice
+                + '--' + this.pjCalUnit + '--' + this.pjDescription + '--' + status);
+
+            // this.insertProduct();
+
+            // call api create product category theo code,nam,status
+            // add xuống, id tự tạo
+
+            //trước khi add nhớ check duplicat code.
+
+
+            this.close();
         }
     }
 
@@ -84,5 +181,11 @@ export class CreateOrEditProductModalComponent extends AppComponentBase {
     close(): void {
         this.active = false;
         this.modal.hide();
+    }
+
+    activeNewPrj(event: Event): void {
+        if (this.isCheckActive) {
+            this.pjActiveDate = this.pjCreateDate;
+        }
     }
 }

@@ -4,7 +4,8 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
 import { ComboboxItemDto } from '@shared/service-proxies/service-proxies';
-import { SupplierDto } from '../dto/supplier.dto';
+import { SupplierDto, ApprovalStatusEnum, NewPJDto, SupplierTypeInfo } from '../dto/supplier.dto';
+import * as moment from 'moment';
 
 @Component({
     selector: 'createOrEditSupplierModal',
@@ -28,6 +29,42 @@ export class CreateOrEditSupplierModalComponent extends AppComponentBase {
     supplier: SupplierDto = new SupplierDto();
     suppliers: ComboboxItemDto[] = [];
 
+    public pjCode = '';
+    public pjName = '';
+    public supplierTypeId: number;
+    public pjCreateDate = '';
+    public pjActiveDate = '';
+    public pjAddress = '';
+    public pjEmail = '';
+    public pjFax = '';
+    public pjPhone = '';
+    public pjContact = '';
+    public pjDescription = '';
+
+    public supplierTypes = [
+        {
+            id: 1,
+            code: 'F001',
+            name: 'Computer Screen'
+        },
+        {
+            id: 2,
+            code: 'F002',
+            name: 'Computer CPU'
+        },
+        {
+            id: 3,
+            code: 'G001',
+            name: 'Fridge'
+        }
+    ];
+
+    public supplierTypeInfoList = [];
+
+    public isCheckActive = false;
+    public statusEnum = ApprovalStatusEnum;
+    public newSupplier: NewPJDto;
+
     constructor(
         injector: Injector,
         private _apiService: WebApiServiceProxy
@@ -37,9 +74,29 @@ export class CreateOrEditSupplierModalComponent extends AppComponentBase {
 
     show(supplierId?: number | null | undefined): void {
         this.active = true;
+        this.saving = false;
+
+        this.pjCode = '';
+        this.pjName = '';
+        this.isCheckActive = false;
+        this.pjAddress = '';
+        this.pjFax = '';
+        this.pjPhone = '';
+        this.pjContact = '';
+        this.pjDescription = '';
+
+        let now = new Date();
+        this.pjCreateDate = moment(now).format('DD/MM/YYYY');
+
+        this.supplierTypeId = this.supplierTypes[0].id;
+        this.supplierTypeInfoList = [];
+
+        this.supplierTypes.forEach((item, i) => {
+            this.supplierTypeInfoList.push(
+                new SupplierTypeInfo(item.id, `${item.code} - ${item.name}`));
+        });
 
         this._apiService.getForEdit('api/MenuClient/GetMenuClientForEdit', supplierId).subscribe(result => {
-            // tiennnnnnnnnnnnnnnnnnnnnnnnnnnnn
             this.supplier = result.menuClient;
             this.suppliers = result.menuClients;
             this.modal.show();
@@ -50,12 +107,29 @@ export class CreateOrEditSupplierModalComponent extends AppComponentBase {
     }
 
     save(): void {
-        let input = this.supplier;
-        this.saving = true;
-        if (input.id) {
-            this.updateSupplier();
-        } else {
-            this.insertSupplier();
+        if (this.pjCode && this.pjCode !== '' && this.pjName && this.pjName !== '') {
+            this.saving = true;
+
+            let status = this.isCheckActive ? this.statusEnum.Active : this.statusEnum.Inactive;
+
+            //createDate: BE lấy giờ hệ thống
+            this.newSupplier = new NewPJDto(this.pjCode, this.pjName, this.supplierTypeId, this.pjAddress,
+                this.pjEmail, this.pjFax, this.pjPhone, this.pjContact, this.pjDescription, status);
+
+
+            console.log(this.pjCode + '--' + this.pjName + '--' + this.supplierTypeId + '--' + this.pjAddress
+                + '--' + this.pjEmail + '--' + this.pjFax + '--' + this.pjPhone + '--' + this.pjContact + '--' +
+                this.pjDescription + '--' + status);
+
+            // this.insertSupplier();
+
+            // call api create product category theo code,nam,status
+            // add xuống, id tự tạo
+
+            //trước khi add nhớ check duplicat code.
+
+
+            this.close();
         }
     }
 
@@ -84,5 +158,11 @@ export class CreateOrEditSupplierModalComponent extends AppComponentBase {
     close(): void {
         this.active = false;
         this.modal.hide();
+    }
+
+    activeNewPrj(event: Event): void {
+        if (this.isCheckActive) {
+            this.pjActiveDate = this.pjCreateDate;
+        }
     }
 }
