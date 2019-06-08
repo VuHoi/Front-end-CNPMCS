@@ -11,6 +11,7 @@ import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.serv
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import * as moment from 'moment';
 import { ApprovalStatusEnum, StatusEnum } from './dto/supplier.dto';
+import { ProductsServiceProxy, SupplierServiceProxy, SupplierSavedDto } from '@shared/service-proxies/service-proxies';
 
 
 @Component({
@@ -39,7 +40,7 @@ export class SupplierComponent extends AppComponentBase implements AfterViewInit
     // thêm: ai thêm cũng đc, ko phân quyền
     public isPermissionEditCloseActive = false;
 
-    public status = StatusEnum.All;
+    public status: number = undefined;
     public statusEnum = StatusEnum;
     public StatusList = [
         {
@@ -79,8 +80,8 @@ export class SupplierComponent extends AppComponentBase implements AfterViewInit
     // public model: any = { date: { year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate() } };
     // public model = new Date();
     public creatDateString = '';
-    public supplierCodeFilter = '';
-    public supplierNameFilter = '';
+    public supplierCodeFilter: string = undefined;
+    public supplierNameFilter: string = undefined;
 
     // -những dự án của năm cũ, sẽ tự động close (mỗi lần đến 1/1/newyear, sẽ trigger cho nó close hết suppliers năm cũ),
     //      dù có đc approved hay chưa.
@@ -269,7 +270,7 @@ export class SupplierComponent extends AppComponentBase implements AfterViewInit
         injector: Injector,
         private _router: Router,
         private _activatedRoute: ActivatedRoute,
-        private _apiService: WebApiServiceProxy
+        private _apiService: SupplierServiceProxy
     ) {
         super(injector);
     }
@@ -306,25 +307,21 @@ export class SupplierComponent extends AppComponentBase implements AfterViewInit
          * Sử dụng _apiService để call các api của backend
          */
 
-        // this._apiService.get('api/MenuClient/GetMenuClientsByFilter',
-        //     [{ fieldName: 'Name', value: this.filterText }],
-        //     this.primengTableHelper.getSorting(this.dataTable),
-        //     this.primengTableHelper.getMaxResultCount(this.paginator, event),
-        //     this.primengTableHelper.getSkipCount(this.paginator, event),
-        // ).subscribe(result => {
-        //     this.primengTableHelper.totalRecordsCount = result.totalCount;
-        //     this.primengTableHelper.records = result.items;
-        //     this.primengTableHelper.hideLoadingIndicator();
-        // });
+        this._apiService.getSupplierWithFilterAsync(this.supplierNameFilter, this.status, this.supplierCodeFilter,
+            this.primengTableHelper.getSorting(this.dataTable),
+            this.primengTableHelper.getMaxResultCount(this.paginator, event),
+            this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(result => {
+                this.primengTableHelper.totalRecordsCount = 16;
+                this.primengTableHelper.records = this.supplierFakes;
 
-        this.primengTableHelper.totalRecordsCount = 16;
-        this.primengTableHelper.records = this.supplierFakes;
+                this.primengTableHelper.records.forEach((item) => {
+                    item.isEdit = false;
+                });
 
-        this.primengTableHelper.records.forEach((item) => {
-            item.isEdit = false;
-        });
+                this.primengTableHelper.hideLoadingIndicator();
+            })
 
-        this.primengTableHelper.hideLoadingIndicator();
+
     }
 
     init(): void {
@@ -419,7 +416,7 @@ export class SupplierComponent extends AppComponentBase implements AfterViewInit
             // vì bên html đã tự bind [(ngModel)] vào row.name và row.note rồi, nên ở đây ta chỉ cần lấy ra giá trị để update
             console.log(id + '---' + row.name + '---' + row.address + '---' + row.email + '---' + row.fax + '---' +
                 row.phone + '---' + row.contact + '---' + row.description);
-
+            this._apiService.updateSupplier(new SupplierSavedDto(row)).subscribe(items => console.log(items));
             //save thành công
             row.isEdit = false;
         }
@@ -451,6 +448,7 @@ export class SupplierComponent extends AppComponentBase implements AfterViewInit
     public removePcItem(id: number, row: any, index: number): void {
         if (this.isPermissionEditCloseActive) {
             this.primengTableHelper.records.splice(index, 1);
+            this._apiService.deleteSupplierAsync(id);
         }
         this.primengTableHelper.hideLoadingIndicator();
     }
