@@ -3,7 +3,7 @@ import { AppComponentBase } from '@shared/common/app-component-base';
 import { ModalDirective } from 'ngx-bootstrap';
 import { finalize } from 'rxjs/operators';
 import { WebApiServiceProxy } from '@shared/service-proxies/webapi.service';
-import { ComboboxItemDto, SupplierServiceProxy, SupplierSavedDto, SupplierType, SupplierTypeDto } from '@shared/service-proxies/service-proxies';
+import { ComboboxItemDto, SupplierServiceProxy, SupplierSavedDto, SupplierTypeDto } from '@shared/service-proxies/service-proxies';
 import { SupplierDto, ApprovalStatusEnum, NewPJDto, SupplierTypeInfo } from '../dto/supplier.dto';
 import * as moment from 'moment';
 
