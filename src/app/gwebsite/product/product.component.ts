@@ -11,7 +11,7 @@ import { WebApiServiceProxy, IFilter } from '@shared/service-proxies/webapi.serv
 import { IMyDpOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import * as moment from 'moment';
 import { ApprovalStatusEnum, StatusEnum } from './dto/product.dto';
-import { ProductsServiceProxy } from '@shared/service-proxies/service-proxies';
+import { ProductsServiceProxy, ProductSavedDto } from '@shared/service-proxies/service-proxies';
 
 
 @Component({
@@ -242,7 +242,9 @@ export class ProductComponent extends AppComponentBase implements AfterViewInit,
 
             // vì bên html đã tự bind [(ngModel)] vào row.name và row.note rồi, nên ở đây ta chỉ cần lấy ra giá trị để update
             console.log(id + '---' + row.name + '---' + row.unitPrice + '---' + row.calUnit + '---' + row.description);
-
+            this._apiService.updateProductAsync(new ProductSavedDto({ id: row.id, address: row.address, description: row.description, name: row.name, unitPrice: row.unitPrice })).subscribe(() => {
+                console.log("success");
+            });
             //save thành công
             row.isEdit = false;
         }

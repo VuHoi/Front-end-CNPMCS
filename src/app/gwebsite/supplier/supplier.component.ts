@@ -312,7 +312,7 @@ export class SupplierComponent extends AppComponentBase implements AfterViewInit
             this.primengTableHelper.getMaxResultCount(this.paginator, event),
             this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(result => {
                 this.primengTableHelper.totalRecordsCount = 16;
-                this.primengTableHelper.records = this.supplierFakes;
+                this.primengTableHelper.records = result.items;
 
                 this.primengTableHelper.records.forEach((item) => {
                     item.isEdit = false;
@@ -368,15 +368,21 @@ export class SupplierComponent extends AppComponentBase implements AfterViewInit
     }
 
     //Refresh grid khi thực hiện create or edit thành công
-    refreshValueFromModal(): void {
-        if (this.createOrEditModal.supplier.id) {
-            for (let i = 0; i < this.primengTableHelper.records.length; i++) {
-                if (this.primengTableHelper.records[i].id === this.createOrEditModal.supplier.id) {
-                    this.primengTableHelper.records[i] = this.createOrEditModal.supplier;
-                    return;
-                }
-            }
-        } else { this.reloadPage(); }
+    refreshValueFromModal(event): void {
+        this._apiService.getSupplierWithFilterAsync(undefined, undefined, undefined,
+            this.primengTableHelper.getSorting(this.dataTable),
+            this.primengTableHelper.getMaxResultCount(this.paginator, event),
+            this.primengTableHelper.getSkipCount(this.paginator, event)).subscribe(result => {
+                this.primengTableHelper.totalRecordsCount = 16;
+                this.primengTableHelper.records = result.items;
+
+                this.primengTableHelper.records.forEach((item) => {
+                    item.isEdit = false;
+                });
+
+                this.primengTableHelper.hideLoadingIndicator();
+            })
+
     }
 
     //hàm show view create Supplier
@@ -414,9 +420,8 @@ export class SupplierComponent extends AppComponentBase implements AfterViewInit
             //Các fields cần đưa vào model để update.
 
             // vì bên html đã tự bind [(ngModel)] vào row.name và row.note rồi, nên ở đây ta chỉ cần lấy ra giá trị để update
-            console.log(id + '---' + row.name + '---' + row.address + '---' + row.email + '---' + row.fax + '---' +
-                row.phone + '---' + row.contact + '---' + row.description);
-            this._apiService.updateSupplier(new SupplierSavedDto(row)).subscribe(items => console.log(items));
+            console.log({ address: row.address, code: row.code, contact: row.contact, createDate: moment(new Date()).toISOString(), description: row.description, email: row.email, fax: row.fax, id: row.id, name: row.name, phone: row.phone, status: row.status, supplierTypeId: row.supplierTypeId });
+            this._apiService.updateSupplier(new SupplierSavedDto({ address: row.address, code: row.code, contact: row.contact, createDate: moment(new Date()), description: row.description, email: row.email, fax: row.fax, id: row.id, name: row.name, phone: row.phone, status: row.status, supplierTypeId: row.supplierTypeId })).subscribe(items => console.log(items));
             //save thành công
             row.isEdit = false;
         }
@@ -448,8 +453,10 @@ export class SupplierComponent extends AppComponentBase implements AfterViewInit
     public removePcItem(id: number, row: any, index: number): void {
         if (this.isPermissionEditCloseActive) {
             this.primengTableHelper.records.splice(index, 1);
-            this._apiService.deleteSupplierAsync(id);
+            this._apiService.deleteSupplierAsync(id).subscribe(() => {
+                this.primengTableHelper.hideLoadingIndicator();
+
+            });
         }
-        this.primengTableHelper.hideLoadingIndicator();
     }
 }

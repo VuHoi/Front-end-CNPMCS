@@ -15,7 +15,7 @@ import * as moment from 'moment';
 export class CreateOrEditSupplierModalComponent extends AppComponentBase {
 
     @ViewChild('createOrEditModal') modal: ModalDirective;
-    @ViewChild('supplierCombobox') supplierCombobox: ElementRef;
+    // @ViewChild('supplierCombobox') supplierCombobox: ElementRef;
     @ViewChild('iconCombobox') iconCombobox: ElementRef;
 
     /**
@@ -88,9 +88,9 @@ export class CreateOrEditSupplierModalComponent extends AppComponentBase {
             this.supplier = result.menuClient;
             this.suppliers = result.menuClients;
             this.modal.show();
-            setTimeout(() => {
-                $(this.supplierCombobox.nativeElement).selectpicker('refresh');
-            }, 0);
+            // setTimeout(() => {
+            //     $(this.supplierCombobox.nativeElement).selectpicker('refresh');
+            // }, 0);
         });
     }
 
@@ -102,7 +102,7 @@ export class CreateOrEditSupplierModalComponent extends AppComponentBase {
             //createDate: BE lấy giờ hệ thống
             this.newSupplier = new SupplierSavedDto({
                 name: this.pjName, address: this.pjAddress, email: this.pjEmail
-                , fax: this.pjFax, code: this.pjCode, contact: this.pjContact, createDate: this.pjCreateDate, description: this.pjDescription
+                , fax: this.pjFax, code: this.pjCode, contact: this.pjContact, createDate: moment(this.pjCreateDate), description: this.pjDescription
                 , phone: this.pjPhone, status: status, supplierTypeId: this.supplierTypeId, id: 0
             });
             this._supplierType.createSupplier(this.newSupplier).subscribe(result => console.log(result));
@@ -118,7 +118,7 @@ export class CreateOrEditSupplierModalComponent extends AppComponentBase {
 
             //trước khi add nhớ check duplicat code.
 
-
+            this.modalSave.emit();
             this.close();
         }
     }
